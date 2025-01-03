@@ -52,6 +52,7 @@ $route['workHistory/update/(:num)'] = "WorkController/updateWorkDetails/$1"; // 
 $route['workHistory/delete/(:num)'] = "WorkController/removeWorkDetails/$1"; // Delete work details
 
 
+
 $route['404_override'] = '';
 
 

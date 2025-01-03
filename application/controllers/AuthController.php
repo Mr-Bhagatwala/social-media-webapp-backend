@@ -119,45 +119,71 @@ class AuthController extends CI_Controller {
     // Add profile details
     public function addProfileDetails() {
         $user_id = $this->session->userdata('user_id');
-
+    
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return;
         }
-
+    
+        // Load the file upload library
+        $this->load->library('upload');
+    
         $data = $this->input->post();
         
         // Add validation rules
-        $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');
         $this->form_validation->set_rules('gender', 'Gender', 'required');
         $this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
         $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
         $this->form_validation->set_rules('current_city', 'Current City', 'required');
         $this->form_validation->set_rules('hometown', 'Hometown', 'required');
     
+        // Check if profile picture is uploaded
+        if (!empty($_FILES['profile_photo']['name'])) {
+            // Set upload configuration
+            $config['upload_path'] = './assests/profile_pictures/';  // Path where the file will be saved
+            $config['allowed_types'] = 'gif|jpg|jpeg|png';  // Allowed file types
+            $config['max_size'] = 2048;  // Maximum file size (2MB)
+    
+            $this->upload->initialize($config);
+    
+            // Perform the upload
+            if (!$this->upload->do_upload('profile_photo')) {
+                // If upload fails, return error
+                echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors()]);
+                return;
+            }
+    
+            // Get the uploaded file data
+            $upload_data = $this->upload->data();
+            $profile_photo_path = 'uploads/profile_pictures/' . $upload_data['file_name'];  // Store the file path
+        } else {
+            $profile_photo_path = $data['profile_photo'];  // If no file uploaded, use existing profile photo
+        }
+    
         if ($this->form_validation->run() == FALSE) {
             echo json_encode(['status' => 'error', 'message' => validation_errors()]);
             return;
         }
-
+    
         // Update user details
         $update_data = array(
-            'profile_photo' => $data['profile_photo'],
+            'profile_photo' => $profile_photo_path,
             'gender' => $data['gender'],
             'marital_status' => $data['marital_status'],
             'date_of_birth' => $data['date_of_birth'],
             'current_city' => $data['current_city'],
             'hometown' => $data['hometown']
         );
-    
+        
         $this->db->where('id', $user_id); // Ensure 'id' is the correct column name for user identification
-        $result = $this->db->update('users', $update_data); // Missing semicolon added here
-
+        $result = $this->db->update('users', $update_data); // Update the user profile
+    
         if ($result) {
             echo json_encode(['status' => 'success', 'message' => 'Profile updated successfully.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to update profile.']);
         }
     }
+    
 }
 ?>
