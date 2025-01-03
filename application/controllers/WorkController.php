@@ -50,14 +50,20 @@ class WorkController extends CI_Controller {
     }
 
     public function removeWorkDetails($id) {
-        $result = $this->WorkDetailsModel->removeWorkDetails($id);
-
-        if ($result) {
+        // Attempt to delete the record
+        $this->db->where('id', $id);
+        $this->db->delete('work_history');
+    
+        // Check the number of affected rows
+        if ($this->db->affected_rows() > 0) {
+            // If a row was deleted
             echo json_encode(['status' => 'success', 'message' => 'Work details removed successfully.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to remove work details.']);
+            // If no rows were affected (id does not exist in the database)
+            echo json_encode(['status' => 'error', 'message' => 'ID not found in the database.']);
         }
     }
+    
     public function updateWorkDetails($id) {
         $data = $this->input->post();
 
@@ -71,7 +77,14 @@ class WorkController extends CI_Controller {
             echo json_encode(['status' => 'error', 'message' => validation_errors()]);
             return;
         }
-
+        $this->db->where('id', $id);
+        $query = $this->db->get('work_history');  // Assuming the table is named 'education_details'
+    
+        if ($query->num_rows() == 0) {
+            // If no record is found with the given ID
+            echo json_encode(['status' => 'error', 'message' => 'work details not found.']);
+            return;
+        }
         $result = $this->WorkDetailsModel->updateWorkDetails(
             $id,
             $data['company_organisation'],

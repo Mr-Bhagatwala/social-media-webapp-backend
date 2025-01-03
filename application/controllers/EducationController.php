@@ -48,30 +48,45 @@ class EducationController extends CI_Controller {
 
     // Remove education details
     public function removeEducationDetails($id) {
-        $result = $this->EducationDetailsModel->removeEducationDetails($id);
+        $this->db->where('id',$id);
+        $this->db->delete('education');
+      
 
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Education details removed successfully.']);
+        if ($this->db->affected_rows() > 0) {
+            // If a row was deleted
+            echo json_encode(['status' => 'success', 'message' => 'education details removed successfully.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to remove education details.']);
+            // If no rows were affected (id does not exist in the database)
+            echo json_encode(['status' => 'error', 'message' => 'ID not found in the database.']);
         }
     }
 
     // Update education details
     public function updateEducationDetails($id) {
         $data = $this->input->post();
-
+    
         $this->form_validation->set_rules('college_school', 'College/School', 'required');
         $this->form_validation->set_rules('degree_program', 'Degree Program', 'required');
         $this->form_validation->set_rules('start_year', 'Start Year', 'required');
         $this->form_validation->set_rules('end_year', 'End Year', 'required');
         $this->form_validation->set_rules('is_current', 'Is Current', 'required');
-
+    
         if ($this->form_validation->run() == FALSE) {
             echo json_encode(['status' => 'error', 'message' => validation_errors()]);
             return;
         }
-
+    
+        // Check if the education details exist for the given ID
+        $this->db->where('id', $id);
+        $query = $this->db->get('education');  // Assuming the table is named 'education_details'
+    
+        if ($query->num_rows() == 0) {
+            // If no record is found with the given ID
+            echo json_encode(['status' => 'error', 'message' => 'Education details not found.']);
+            return;
+        }
+    
+        // If the record exists, proceed to update
         $result = $this->EducationDetailsModel->updateEducationDetails(
             $id,
             $data['college_school'],
@@ -80,12 +95,12 @@ class EducationController extends CI_Controller {
             $data['end_year'],
             $data['is_current']
         );
-
+    
         if ($result) {
             echo json_encode(['status' => 'success', 'message' => 'Education details updated successfully.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to update education details.']);
         }
     }
-}
+}    
 ?>
