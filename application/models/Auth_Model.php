@@ -10,10 +10,17 @@ class Auth_Model extends CI_Model {
             'name' => $name,
             'email' => $email,
             'password' => $password,
-
+            'profile_photo' => "",
+            'gender' => "",
+            'marital_status' => "",
+            'date_of_birth' => "",
+            'current_city' => "",
+            'hometown' => ""
         );
     
-        return $this->db->insert('users', $data);
+        $this->db->insert('users', $data);
+    
+        return $this->db->insert_id(); 
     }
     
 
@@ -41,7 +48,7 @@ class Auth_Model extends CI_Model {
             'current_city' => $current_city,
             'hometown' => $hometown,
         ); // Fixed: Added semicolon here
-    
+        
         return $this->db->insert('users', $data);
     }
     

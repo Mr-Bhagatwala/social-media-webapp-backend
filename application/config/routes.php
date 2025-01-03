@@ -42,6 +42,7 @@ $route['default_controller'] = "welcome";
 $route['register'] = 'AuthController/register_user';
 $route['login'] = "AuthController/login_user";
 $route['logout'] = "AuthController/logout";
+$route['details'] = "AuthController/addProfileDetails";
 $route['contact'] = "ContactController/addContactDetails";
 $route['education'] = "EducationController/addEducationDetails";
 $route['workHistory'] = "WorkController/addWorkDetails";

@@ -12,122 +12,152 @@ class AuthController extends CI_Controller {
 
     // Handle registration form submission
     public function register_user()
-{
-    // Validation for registration form
-    $this->form_validation->set_rules('name', 'name', 'required');
-    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-    $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
-
-    if ($this->form_validation->run() == FALSE)
     {
-        // // If validation fails, return an error message or reload the register view
-        // $this->load->view('register');  // Assuming you have a register view
-        // // You can also display validation errors like this:
-        echo validation_errors();
-    }
-    else
-    {
-        // Get user data from form
-        $username = $this->input->post('name');
+        // Validation for registration form
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
+    
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
+            return;
+        }
+    
+        // Get user data
+        $name = $this->input->post('name'); // Correct variable name
         $email = $this->input->post('email');
-        $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT); // Hash password
-
+        $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+    
         // Save user to database
-        $is_registered = $this->Auth_model->register($username, $email, $password);
-
-        if ($is_registered)
-        {
-            // Redirect to login page or dashboard on success
-            $this->session->set_flashdata('success', 'Registration successful! Please log in.');
-            // redirect('/login');  // Or any other page where user can log in
-        }
-        else
-        {
-            // Show error message if registration failed
-            $this->session->set_flashdata('error', 'Registration failed. Please try again.');
-            redirect('/register');  // Go back to register page or another page for retry
+        $user_id = $this->Auth_model->register($name, $email, $password);
+    
+        if ($user_id) {
+            // Store user_id in session
+            $this->session->set_userdata('user_id', $user_id);
+    
+            // Send success response
+            echo json_encode(['status' => 'success', 'message' => 'User registered successfully.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to register user.']);
         }
     }
-}
-
-
+    
 
     // Handle login form submission
     public function login_user()
     {
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required');
-
+    
         if ($this->form_validation->run() == FALSE)
         {
-            // $this->load->view('login');
+            // Validation failed, return errors
+            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
+            return;
         }
-        else
+        
+        // Get email and password
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+    
+        // Check if user exists
+        $user = $this->Auth_model->login($email); // Corrected from $this->user to $this->Auth_model
+    
+        if ($user)
         {
-            $email = $this->input->post('email');
-            $password = $this->input->post('password');
-
-            // Check if user exists
-            $user = $this->Auth_model->login($email);
-
-            if ($user && password_verify($password, $user['password']))
+            // Check password using password_verify
+            if (password_verify($password, $user['password']))
             {
                 // Set session data for logged-in user
-                $this->session->set_userdata('user', $user);
-                echo " logged in";
-
-                // redirect('dashboard');
+                $this->session->set_userdata('user_id', $user['id']);
+                $this->session->set_userdata('user_email', $user['email']);
+                $this->session->set_userdata('user_name', $user['name']);
+    
+                // Return success message
+                echo json_encode(['status' => 'success', 'message' => "User logged in successfully"]);
             }
             else
             {
-                $this->session->set_flashdata('error', 'Invalid email or password');
-                redirect('/');
+                // Invalid password
+                echo json_encode(['status' => 'error', 'message' => 'Invalid password']);
             }
         }
+        else
+        {
+            // User not found
+            echo json_encode(['status' => 'error', 'message' => 'Invalid email or user not found']);
+        }
     }
+    
 
     // Logout
     public function logout()
     {
-        $this->session->unset_userdata('user');
+        // Check if the user is logged in
+        $user_id = $this->session->userdata('user_id');
+        
+        if ($user_id) {
+            // Unset all session data
+            $this->session->unset_userdata('user_id');
+            $this->session->unset_userdata('user');
+            
+            // Destroy the session
+            $this->session->sess_destroy();
+    
+            // Respond with a success message
+            echo json_encode(['status' => 'success', 'message' => 'You have been logged out successfully.']);
+        } else {
+            // User is not logged in, send an error message
+            echo json_encode(['status' => 'error', 'message' => 'No active session found.']);
+        }
+    
+        // Optionally, redirect the user to the login page after logging out
         // redirect('/login');
     }
+    
 
-        // Add profile details
+    // Add profile details
     public function addProfileDetails() {
-        $data = json_decode(file_get_contents("php://input"), true);
+        $user_id = $this->session->userdata('user_id');
 
-        $this->form_validation->set_data($data);
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+            return;
+        }
 
+        $data = $this->input->post();
+        
+        // Add validation rules
         $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');
         $this->form_validation->set_rules('gender', 'Gender', 'required');
         $this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
         $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
         $this->form_validation->set_rules('current_city', 'Current City', 'required');
         $this->form_validation->set_rules('hometown', 'Hometown', 'required');
-
+    
         if ($this->form_validation->run() == FALSE) {
-            $response = array('status' => 'error', 'message' => validation_errors());
-            echo json_encode($response);
+            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
             return;
         }
 
-        $result = $this->ContactDetailsModel->fillDetails(
-            $data['profile_photo'], 
-            $data['gender'], 
-            $data['marital_status'], 
-            $data['date_of_birth'], 
-            $data['current_city'], 
-            $data['hometown']
+        // Update user details
+        $update_data = array(
+            'profile_photo' => $data['profile_photo'],
+            'gender' => $data['gender'],
+            'marital_status' => $data['marital_status'],
+            'date_of_birth' => $data['date_of_birth'],
+            'current_city' => $data['current_city'],
+            'hometown' => $data['hometown']
         );
+    
+        $this->db->where('id', $user_id); // Ensure 'id' is the correct column name for user identification
+        $result = $this->db->update('users', $update_data); // Missing semicolon added here
 
         if ($result) {
-            $response = array('status' => 'success', 'message' => 'Profile details added successfully.');
+            echo json_encode(['status' => 'success', 'message' => 'Profile updated successfully.']);
         } else {
-            $response = array('status' => 'error', 'message' => 'Failed to add profile details.');
+            echo json_encode(['status' => 'error', 'message' => 'Failed to update profile.']);
         }
-        echo json_encode($response);
     }
-
 }
 ?>

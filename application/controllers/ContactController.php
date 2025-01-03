@@ -9,13 +9,18 @@ class ContactController extends CI_Controller {
         $this->load->library('form_validation');
     }
 
-      // Add contact details
-      public function addContactDetails() {
+    // Add or update contact details
+    public function addContactDetails() {
+
+        $user_id = $this->session->userdata('user_id');
+
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+            return;
+        }
+
+        $data = $this->input->post();
         
-        $data = json_decode(file_get_contents("php://input"), true);
-
-        $this->form_validation->set_data($data);
-
         $this->form_validation->set_rules('primary_phone', 'Primary Phone', 'required');
         $this->form_validation->set_rules('linkedin_url', 'LinkedIn URL', 'required|valid_url');
         $this->form_validation->set_rules('alternative_email', 'Alternative Email', 'required|valid_email');
@@ -27,6 +32,7 @@ class ContactController extends CI_Controller {
             return;
         }
 
+        // Call the model method to add or update the contact details
         $result = $this->ContactDetailsModel->fillContactDetails(
             $data['primary_phone'], 
             $data['linkedin_url'], 
@@ -34,11 +40,15 @@ class ContactController extends CI_Controller {
             $data['alternative_phone']
         );
 
-        if ($result) {
+        // Check the result and respond accordingly
+        if ($result === 'updated') {
+            $response = array('status' => 'success', 'message' => 'Contact details updated successfully.');
+        } elseif ($result === 'added') {
             $response = array('status' => 'success', 'message' => 'Contact details added successfully.');
         } else {
-            $response = array('status' => 'error', 'message' => 'Failed to add contact details.');
+            $response = array('status' => 'error', 'message' => 'Failed to add or update contact details.');
         }
+
         echo json_encode($response);
     }
 }
