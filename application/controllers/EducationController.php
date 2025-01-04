@@ -102,5 +102,16 @@ class EducationController extends CI_Controller {
             echo json_encode(['status' => 'error', 'message' => 'Failed to update education details.']);
         }
     }
+
+    public function listEducationHistory(){
+        $user_id = $this->session->userdata('user_id');
+    
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+            return;
+        }
+        $educationHistory = $this->EducationDetailsModel->getUserEducationHistory($user_id);
+        echo json_encode(['status' => 'success', 'education' => $educationHistory]);
+    }
 }    
 ?>

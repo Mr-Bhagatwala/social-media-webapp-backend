@@ -67,5 +67,11 @@ class EducationDetailsModel extends CI_Model {
 
         return $this->db->update('education', $data);
     }
+
+    public function getUserEducationHistory($user_id){
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get('education');
+        return $query->result_array();
+    }
 }
 ?>

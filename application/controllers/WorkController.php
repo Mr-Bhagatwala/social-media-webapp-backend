@@ -101,5 +101,17 @@ class WorkController extends CI_Controller {
         }
     }
 
+    public function listWorkHistory(){
+        $user_id = $this->session->userdata('user_id');
+    
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+            return;
+        }
+        $workHistory = $this->WorkDetailsModel->getUserWorkHistory($user_id);
+        echo json_encode(['status' => 'success', 'work' => $workHistory]);
+    
+    }
+
 }
 ?>

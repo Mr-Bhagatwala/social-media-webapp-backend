@@ -54,13 +54,16 @@ $route['alternativePhone/delete/(:num)'] = "AlternativePhonesController/removeAl
 $route['alternativePhone/list'] = "AlternativePhonesController/listAlternativePhones";
 
 $route['education'] = "EducationController/addEducationDetails";
+$route['education/list'] = "EducationController/listEducationHistory";
 $route['education/update/(:num)'] = "EducationController/updateEducationDetails/$1"; // Update education details
 $route['education/delete/(:num)'] = "EducationController/removeEducationDetails/$1";// Delete education details
 
 
 $route['workHistory'] = "WorkController/addWorkDetails"; // Add work details
+$route['workHistory/list'] = "WorkController/listWorkHistory"; // Add work details
 $route['workHistory/update/(:num)'] = "WorkController/updateWorkDetails/$1"; // Update work details
 $route['workHistory/delete/(:num)'] = "WorkController/removeWorkDetails/$1"; // Delete work details
+
 
 
 

@@ -66,5 +66,11 @@ class WorkDetailsModel extends CI_Model {
 
         return $this->db->update('work_history', $data);
     }
+
+     public function getUserWorkHistory($user_id){
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get('work_history');
+        return $query->result_array();
+    }
 }
 ?>
