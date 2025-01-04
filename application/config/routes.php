@@ -44,9 +44,20 @@ $route['login'] = "AuthController/login_user";
 $route['logout'] = "AuthController/logout";
 $route['details'] = "AuthController/addProfileDetails";
 $route['contact'] = "ContactController/addContactDetails";
+
+$route['alternativeEmail'] = "AlternativeEmailsController/addAlternativeEmail";
+$route['alternativeEmail/delete/(:num)'] = "AlternativeEmailsController/removeAlternativeEmail/$1";
+$route['alternativeEmail/list'] = "AlternativeEmailsController/listAlternativeEmails";
+
+$route['alternativePhone'] = "AlternativePhonesController/addAlternativePhone";
+$route['alternativePhone/delete/(:num)'] = "AlternativePhonesController/removeAlternativePhone/$1";
+$route['alternativePhone/list'] = "AlternativePhonesController/listAlternativePhones";
+
 $route['education'] = "EducationController/addEducationDetails";
 $route['education/update/(:num)'] = "EducationController/updateEducationDetails/$1"; // Update education details
-$route['education/delete/(:num)'] = "EducationController/removeEducationDetails/$1"; // Delete education details
+$route['education/delete/(:num)'] = "EducationController/removeEducationDetails/$1";// Delete education details
+
+
 $route['workHistory'] = "WorkController/addWorkDetails"; // Add work details
 $route['workHistory/update/(:num)'] = "WorkController/updateWorkDetails/$1"; // Update work details
 $route['workHistory/delete/(:num)'] = "WorkController/removeWorkDetails/$1"; // Delete work details

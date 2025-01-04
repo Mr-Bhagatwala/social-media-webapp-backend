@@ -36,5 +36,7 @@ class ContactDetailsModel extends CI_Model {
             return 'added';  // Return 'added' if a new contact was added
         }
     }
+
+    
 }
 ?>
