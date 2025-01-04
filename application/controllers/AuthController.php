@@ -8,15 +8,19 @@ class AuthController extends CI_Controller {
         parent::__construct();
         $this->load->model('Auth_model'); // Load the model
         $this->load->library('form_validation'); // Load form validation library
+        header('Access-Control-Allow-Origin: *');  // Allow all origins
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
     }
 
     // Handle registration form submission
     public function register_user()
     {
         // Validation for registration form
+       json_decode(file_get_contents('php://input'), true); // Get JSON input
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
     
         if ($this->form_validation->run() == FALSE) {
             echo json_encode(['status' => 'error', 'message' => validation_errors()]);
@@ -52,7 +56,7 @@ class AuthController extends CI_Controller {
         if ($this->form_validation->run() == FALSE)
         {
             // Validation failed, return errors
-            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
+            echo json_encode(['status' => 'error', 'message' => "ahiya error ave 6"]);
             return;
         }
         
