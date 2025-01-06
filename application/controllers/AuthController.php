@@ -12,25 +12,85 @@ class AuthController extends CI_Controller {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
     }
+    
+    public function check_session()
+    {
+        $user_id = $this->session->userdata('user_id');
+        if ($user_id) {
+            echo json_encode(['status' => 'success', 'user_id' => $user_id]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'No user ID found in session.']);
+        }
+    }
 
-    // Handle registration form submission
+
+
+    //Handle registration form submission
+    // public function register_user()
+    // {
+    //     // Validation for registration form
+    //      $postData = json_decode(file_get_contents('php://input'), true); // Get JSON input
+    //     // $this->form_validation->set_rules('name', 'Name', 'required');
+    //     // $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    //     // $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+    
+    //     // if ($this->form_validation->run() == FALSE) {
+    //     //     echo json_encode(['status' => 'error', "data is "=> $postData,'message' => validation_errors()]);
+    //     //     return;
+    //     // }
+    
+    //     // Get user data
+    //     $name = $this->input->post('name'); // Correct variable name
+    //     $email = $this->input->post('email');
+    //     $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+    
+    //     // Save user to database
+    //     $user_id = $this->Auth_model->register($name, $email, $password);
+    
+    //     if ($user_id) {
+    //         // Store user_id in session
+    //         $this->session->set_userdata('user_id', $user_id);
+    
+    //         // Send success response
+    //         echo json_encode(['status' => 'success', 'message' => 'User registered successfully.']);
+    //     } else {
+    //         echo json_encode(['status' => 'error', 'message' => 'Failed to register user.']);
+    //     }
+    // }
+
+
+    
+
     public function register_user()
     {
-        // Validation for registration form
-       json_decode(file_get_contents('php://input'), true); // Get JSON input
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+        // Decode JSON input
+        $postData = json_decode(file_get_contents('php://input'), true);
     
-        if ($this->form_validation->run() == FALSE) {
-            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
+        // Debug incoming data
+        log_message('debug', 'Incoming data: ' . print_r($postData, true));
+    
+        // Basic manual validation
+        if (empty($postData['name']) || empty($postData['email']) || empty($postData['password'])) {
+            echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
             return;
         }
     
-        // Get user data
-        $name = $this->input->post('name'); // Correct variable name
-        $email = $this->input->post('email');
-        $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+        // Ensure email is valid
+        if (!filter_var($postData['email'], FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid email address.']);
+            return;
+        }
+    
+        // Ensure password length is sufficient
+        if (strlen($postData['password']) < 6) {
+            echo json_encode(['status' => 'error', 'message' => 'Password must be at least 6 characters long.']);
+            return;
+        }
+    
+        // Extract user data
+        $name = $postData['name'];
+        $email = $postData['email'];
+        $password = password_hash($postData['password'], PASSWORD_DEFAULT);
     
         // Save user to database
         $user_id = $this->Auth_model->register($name, $email, $password);
@@ -45,30 +105,32 @@ class AuthController extends CI_Controller {
             echo json_encode(['status' => 'error', 'message' => 'Failed to register user.']);
         }
     }
-    
 
     // Handle login form submission
     public function login_user()
     {
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'required');
+        // $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        // $this->form_validation->set_rules('password', 'Password', 'required');
     
-        if ($this->form_validation->run() == FALSE)
-        {
-            // Validation failed, return errors
-            echo json_encode(['status' => 'error', 'message' => "ahiya error ave 6"]);
-            return;
-        }
-        
+        // if ($this->form_validation->run() == FALSE)
+        // {
+        //     // Validation failed, return errors
+        //     echo json_encode(['status' => 'error', 'message' => "ahiya error ave 6"]);
+        //     return;
+        // }
+        $postData = json_decode(file_get_contents('php://input'), true);
         // Get email and password
         $email = $this->input->post('email');
         $password = $this->input->post('password');
     
         // Check if user exists
+        // $this->db->where('email', $email);
+        // $user= $this->db->get('users');
         $user = $this->Auth_model->login($email); // Corrected from $this->user to $this->Auth_model
-    
-        if ($user)
-        {
+    echo " phase 1";
+    if ($user)
+    {
+            echo " phase 2";
             // Check password using password_verify
             if (password_verify($password, $user['password']))
             {
@@ -82,13 +144,11 @@ class AuthController extends CI_Controller {
             }
             else
             {
-                // Invalid password
                 echo json_encode(['status' => 'error', 'message' => 'Invalid password']);
             }
         }
         else
         {
-            // User not found
             echo json_encode(['status' => 'error', 'message' => 'Invalid email or user not found']);
         }
     }

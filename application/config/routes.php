@@ -39,6 +39,9 @@
 */
 
 $route['default_controller'] = "welcome";
+$route['session'] = "AuthController/check_session";
+
+
 $route['register'] = 'AuthController/register_user';
 $route['login'] = "AuthController/login_user";
 $route['logout'] = "AuthController/logout";

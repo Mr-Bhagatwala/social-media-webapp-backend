@@ -30,7 +30,7 @@ class Auth_Model extends CI_Model {
         $this->db->where('email', $email);
         $query = $this->db->get('users');
 
-        if ($query->num_rows() == 1)
+        if ($query)
         {
             return $query->row_array(); // Return user data
         }
