@@ -3,22 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ContactDetailsModel extends CI_Model {
 
-    public function fillContactDetails($primary_phone, $linkedin_url, $alternative_email, $alternative_phone) {
+    public function fillContactDetails($primary_phone, $linkedin_url, $primary_email ,$user_id) {
         // Get user_id from session
-        $user_id = $this->session->userdata('user_id');
+        // $user_id = $this->session->userdata('user_id');
 
-        if (!$user_id) {
-            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
-            return;
-        }
+        // if (!$user_id) {
+        //     echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        //     return;
+        // }
 
         // Prepare the data for insertion
         $data = array(
             'user_id' => $user_id,
             'primary_phone' => $primary_phone,
             'linkedin_url' => $linkedin_url,
-            'alternative_email' => $alternative_email,
-            'alternative_phone' => $alternative_phone
+            'primary_email' => $primary_email,
         );
 
         // Check if contact details already exist for the user

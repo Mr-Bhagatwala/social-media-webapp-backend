@@ -7,7 +7,7 @@ class AlternativePhonesModel extends CI_Model {
             'user_id' => $user_id,
             'alternative_phones' => $alternative_phone,
         ];
-
+        // $this->db->where('user_id', $user_id);
         return $this->db->insert('alternative_phones', $data);
     }
 

@@ -2,13 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AlternativeEmailsModel extends CI_Model {
-    public function addAlternativeEmail($alternative_email) {
-        $user_id = $this->session->userdata('user_id');
+    public function addAlternativeEmail($alternative_email,$user_id) {
+        // $user_id = $this->session->userdata('user_id');
 
-        // Check if the user is authenticated
-        if (!$user_id) {
-            return ['status' => 'error', 'message' => 'User not authenticated.'];
-        }
+        // // Check if the user is authenticated
+        // if (!$user_id) {
+        //     return ['status' => 'error', 'message' => 'User not authenticated.'];
+        // }
 
         // Prepare the data for insertion
         $data = array(
@@ -17,6 +17,7 @@ class AlternativeEmailsModel extends CI_Model {
         );
 
         // Insert the data into the database
+        // $this->db->where('user_id', $user_id);
         if ($this->db->insert('alternative_emails', $data)) {
             return ['status' => 'success', 'message' => 'Alternative email added successfully.'];
         } else {

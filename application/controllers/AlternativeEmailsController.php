@@ -7,27 +7,41 @@ class AlternativeEmailsController extends CI_Controller{
         $this->load->model('AlternativeEmailsModel');
         $this->load->helper('url');
         $this->load->library('form_validation');
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            http_response_code(200);  // Respond with HTTP OK status
+            exit;  // Terminate the script after the preflight response
+        }
+
+        // CORS headers for other requests
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
     }
 
     public function addAlternativeEmail(){
-        $user_id = $this->session->userdata('user_id');
+        // $user_id = $this->session->userdata('user_id');
 
-        if (!$user_id) {
-            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
-            return;
-        }
+        // if (!$user_id) {
+        //     echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        //     return;
+        // }
 
-        $data = $this->input->post();
-        $this->form_validation->set_rules('alternative_email', 'Alternative Email', 'required|valid_email');
+        // $data = $this->input->post();
+        $data = json_decode(file_get_contents('php://input'), true);
+        // $this->form_validation->set_rules('alternative_email', 'Alternative Email', 'required|valid_email');
 
-        if ($this->form_validation->run() == FALSE) {
-            $response = array('status' => 'error', 'message' => validation_errors());
-            echo json_encode($response);
-            return;
-        }
+        // if ($this->form_validation->run() == FALSE) {
+        //     $response = array('status' => 'error', 'message' => validation_errors());
+        //     echo json_encode($response);
+        //     return;
+        // }
 
         $result = $this->AlternativeEmailsModel->addAlternativeEmail(         
-            $data['alternative_email']
+            $data['alternative_email'],
+            $data['user_id']
         );
         if ($result) {
             echo json_encode(['status' => 'success', 'message' => 'Alternative Email added successfully']);
