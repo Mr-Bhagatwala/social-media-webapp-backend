@@ -125,6 +125,14 @@ exit; // Terminate the script after the preflight response
         } else {
         $data = $this->upload->data();
         $userId = $this->input->post('userId');
+        //add user story to story model
+        $storyData = [
+            'user_id' => $userId,
+            'media_url' => 'assets/stories/' . $data['file_name'],
+            'expires_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))
+        ];
+        $this->StoriesModel->uploadStory($storyData);
+        
         // You can save the file info to the database here, e.g., $data['file_name']
         echo json_encode(['status' => 'success', 'file_name' => $data['file_name']]);
         }
@@ -188,6 +196,17 @@ exit; // Terminate the script after the preflight response
 
     // Get Stories of the logged in user
     public function getMyStories($userId){
+        // Fetch stories from the model
+        $stories = $this->StoriesModel->getStories($userId);
+        
+        // Add base URL to media paths
+        foreach ($stories as &$story) {
+            $story['media_url'] = base_url($story['media_url']);
+        }
+        
+        // Return the stories as JSON response
+        return $this->output->set_content_type('application/json')
+                            ->set_output(json_encode($stories));
 
     }
     // Mark Story as Viewed
