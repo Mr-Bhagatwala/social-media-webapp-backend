@@ -11,6 +11,18 @@ class StoriesController extends CI_Controller {
         $this->load->model('NotificationModel');
         $this->load->model('FriendRequestModel');
         $this->load->helper('url'); 
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            http_response_code(200);  // Respond with HTTP OK status
+exit; // Terminate the script after the preflight response
+        }
+
+        // CORS headers for other requests
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization'); 
     }
 
     // Upload a Story
@@ -64,43 +76,58 @@ class StoriesController extends CI_Controller {
         //     return $this->output->set_content_type('application/json')
         //                         ->set_output(json_encode(['status' => 'error', 'message' => 'No media file provided', 'file' => $_FILES, "user id id "=> $this->input->post('user_id')]));
         // }x
-        if(!$data['media']|| empty($data['user_id'])){
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode(['status' => 'error', 'message' => 'No media file provided', 'file' =>$data['media'], "user id id "=> $data['user_id']]));
-        }
+        // if(!$data['media']|| empty($data['user_id'])){
+        //     return $this->output->set_content_type('application/json')
+        //     ->set_output(json_encode(['status' => 'error', 'message' => 'No media file provided', 'file' =>$data['media'], "user id id "=> $data['user_id']]));
+        // }
 
-        // Configure upload settings
-        $config['upload_path']   = './assets/stories/';
-        $config['allowed_types'] = 'jpg|jpeg|png|mp4';
-        $config['max_size']      = 20480; // Max size in KB (20MB)
-        $config['file_name']     = uniqid() . '_' . $_FILES['media']['name'];
+        // // Configure upload settings
+        // $config['upload_path']   = './assets/stories/';
+        // $config['allowed_types'] = 'jpg|jpeg|png|mp4';
+        // $config['max_size']      = 20480; // Max size in KB (20MB)
+        // $config['file_name']     = uniqid() . '_' . $_FILES['media']['name'];
+
+        // $this->load->library('upload', $config);
+
+        // // Try to upload the file
+        // if (!$this->upload->do_upload('media')) {
+        //     return $this->output->set_content_type('application/json')
+        //                         ->set_output(json_encode(['status' => 'error', 'message' => "Error in uploading stories ". $this->upload->display_errors()]));
+        // }
+
+        // // Get uploaded file data
+        // $uploadedData = $this->upload->data();
+        // $mediaPath = 'assets/stories/' . $uploadedData['file_name'];
+
+        // // Prepare data for the database
+        // date_default_timezone_set('Asia/Kolkata');
+        // $storyData = [
+ 
+        //     'user_id' => $user_id,
+        //     'media_url' => $mediaPath,
+        //     'expires_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))
+        // ];
+
+        // // Save story to the database
+        // $response = $this->StoriesModel->uploadStory($storyData);
+
+        // return $this->output->set_content_type('application/json')
+        //                     ->set_output(json_encode($response));
+        $config['upload_path'] = FCPATH .'assests/stories/';
+        $config['allowed_types'] = 'jpg|png|gif|mp4|avi|mov|mkv';
+        $config['max_size'] = 10240; // 10 MB
 
         $this->load->library('upload', $config);
 
-        // Try to upload the file
         if (!$this->upload->do_upload('media')) {
-            return $this->output->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => "Error in uploading stories ". $this->upload->display_errors()]));
+        $error = $this->upload->display_errors();
+        echo json_encode(['status' => 'error', 'messages' => $error]);
+        } else {
+        $data = $this->upload->data();
+        $userId = $this->input->post('userId');
+        // You can save the file info to the database here, e.g., $data['file_name']
+        echo json_encode(['status' => 'success', 'file_name' => $data['file_name']]);
         }
-
-        // Get uploaded file data
-        $uploadedData = $this->upload->data();
-        $mediaPath = 'assets/stories/' . $uploadedData['file_name'];
-
-        // Prepare data for the database
-        date_default_timezone_set('Asia/Kolkata');
-        $storyData = [
- 
-            'user_id' => $user_id,
-            'media_url' => $mediaPath,
-            'expires_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))
-        ];
-
-        // Save story to the database
-        $response = $this->StoriesModel->uploadStory($storyData);
-
-        return $this->output->set_content_type('application/json')
-                            ->set_output(json_encode($response));
     }
 
     // Get all Stories
