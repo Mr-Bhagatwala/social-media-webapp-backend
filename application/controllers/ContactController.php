@@ -51,5 +51,21 @@ class ContactController extends CI_Controller {
 
         echo json_encode($response);
     }
+
+    public function listContactDetails(){
+        // $user_id = $this->session->userdata('user_id');
+        // if (!$user_id) {
+        //     echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        //     return;
+        // }
+        $user_id = json_decode(file_get_contents('php://input'), true);
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+            return;
+        }
+        $contactDetails = $this->ContactDetailsModel->getUserContactHistory($user_id);
+        echo json_encode(['status' => 'success', 'contact' => $contactDetails]);
+    
+    }
 }
 ?>

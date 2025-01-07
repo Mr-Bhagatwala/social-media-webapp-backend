@@ -64,13 +64,17 @@ class AlternativePhonesController extends CI_Controller {
     }
 
     public function listAlternativePhones() {
-        $user_id = $this->session->userdata('user_id');
+        // $user_id = $this->session->userdata('user_id');
 
+        // if (!$user_id) {
+        //     echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        //     return;
+        // }
+        $user_id = json_decode(file_get_contents('php://input'), true);
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return;
         }
-
         $phones = $this->AlternativePhonesModel->getUserPhones($user_id);
         echo json_encode(['status' => 'success', 'phones' => $phones]);
     }

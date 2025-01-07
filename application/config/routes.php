@@ -46,7 +46,11 @@ $route['register'] = 'AuthController/register_user';
 $route['login'] = "AuthController/login_user";
 $route['logout'] = "AuthController/logout";
 $route['details'] = "AuthController/addProfileDetails";
+$route['getUser'] = "AuthController/getUser";
+
+
 $route['contact'] = "ContactController/addContactDetails";
+$route['contact/list'] = "ContactController/listContactDetails";
 
 $route['alternativeEmail'] = "AlternativeEmailsController/addAlternativeEmail";
 $route['alternativeEmail/delete/(:num)'] = "AlternativeEmailsController/removeAlternativeEmail/$1";
@@ -66,8 +70,32 @@ $route['workHistory'] = "WorkController/addWorkDetails"; // Add work details
 $route['workHistory/list'] = "WorkController/listWorkHistory"; // Add work details
 $route['workHistory/update/(:num)'] = "WorkController/updateWorkDetails/$1"; // Update work details
 $route['workHistory/delete/(:num)'] = "WorkController/removeWorkDetails/$1"; // Delete work details
+$route['send-friend-request'] = 'FriendRequestController/sendRequest';
+$route['get-requests/(:num)'] = 'FriendRequestController/getRequests/$1';
+
+// $route['respond-friend-request'] = 'FriendRequestController/respondRequest';
+$route['rfr'] = 'FriendRequestController/respondRequest';
+$route['get-friends/(:num)'] = 'FriendRequestController/getFriends/$1';
+
+// Stories
+$route['upload-story'] = 'StoriesController/uploadStory';
+$route['get-stories/(:num)'] = 'StoriesController/getStoriesofUser/$1';
+$route['get-my-story/(:num)'] = 'StoriesController/getMyStory/$1';
+$route['mark-story-viewed/(:num)'] = 'StoriesController/markStoryAsViewed/$1';
+$route['react-to-story/ (:num)'] = 'StoriesController/reactToStory/$1';
+$route['getFriendsStories/(:num)'] = 'StoriesController/getFriendsStories/$1';
+$route['delete-expired-stories'] = 'StoriesController/deleteExpiredStories';
 
 
+// Posts-related routes
+$route['posts/create'] = 'PostController/createPost';  // POST: Create a new post
+$route['posts/delete/(:num)'] = 'PostController/deletePost/$1';  // POST: Delete a post by post ID
+$route['posts/feed'] = 'PostController/getFeed';  // GET: Get paginated feed
+$route['posts/like/(:num)'] = 'PostController/likePost/$1';  // POST: Like a post by post ID
+$route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a comment to a post by post ID
+$route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
+ 
+$route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
 
 $route['404_override'] = '';

@@ -50,10 +50,15 @@ class Auth_Model extends CI_Model {
             'current_city' => $current_city,
             'hometown' => $hometown,
         ); // Fixed: Added semicolon here
-        
         return $this->db->insert('users', $data);
     }
-    
+
+
+    public function getUserDetail($user_id){
+        $this->db->where('id', $user_id);
+        $query = $this->db->get('users');
+        return $query->result_array();
+    }
 
 }
 ?>

@@ -10,6 +10,14 @@ class AuthController extends CI_Controller {
 
         $this->load->model('Auth_model'); // Load the model
         $this->load->library('form_validation'); // Load form validation library
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            http_response_code(200);  // Respond with HTTP OK status
+            exit;  // Terminate the script after the preflight response
+        }
         header('Access-Control-Allow-Origin: *');  // Allow all origins
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -84,9 +92,9 @@ class AuthController extends CI_Controller {
             return;
         }
 
-        // $user = $this->Auth_model->login($email);
+        // $user = $this->Auth_model->login($postData['email']);
         // if($user){
-        //     echo json_encode(['status' => 'error', 'message' => 'already email address is registered.']);
+        //     echo json_encode(['status' => 'error', 'message' => 'already email address is registered.'],"user" => $user);
         //     return;
         // }
     
@@ -258,6 +266,16 @@ class AuthController extends CI_Controller {
         }
     }
     
+    public function getUser(){
+        $user_id = $this->input->get('user_id');
+        // $user_id = json_decode(file_get_contents('php://input'), true);
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+            return;
+        }
+        $user = $this->Auth_model->getUserDetail($user_id);
+        echo json_encode(['status' => 'success', 'user' => $user]);
     
+    }
 }
 ?>

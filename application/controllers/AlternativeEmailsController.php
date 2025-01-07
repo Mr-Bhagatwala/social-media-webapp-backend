@@ -66,13 +66,18 @@ class AlternativeEmailsController extends CI_Controller{
     }
 
     public function listAlternativeEmails() {
-        $user_id = $this->session->userdata('user_id');
+        // $user_id = $this->session->userdata('user_id');
     
+        // if (!$user_id) {
+        //     echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        //     return;
+        // }
+        
+        $user_id = json_decode(file_get_contents('php://input'), true);
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return;
         }
-    
         // Correct the variable and method names
         $emails = $this->AlternativeEmailsModel->getUserEmails($user_id); 
         echo json_encode(['status' => 'success', 'emails' => $emails]);

@@ -8,6 +8,19 @@ class WorkController extends CI_Controller {
         parent::__construct();
         $this->load->model('WorkDetailsModel'); // Load the model
         $this->load->library('form_validation'); // Load form validation library
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            http_response_code(200);  // Respond with HTTP OK status
+            exit;  // Terminate the script after the preflight response
+        }
+
+        // CORS headers for other requests
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization'); 
     }
 
      // Add work details
@@ -102,13 +115,13 @@ class WorkController extends CI_Controller {
     }
 
     public function listWorkHistory(){
-        $user_id = $this->session->userdata('user_id');
-    
-        if (!$user_id) {
+        // $user_id = $this->session->userdata('user_id');
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return;
         }
-        $workHistory = $this->WorkDetailsModel->getUserWorkHistory($user_id);
+        $workHistory = $this->WorkDetailsModel->getUserWorkHistory($data);
         echo json_encode(['status' => 'success', 'work' => $workHistory]);
     
     }

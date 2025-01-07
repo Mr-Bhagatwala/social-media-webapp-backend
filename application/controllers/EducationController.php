@@ -7,6 +7,18 @@ class EducationController extends CI_Controller {
         parent::__construct();
         $this->load->model('EducationDetailsModel');
         $this->load->library('form_validation');
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            http_response_code(200);  // Respond with HTTP OK status
+            exit;  // Terminate the script after the preflight response
+        }
+
+        // CORS headers for other requests
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization'); 
     }
 
     // Add education details
@@ -104,8 +116,7 @@ class EducationController extends CI_Controller {
     }
 
     public function listEducationHistory(){
-        $user_id = $this->session->userdata('user_id');
-    
+        $user_id = json_decode(file_get_contents('php://input'), true);
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return;
