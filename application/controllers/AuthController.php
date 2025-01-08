@@ -36,14 +36,14 @@ class AuthController extends CI_Controller {
 
 
 
-    //Handle registration form submission
+    Handle registration form submission
     // public function register_user()
     // {
     //     // Validation for registration form
     //      $postData = json_decode(file_get_contents('php://input'), true); // Get JSON input
-    //     // $this->form_validation->set_rules('name', 'Name', 'required');
-    //     // $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-    //     // $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
+    //     $this->form_validation->set_rules('name', 'Name', 'required');
+    //     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+    //     $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
     
     //     // if ($this->form_validation->run() == FALSE) {
     //     //     echo json_encode(['status' => 'error', "data is "=> $postData,'message' => validation_errors()]);
@@ -111,12 +111,13 @@ class AuthController extends CI_Controller {
     
         // Save user to database
         $user_id = $this->Auth_model->register($name, $email, $password);
-    
+         
         if ($user_id) {
             // Store user_id in session
             $this->session->set_userdata('user_id', $user_id);
             // Send success response
-            echo json_encode(['status' => 'success', 'message' => 'User registered successfully.']);
+            echo json_encode(['status' => 'success', 'message' => 'User registered successfully.', 'user_id'  =>  $user_id] 
+           );
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to register user.']);
         }
@@ -267,8 +268,8 @@ class AuthController extends CI_Controller {
     }
     
     public function getUser(){
-        $user_id = $this->input->get('user_id');
-        // $user_id = json_decode(file_get_contents('php://input'), true);
+        // $user_id = $this->input->get('user_id');
+        $user_id = json_decode(file_get_contents('php://input'), true);
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return;
