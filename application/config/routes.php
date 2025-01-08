@@ -56,6 +56,8 @@ $route['alternativeEmail'] = "AlternativeEmailsController/addAlternativeEmail";
 $route['alternativeEmail/delete/(:num)'] = "AlternativeEmailsController/removeAlternativeEmail/$1";
 $route['alternativeEmail/list'] = "AlternativeEmailsController/listAlternativeEmails";
 
+$route['abc/(:num)/(:any)'] = "contorl/func/$1/$2";
+
 $route['alternativePhone'] = "AlternativePhonesController/addAlternativePhone";
 $route['alternativePhone/delete/(:num)'] = "AlternativePhonesController/removeAlternativePhone/$1";
 $route['alternativePhone/list'] = "AlternativePhonesController/listAlternativePhones";

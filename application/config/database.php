@@ -48,11 +48,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['port'] = '3307';
-$db['default']['password'] = '';
-$db['default']['database'] = 'project1';
+$db['default']['hostname'] = 'https://dev1.almashines.com/index.php';
+$db['default']['username'] = 'learning';
+$db['default']['port'] = '3306';
+$db['default']['password'] = '2025.2025';
+$db['default']['database'] = 'learning_alma1';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
