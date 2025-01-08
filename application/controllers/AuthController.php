@@ -7,7 +7,6 @@ class AuthController extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('session');
-
         $this->load->model('Auth_model'); // Load the model
         $this->load->library('form_validation'); // Load form validation library
 
@@ -36,7 +35,7 @@ class AuthController extends CI_Controller {
 
 
 
-    Handle registration form submission
+    // Handle registration form submission
     // public function register_user()
     // {
     //     // Validation for registration form
