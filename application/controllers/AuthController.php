@@ -265,7 +265,7 @@ class AuthController extends CI_Controller {
     }
     
     public function getUser(){
-        // $user_id = $this->input->get('user_id');
+        $user_id = $this->input->get('id');
         $user_id = json_decode(file_get_contents('php://input'), true);
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
@@ -273,7 +273,6 @@ class AuthController extends CI_Controller {
         }
         $user = $this->Auth_model->getUserDetail($user_id);
         echo json_encode(['status' => 'success', 'user' => $user]);
-    
     }
 }
 ?>
