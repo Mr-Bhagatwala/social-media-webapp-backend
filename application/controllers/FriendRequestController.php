@@ -37,7 +37,7 @@ exit; // Terminate the script after the preflight response
     //new one send as json
     public function sendRequest() {
 
-        // $data = $this->input->post();
+        // $data = $this->input->post(); // form-data
        $data = json_decode(file_get_contents('php://input'), true); // Get raw JSON data
         //$request_id = $data['receiver_id']; // Access the 'receiver_id' value from the associative array
         //$sender_id = $data['sender_id']; // Access the 'sender_id' value from the associative array
@@ -98,6 +98,7 @@ exit; // Terminate the script after the preflight response
     // params required: receiver_id  (current userid), status(optional) bydefault: pending
 
     // send data in query params
+    // loxl/:di
     public function getRequests($userId) {
         $type = $this->input->get('type') ?: 'pending';
         
@@ -174,7 +175,9 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Failed to process request.']));
         }
     }
-
+// lcaohost?k=5
+//$var = $this->input->get('k');
+///$var2 = this-inut-get('z');
     /**
      * Get Friend List of User
      */
