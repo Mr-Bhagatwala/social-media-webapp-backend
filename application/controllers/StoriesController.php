@@ -138,60 +138,35 @@ exit; // Terminate the script after the preflight response
     }
 
     // Get all Stories
-    public function getStoriesofUser($userId) {
-        // Fetch stories from the model
-     
-        // $stories = $this->StoriesModel->getStories($userId);
-
-        // // Add base URL to media paths
-        // foreach ($stories as &$story) {
-        //     $story['media_url'] = base_url($story['media_url']);
-        // }
-
-        // return $this->output->set_content_type('application/json')
-        //                     ->set_output(json_encode($stories));
-      
-            // Method to get all stories of a user
-        
-                // Fetch stories from the model
-                //get all friend of user
-
-
-                // $stories = $this->StoriesModel->getStories($userId);
-            
-                // // Check if stories are returned
-                // if (empty($stories)) {
-                //     // If no stories found, return an empty array or a custom message
-                //     return $this->output->set_content_type('application/json')
-                //                         ->set_output(json_encode(["message"=>"no Stories with the specific iserId". $userId])); // Return an empty array
-                // }
-        
-                // // Add base URL to the media paths of each story
-                // foreach ($stories as &$story) {
-                //     $story['media_url'] = base_url($story['media_url']); // Add the base URL to media URL
-                // }
-        
-                // // Return the stories as JSON response
-                // return $this->output->set_content_type('application/json')
-                //                     ->set_output(json_encode($stories));
-                $friends = $this->FriendRequestModel->getFriendsList($userId);
-                $frds_id = [];
-                foreach ($friends as $frd) {
-                    array_push($frds_id, $frd['friend_id']);
-                }
-                $res = [];
-                foreach ($frds_id as $frd_id) {
-                    $res = array_merge($res, $this->StoriesModel->getStories($frd_id));
-                }
-                // Add base URL to the media paths of each story
-                foreach ($res as &$story) {
-                    $story['media_url'] = base_url($story['media_url']); // Add the base URL to media URL
-                }
-
-                return $this->output->set_content_type('application/json')
-                                    ->set_output(json_encode($res));
-            
-    }
+    public function getStoriesOfUser($userId) {
+        // Get the list of friends
+        $friends = $this->FriendRequestModel->getFriendsList($userId);
+        $frds_id = [];
+        foreach ($friends as $frd) {
+            array_push($frds_id, $frd['friend_id']);
+        }
+    
+        // Fetch stories from friends
+        $res = [];
+        foreach ($frds_id as $frd_id) {
+            $res = array_merge($res, $this->StoriesModel->getStories($frd_id));
+        }
+    
+        // Fetch the user's own stories
+        $userStories = $this->StoriesModel->getStories($userId);
+    
+        // Merge user's stories with friends' stories
+        $res = array_merge($userStories, $res);
+    
+        // Add base URL to the media paths of each story
+        foreach ($res as &$story) {
+            $story['media_url'] = base_url().($story['media_url']); // Add the base URL to media URL
+        }
+    
+        // Return the response as JSON
+        return $this->output->set_content_type('application/json')
+                            ->set_output(json_encode($res));
+    }    
 
     // Get Stories of the logged in user
     public function getMyStories($userId){
@@ -302,11 +277,14 @@ exit; // Terminate the script after the preflight response
     }
 
     public function isViewedByUser($storyId){
-        $data = json_decode(file_get_contents('php://input'), true);
-        $viewerId = $data['userId'];
+       // $data = json_decode(file_get_contents('php://input'), true);
+        // $data = json_decode(file_get_contents('php://input'), true);
+        // $viewerId = $data['userId'];
+        $viewerId = $this->input->get('userId');
         $response = $this->StoriesModel->isViewedByUser($storyId, $viewerId);
+        $res = sizeof($response)>0;
         return $this->output->set_content_type('application/json')
-                            ->set_output(json_encode($response));
+                        ->set_output(json_encode($res));
     }
 }
 ?>
