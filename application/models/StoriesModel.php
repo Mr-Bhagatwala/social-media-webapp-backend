@@ -56,5 +56,11 @@ class StoriesModel extends CI_Model {
         $this->db->delete('stories');
         return $this->db->affected_rows();
     }
+
+    public function isViewedByUser($storyId, $viewerId) {
+        $this->db->where('story_id', $storyId);
+        $this->db->where('viewer_id', $viewerId);
+        return $this->db->get('story_views')->result_array();
+    }
 }
 ?>

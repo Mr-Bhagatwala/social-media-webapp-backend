@@ -11,6 +11,18 @@ class StoriesController extends CI_Controller {
         $this->load->model('NotificationModel');
         $this->load->model('FriendRequestModel');
         $this->load->helper('url'); 
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            http_response_code(200);  // Respond with HTTP OK status
+exit; // Terminate the script after the preflight response
+        }
+
+        // CORS headers for other requests
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization'); 
     }
 
     // Upload a Story
@@ -45,7 +57,6 @@ class StoriesController extends CI_Controller {
 
     // Upload a Story
     public function uploadStory() {
-
         // getting user Id from sessions
         //$user_id = $this->session->userdata('user_id');
 
@@ -64,103 +75,112 @@ class StoriesController extends CI_Controller {
         //     return $this->output->set_content_type('application/json')
         //                         ->set_output(json_encode(['status' => 'error', 'message' => 'No media file provided', 'file' => $_FILES, "user id id "=> $this->input->post('user_id')]));
         // }x
-        if(!$data['media']|| empty($data['user_id'])){
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode(['status' => 'error', 'message' => 'No media file provided', 'file' =>$data['media'], "user id id "=> $data['user_id']]));
-        }
+        // if(!$data['media']|| empty($data['user_id'])){
+        //     return $this->output->set_content_type('application/json')
+        //     ->set_output(json_encode(['status' => 'error', 'message' => 'No media file provided', 'file' =>$data['media'], "user id id "=> $data['user_id']]));
+        // }
 
-        // Configure upload settings
-        $config['upload_path']   = './assets/stories/';
-        $config['allowed_types'] = 'jpg|jpeg|png|mp4';
-        $config['max_size']      = 20480; // Max size in KB (20MB)
-        $config['file_name']     = uniqid() . '_' . $_FILES['media']['name'];
+        // // Configure upload settings
+        // $config['upload_path']   = './assets/stories/';
+        // $config['allowed_types'] = 'jpg|jpeg|png|mp4';
+        // $config['max_size']      = 20480; // Max size in KB (20MB)
+        // $config['file_name']     = uniqid() . '_' . $_FILES['media']['name'];
+
+        // $this->load->library('upload', $config);
+
+        // // Try to upload the file
+        // if (!$this->upload->do_upload('media')) {
+        //     return $this->output->set_content_type('application/json')
+        //                         ->set_output(json_encode(['status' => 'error', 'message' => "Error in uploading stories ". $this->upload->display_errors()]));
+        // }
+
+        // // Get uploaded file data
+        // $uploadedData = $this->upload->data();
+        // $mediaPath = 'assets/stories/' . $uploadedData['file_name'];
+
+        // // Prepare data for the database
+        // date_default_timezone_set('Asia/Kolkata');
+        // $storyData = [
+ 
+        //     'user_id' => $user_id,
+        //     'media_url' => $mediaPath,
+        //     'expires_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))
+        // ];
+
+        // // Save story to the database
+        // $response = $this->StoriesModel->uploadStory($storyData);
+
+        // return $this->output->set_content_type('application/json')
+        //                     ->set_output(json_encode($response));
+        $config['upload_path'] = FCPATH .'assests/stories/';
+        $config['allowed_types'] = 'jpg|png|gif|mp4|avi|mov|mkv';
+        $config['max_size'] = 10240; // 10 MB
 
         $this->load->library('upload', $config);
 
-        // Try to upload the file
         if (!$this->upload->do_upload('media')) {
-            return $this->output->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => "Error in uploading stories ". $this->upload->display_errors()]));
-        }
-
-        // Get uploaded file data
-        $uploadedData = $this->upload->data();
-        $mediaPath = 'assets/stories/' . $uploadedData['file_name'];
-
-        // Prepare data for the database
-        date_default_timezone_set('Asia/Kolkata');
+        $error = $this->upload->display_errors();
+        echo json_encode(['status' => 'error', 'messages' => $error]);
+        } else {
+        $data = $this->upload->data();
+        $userId = $this->input->post('userId');
+        //add user story to story model
         $storyData = [
- 
-            'user_id' => $user_id,
-            'media_url' => $mediaPath,
+            'user_id' => $userId,
+            'media_url' => 'assets/stories/' . $data['file_name'],
             'expires_at' => date('Y-m-d H:i:s', strtotime('+24 hours'))
         ];
-
-        // Save story to the database
-        $response = $this->StoriesModel->uploadStory($storyData);
-
-        return $this->output->set_content_type('application/json')
-                            ->set_output(json_encode($response));
+        $this->StoriesModel->uploadStory($storyData);
+        
+        // You can save the file info to the database here, e.g., $data['file_name']
+        echo json_encode(['status' => 'success', 'file_name' => $data['file_name']]);
+        }
     }
 
     // Get all Stories
-    public function getStoriesofUser($userId) {
-        // Fetch stories from the model
-     
-        // $stories = $this->StoriesModel->getStories($userId);
-
-        // // Add base URL to media paths
-        // foreach ($stories as &$story) {
-        //     $story['media_url'] = base_url($story['media_url']);
-        // }
-
-        // return $this->output->set_content_type('application/json')
-        //                     ->set_output(json_encode($stories));
-      
-            // Method to get all stories of a user
-        
-                // Fetch stories from the model
-                //get all friend of user
-
-
-                // $stories = $this->StoriesModel->getStories($userId);
-            
-                // // Check if stories are returned
-                // if (empty($stories)) {
-                //     // If no stories found, return an empty array or a custom message
-                //     return $this->output->set_content_type('application/json')
-                //                         ->set_output(json_encode(["message"=>"no Stories with the specific iserId". $userId])); // Return an empty array
-                // }
-        
-                // // Add base URL to the media paths of each story
-                // foreach ($stories as &$story) {
-                //     $story['media_url'] = base_url($story['media_url']); // Add the base URL to media URL
-                // }
-        
-                // // Return the stories as JSON response
-                // return $this->output->set_content_type('application/json')
-                //                     ->set_output(json_encode($stories));
-                $friends = $this->FriendRequestModel->getFriendsList($userId);
-                $frds_id = [];
-                foreach ($friends as $frd) {
-                    array_push($frds_id, $frd['friend_id']);
-                }
-                $res = [];
-                foreach ($frds_id as $frd_id) {
-                    $res = array_merge($res, $this->StoriesModel->getStories($frd_id));
-                }
-                // Add base URL to the media paths of each story
-                foreach ($res as &$story) {
-                    $story['media_url'] = base_url($story['media_url']); // Add the base URL to media URL
-                }
-
-                return $this->output->set_content_type('application/json')
-                                    ->set_output(json_encode($res));
-            
-    }
+    public function getStoriesOfUser($userId) {
+        // Get the list of friends
+        $friends = $this->FriendRequestModel->getFriendsList($userId);
+        $frds_id = [];
+        foreach ($friends as $frd) {
+            array_push($frds_id, $frd['friend_id']);
+        }
+    
+        // Fetch stories from friends
+        $res = [];
+        foreach ($frds_id as $frd_id) {
+            $res = array_merge($res, $this->StoriesModel->getStories($frd_id));
+        }
+    
+        // Fetch the user's own stories
+        $userStories = $this->StoriesModel->getStories($userId);
+    
+        // Merge user's stories with friends' stories
+        $res = array_merge($userStories, $res);
+    
+        // Add base URL to the media paths of each story
+        foreach ($res as &$story) {
+            $story['media_url'] = base_url().($story['media_url']); // Add the base URL to media URL
+        }
+    
+        // Return the response as JSON
+        return $this->output->set_content_type('application/json')
+                            ->set_output(json_encode($res));
+    }    
 
     // Get Stories of the logged in user
     public function getMyStories($userId){
+        // Fetch stories from the model
+        $stories = $this->StoriesModel->getStories($userId);
+        
+        // Add base URL to media paths
+        foreach ($stories as &$story) {
+            $story['media_url'] = base_url($story['media_url']);
+        }
+        
+        // Return the stories as JSON response
+        return $this->output->set_content_type('application/json')
+                            ->set_output(json_encode($stories));
 
     }
     // Mark Story as Viewed
@@ -254,6 +274,17 @@ class StoriesController extends CI_Controller {
         $response = $this->StoriesModel->deleteExpiredStories();
         return $this->output->set_content_type('application/json')
                             ->set_output(json_encode($response));
+    }
+
+    public function isViewedByUser($storyId){
+       // $data = json_decode(file_get_contents('php://input'), true);
+        // $data = json_decode(file_get_contents('php://input'), true);
+        // $viewerId = $data['userId'];
+        $viewerId = $this->input->get('userId');
+        $response = $this->StoriesModel->isViewedByUser($storyId, $viewerId);
+        $res = sizeof($response)>0;
+        return $this->output->set_content_type('application/json')
+                        ->set_output(json_encode($res));
     }
 }
 ?>
