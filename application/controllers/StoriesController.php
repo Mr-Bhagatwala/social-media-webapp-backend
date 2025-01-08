@@ -57,7 +57,6 @@ exit; // Terminate the script after the preflight response
 
     // Upload a Story
     public function uploadStory() {
-
         // getting user Id from sessions
         //$user_id = $this->session->userdata('user_id');
 
@@ -298,6 +297,14 @@ exit; // Terminate the script after the preflight response
     public function deleteExpiredStories() {
         // Delete expired stories
         $response = $this->StoriesModel->deleteExpiredStories();
+        return $this->output->set_content_type('application/json')
+                            ->set_output(json_encode($response));
+    }
+
+    public function isViewedByUser($storyId){
+        $data = json_decode(file_get_contents('php://input'), true);
+        $viewerId = $data['userId'];
+        $response = $this->StoriesModel->isViewedByUser($storyId, $viewerId);
         return $this->output->set_content_type('application/json')
                             ->set_output(json_encode($response));
     }

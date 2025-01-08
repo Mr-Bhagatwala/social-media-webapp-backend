@@ -85,6 +85,7 @@ $route['mark-story-viewed/(:num)'] = 'StoriesController/markStoryAsViewed/$1';
 $route['react-to-story/ (:num)'] = 'StoriesController/reactToStory/$1';
 $route['getFriendsStories/(:num)'] = 'StoriesController/getFriendsStories/$1';
 $route['delete-expired-stories'] = 'StoriesController/deleteExpiredStories';
+$route['is-viewed-by-user/(:num)'] = 'StoriesController/isViewedByUser/$1';
 
 
 // Posts-related routes
