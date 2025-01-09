@@ -114,13 +114,7 @@ class PostController extends CI_Controller {
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
 
-    public function getUserPost(){
-
-        $userId = $this->input->get("userId");
-        $response = $this->PostModel->getUserPost($userId);
-
-        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
-    }
+ 
     // Like a post
     public function likePost($postId) {
         // take useriD from session
@@ -174,7 +168,7 @@ class PostController extends CI_Controller {
     //     return $this->output->set_content_type('application/json')
     //                         ->set_output(json_encode($response));
     // }
-    public function getUserPost(){
+     public function getUserPost(){
 
         $userId = $this->input->get("userId");
         $response = $this->PostModel->getUserPost($userId);
