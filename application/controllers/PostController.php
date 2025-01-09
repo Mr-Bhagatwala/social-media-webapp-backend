@@ -53,7 +53,7 @@ class PostController extends CI_Controller {
                 $_FILES['file']['error']    = $files['error'][$i];
                 $_FILES['file']['size']     = $files['size'][$i];
 
-                $config['upload_path']   = './assets/posts/';
+                $config['upload_path']   = FCPATH .'./assets/posts/';
                 $config['allowed_types'] = 'jpg|jpeg|png|mp4|pdf|docx';
                 $config['max_size']      = 20480; // 20MB
                 $config['file_name']     = uniqid() . '_' . $_FILES['file']['name'];
@@ -114,6 +114,13 @@ class PostController extends CI_Controller {
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
 
+    public function getUserPost(){
+
+        $userId = $this->input->get("userId");
+        $response = $this->PostModel->getUserPost($userId);
+
+        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
     // Like a post
     public function likePost($postId) {
         // take useriD from session

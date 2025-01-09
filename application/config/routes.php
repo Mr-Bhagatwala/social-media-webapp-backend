@@ -95,7 +95,11 @@ $route['posts/feed'] = 'PostController/getFeed';  // GET: Get paginated feed
 $route['posts/like/(:num)'] = 'PostController/likePost/$1';  // POST: Like a post by post ID
 $route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a comment to a post by post ID
 $route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
- 
+$route['posts/post-by-user'] = 'PostController/getUserPost';
+
+
+
+
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
 

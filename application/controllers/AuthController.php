@@ -36,7 +36,7 @@ class AuthController extends CI_Controller {
 
 
 
-    Handle registration form submission
+   // Handle registration form submission
     // public function register_user()
     // {
     //     // Validation for registration form
