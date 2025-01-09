@@ -81,11 +81,12 @@ class PostModel extends CI_Model {
         }
     }
 
-    public function getCommentsofPost($postId){
-        $this->db->where('post_id', $postId);
-        
-        return $this->db->get('comments')->result_array();
-        
+    public function getCommentsofPost($postId) {
+        $this->db->select('comments.*, users.name as user_name, users.profile_photo');
+        $this->db->from('comments');
+        $this->db->join('users', 'comments.user_id = users.id', 'left'); // Adjust 'users.id' to your actual user ID column name
+        $this->db->where('comments.post_id', $postId);
+        return $this->db->get()->result_array();
     }
     // Get notifications
     public function getNotifications($userId) {

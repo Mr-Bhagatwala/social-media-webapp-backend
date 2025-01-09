@@ -16,13 +16,37 @@ class StoriesModel extends CI_Model {
     }
 
     // Get visible Stories for a user
+    // public function getStories($userId) {
+    //     date_default_timezone_set('Asia/Kolkata');
+    //     $this->db->where('user_id', $userId);
+    //     $this->db->where('expires_at >  ', date('Y-m-d H:i:s'));
+    //     //echo date('Y-m-d H:i:s');
+    //     return $this->db->get('stories')->result_array();
+    // }
     public function getStories($userId) {
         date_default_timezone_set('Asia/Kolkata');
-        $this->db->where('user_id', $userId);
-        $this->db->where('expires_at >  ', date('Y-m-d H:i:s'));
-        //echo date('Y-m-d H:i:s');
-        return $this->db->get('stories')->result_array();
+    
+        // Select fields from both stories and users
+        $this->db->select('
+            stories.*, 
+            users.name AS name, 
+            users.profile_photo AS profile_photo
+        ');
+    
+        // Join with the users table to get the name and profile photo
+        $this->db->from('stories');
+        $this->db->join('users', 'users.user_id = stories.user_id', 'inner'); // Inner join to get user details
+    
+        // Apply the conditions
+        $this->db->where('stories.user_id', $userId);
+        $this->db->where('stories.expires_at >', date('Y-m-d H:i:s')); // Only active stories
+    
+        // Get the results and return as an array
+        $result = $this->db->get()->result_array();
+    
+        return $result;
     }
+    
 
     // Mark a story as viewed
     public function markAsViewed($storyId, $viewerId) {
