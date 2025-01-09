@@ -15,9 +15,9 @@ class ContactDetailsModel extends CI_Model {
         // Prepare the data for insertion
         $data = array(
             'user_id' => $user_id,
-            'primary_phone' => $primary_phone,
+            'alternative_phone' => $primary_phone,
             'linkedin_url' => $linkedin_url,
-            'primary_email' => $primary_email,
+            'alternative_email' => $primary_email,
         );
 
         // Check if contact details already exist for the user

@@ -7,6 +7,8 @@ class ContactController extends CI_Controller {
         $this->load->model('ContactDetailsModel');
         $this->load->helper('url');
         $this->load->library('form_validation');
+        
+
         header('Access-Control-Allow-Origin: *');  // Allow all domains
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow specific methods
         header('Access-Control-Allow-Headers: Content-Type, Authorization');  // Allow specific headers

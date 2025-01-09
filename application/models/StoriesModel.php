@@ -60,7 +60,31 @@ class StoriesModel extends CI_Model {
     public function isViewedByUser($storyId, $viewerId) {
         $this->db->where('story_id', $storyId);
         $this->db->where('viewer_id', $viewerId);
-        return $this->db->get('story_views')->row_array();
+        return $this->db->get('story_views')->result_array();
+    }
+
+    //get number of views for a story
+    public function getStoryViews($storyId) {
+        $this->db->where('story_id', $storyId);
+        return $this->db->get('story_views')->num_rows();
+    }
+
+    public function like($storyId, $userId) {
+        $data = [
+            'story_id' => $storyId,
+            'user_id' => $userId,
+        ];
+        $this->db->insert('likes', $data);
+        return $this->db->affected_rows() > 0;
+    }
+    public function getLikes($storyId) {
+        $this->db->where('story_id', $storyId);
+        return $this->db->get('likes')->num_rows();
+        }
+    public function isLiked($storyId, $userId) {
+        $this->db->where('story_id', $storyId);
+        $this->db->where('user_id', $userId);
+        return $this->db->get('likes')->result_array();
     }
 }
 ?>

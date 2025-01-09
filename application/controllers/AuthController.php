@@ -7,11 +7,10 @@ class AuthController extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('session');
-
         $this->load->model('Auth_model'); // Load the model
         $this->load->library('form_validation'); // Load form validation library
-
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
             header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -36,7 +35,7 @@ class AuthController extends CI_Controller {
 
 
 
-   // Handle registration form submission
+    // Handle registration form submission
     // public function register_user()
     // {
     //     // Validation for registration form
@@ -69,9 +68,7 @@ class AuthController extends CI_Controller {
     //     }
     // }
 
-
     
-
     public function register_user()
     {
         // Decode JSON input
@@ -79,7 +76,7 @@ class AuthController extends CI_Controller {
     
         // Debug incoming data
         log_message('debug', 'Incoming data: ' . print_r($postData, true));
-    
+        
         // Basic manual validation
         if (empty($postData['name']) || empty($postData['email']) || empty($postData['password'])) {
             echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
@@ -97,7 +94,7 @@ class AuthController extends CI_Controller {
         //     echo json_encode(['status' => 'error', 'message' => 'already email address is registered.'],"user" => $user);
         //     return;
         // }
-    
+        
         // Ensure password length is sufficient
         if (strlen($postData['password']) < 6) {
             echo json_encode(['status' => 'error', 'message' => 'Password must be at least 6 characters long.']);
@@ -140,14 +137,14 @@ class AuthController extends CI_Controller {
             if ($password==$user['password']) {
                 // Set session data for logged-in user
 
-                $this->session->set_userdata('user_id', $user['id']);
+                $this->session->set_userdata('user_id', $user['user_id']);
                 $this->session->set_userdata('user_email', $user['email']);
                 $this->session->set_userdata('user_name', $user['name']);
                 
                 // Set cookie (example configuration)
                 $cookie = array(
                     'name'   => 'user_id',
-                    'value'  => $user['id'],
+                    'value'  => $user['user_id'],
                     'expire' => '3600', // 1 hour
                     'path'   => '/',
                     'secure' => FALSE, // Set to TRUE if using HTTPS
@@ -258,7 +255,7 @@ class AuthController extends CI_Controller {
             'hometown' => $data['hometown']
         );
     
-        $this->db->where('id', $data['user_id']);
+        $this->db->where('user_id', $data['user_id']);
         $result = $this->db->update('users', $update_data);
         if ($result) {
             echo json_encode(['status' => 'success', 'message' => 'Profile updated successfully.']);
@@ -268,7 +265,7 @@ class AuthController extends CI_Controller {
     }
     
     public function getUser(){
-        // $user_id = $this->input->get('user_id');
+        $user_id = $this->input->get('id');
         $user_id = json_decode(file_get_contents('php://input'), true);
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
@@ -276,7 +273,6 @@ class AuthController extends CI_Controller {
         }
         $user = $this->Auth_model->getUserDetail($user_id);
         echo json_encode(['status' => 'success', 'user' => $user]);
-    
     }
 }
 ?>

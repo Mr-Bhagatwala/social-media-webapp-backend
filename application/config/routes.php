@@ -56,6 +56,8 @@ $route['alternativeEmail'] = "AlternativeEmailsController/addAlternativeEmail";
 $route['alternativeEmail/delete/(:num)'] = "AlternativeEmailsController/removeAlternativeEmail/$1";
 $route['alternativeEmail/list'] = "AlternativeEmailsController/listAlternativeEmails";
 
+$route['abc/(:num)/(:any)'] = "contorl/func/$1/$2";
+
 $route['alternativePhone'] = "AlternativePhonesController/addAlternativePhone";
 $route['alternativePhone/delete/(:num)'] = "AlternativePhonesController/removeAlternativePhone/$1";
 $route['alternativePhone/list'] = "AlternativePhonesController/listAlternativePhones";
@@ -76,7 +78,7 @@ $route['get-requests/(:num)'] = 'FriendRequestController/getRequests/$1';
 // $route['respond-friend-request'] = 'FriendRequestController/respondRequest';
 $route['rfr'] = 'FriendRequestController/respondRequest';
 $route['get-friends/(:num)'] = 'FriendRequestController/getFriends/$1';
-
+    
 // Stories
 $route['upload-story'] = 'StoriesController/uploadStory';
 $route['get-stories/(:num)'] = 'StoriesController/getStoriesofUser/$1';
@@ -86,6 +88,10 @@ $route['react-to-story/ (:num)'] = 'StoriesController/reactToStory/$1';
 $route['getFriendsStories/(:num)'] = 'StoriesController/getFriendsStories/$1';
 $route['delete-expired-stories'] = 'StoriesController/deleteExpiredStories';
 $route['is-viewed-by-user/(:num)'] = 'StoriesController/isViewedByUser/$1';
+$route['get-story-view/(:num)'] = 'StoriesController/getStoryView/$1';
+$route['like/(:num)'] = 'StoriesController/like/$1';
+$route['get-story-likes/(:num)'] = 'StoriesController/getLikes/$1';
+$route['is-liked/(:num)'] = 'StoriesController/isLiked/$1';
 
 
 // Posts-related routes
@@ -96,10 +102,7 @@ $route['posts/like/(:num)'] = 'PostController/likePost/$1';  // POST: Like a pos
 $route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a comment to a post by post ID
 $route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
 $route['posts/post-by-user'] = 'PostController/getUserPost';
-
-
-
-
+ 
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
 
