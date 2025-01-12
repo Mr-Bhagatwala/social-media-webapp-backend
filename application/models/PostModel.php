@@ -81,17 +81,36 @@ class PostModel extends CI_Model {
         }
     }
 
-    public function getCommentsofPost($postId){
-        $this->db->where('post_id', $postId);
-        
-        return $this->db->get('comments')->result_array();
-        
+    public function getCommentsofPost($postId) {
+        $this->db->select('comments.*, users.name as user_name, users.profile_photo');
+        $this->db->from('comments');
+        $this->db->join('users', 'comments.user_id = users.id', 'left'); // Adjust 'users.id' to your actual user ID column name
+        $this->db->where('comments.post_id', $postId);
+        return $this->db->get()->result_array();
     }
     // Get notifications
     public function getNotifications($userId) {
         $this->db->select('message, link, is_read, created_at');
         $this->db->where('user_id', $userId);
         return $this->db->get('notifications')->result_array();
+    }
+
+
+    //get user posts
+    public function getUserPost($userId){
+        // $this->db->where('user_id', $userId);
+
+        // return $this->db->get('posts')->result_array();
+        $this->db->select('p.post_id, p.content, p.created_at, u.name, u.id, GROUP_CONCAT(m.media_url) as media');
+        $this->db->from('posts p');
+        
+        $this->db->join('users u', 'u.id = p.user_id');
+        $this->db->join('media m', 'm.post_id = p.post_id', 'left');
+       
+        $this->db->group_by('p.post_id');
+        $this->db->where('u.id', $userId);
+
+        return $this->db->get()->result_array();
     }
 }
 ?>

@@ -15,7 +15,7 @@ class ContactDetailsModel extends CI_Model {
         // Prepare the data for insertion
         $data = array(
             'user_id' => $user_id,
-            'primary_phone' => $primary_phone,
+            'alternative_phone' => $primary_phone,
             'linkedin_url' => $linkedin_url,
         );
 

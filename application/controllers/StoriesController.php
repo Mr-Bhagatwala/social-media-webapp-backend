@@ -112,7 +112,7 @@ exit; // Terminate the script after the preflight response
 
         // return $this->output->set_content_type('application/json')
         //                     ->set_output(json_encode($response));
-        $config['upload_path'] = FCPATH .'assests/stories/';
+        $config['upload_path'] = FCPATH .'assets/stories/';
         $config['allowed_types'] = 'jpg|png|gif|mp4|avi|mov|mkv';
         $config['max_size'] = 10240; // 10 MB
 
@@ -285,6 +285,31 @@ exit; // Terminate the script after the preflight response
         $res = sizeof($response)>0;
         return $this->output->set_content_type('application/json')
                         ->set_output(json_encode($res));
+    }
+    //get story views
+    public function getStoryView($storyId){
+        $response = $this->StoriesModel->getStoryViews($storyId);
+        return $this->output->set_content_type('application/json')
+                        ->set_output(json_encode($response));
+    }
+    public function like($storyId){
+       $userId = $this->input->get('userId');
+        $response = $this->StoriesModel->like($storyId, $userId);
+        return $this->output->set_content_type('application/json')
+                        ->set_output(json_encode($response));
+    }
+    //get all likes of a story
+    public function getLikes($storyId){
+        $response = $this->StoriesModel->getLikes($storyId);
+        return $this->output->set_content_type('application/json')
+                        ->set_output(json_encode($response));
+    }
+
+    public function isLiked($storyId){
+        $userId = $this->input->get('userId');
+        $response = $this->StoriesModel->isLiked($storyId, $userId);
+        return $this->output->set_content_type('application/json')
+                        ->set_output(json_encode($response));
     }
 }
 ?>

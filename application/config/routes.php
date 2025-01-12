@@ -94,6 +94,10 @@ $route['react-to-story/ (:num)'] = 'StoriesController/reactToStory/$1';
 $route['getFriendsStories/(:num)'] = 'StoriesController/getFriendsStories/$1';
 $route['delete-expired-stories'] = 'StoriesController/deleteExpiredStories';
 $route['is-viewed-by-user/(:num)'] = 'StoriesController/isViewedByUser/$1';
+$route['get-story-view/(:num)'] = 'StoriesController/getStoryView/$1';
+$route['like/(:num)'] = 'StoriesController/like/$1';
+$route['get-story-likes/(:num)'] = 'StoriesController/getLikes/$1';
+$route['is-liked/(:num)'] = 'StoriesController/isLiked/$1';
 
 
 // Posts-related routes
@@ -103,6 +107,7 @@ $route['posts/feed'] = 'PostController/getFeed';  // GET: Get paginated feed
 $route['posts/like/(:num)'] = 'PostController/likePost/$1';  // POST: Like a post by post ID
 $route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a comment to a post by post ID
 $route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
+$route['posts/post-by-user'] = 'PostController/getUserPost';
  
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 

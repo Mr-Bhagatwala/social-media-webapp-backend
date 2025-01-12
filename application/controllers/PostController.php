@@ -156,6 +156,9 @@ class PostController extends CI_Controller {
     // get comments of a postid
     public function getComments($postId){
         $response = $this->PostModel->getCommentsofPost($postId);
+        foreach($response as $key => $value){
+            $response[$key]['profile_photo'] = base_url().$response[$key]['profile_photo'];
+        }
         return $this->output->set_content_type('application/json')
                             ->set_output(json_encode($response));
     }
@@ -167,5 +170,12 @@ class PostController extends CI_Controller {
     //     return $this->output->set_content_type('application/json')
     //                         ->set_output(json_encode($response));
     // }
+    public function getUserPost(){
+
+        $userId = $this->input->get("userId");
+        $response = $this->PostModel->getUserPost($userId);
+
+        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
 }
 ?>

@@ -89,20 +89,20 @@ class AuthController extends CI_Controller {
             if ($password==$user['password']) {
                 // Set session data for logged-in user
 
-                $this->session->set_userdata('user_id', $user['id']);
-                $this->session->set_userdata('user_email', $user['email']);
-                $this->session->set_userdata('user_name', $user['name']);
+                // $this->session->set_userdata('user_id', $user['user_id']);
+                // $this->session->set_userdata('user_email', $user['email']);
+                // $this->session->set_userdata('user_name', $user['name']);
                 
                 // Set cookie (example configuration)
-                $cookie = array(
-                    'name'   => 'user_id',
-                    'value'  => $user['id'],
-                    'expire' => '3600', // 1 hour
-                    'path'   => '/',
-                    'secure' => FALSE, // Set to TRUE if using HTTPS
-                    'httponly' => TRUE
-                );
-                $this->input->set_cookie($cookie);
+                // $cookie = array(
+                //     'name'   => 'user_id',
+                //     'value'  => $user['user_id'],
+                //     'expire' => '3600', // 1 hour
+                //     'path'   => '/',
+                //     'secure' => FALSE, // Set to TRUE if using HTTPS
+                //     'httponly' => TRUE
+                // );
+                // $this->input->set_cookie($cookie);
                 // Return success message
                 echo json_encode(['status' => 'success', 'message' => "User logged in successfully", "user"=>$user]);
             } else {

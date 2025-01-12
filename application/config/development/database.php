@@ -48,6 +48,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+// $db['default']['hostname'] = 'localhost';
+// $db['default']['username'] = 'root';
+// $db['default']['port'] = '3306';
+// $db['default']['password'] = '';
+// $db['default']['database'] = 'alma1';
 $db['default']['hostname'] = 'ls-814eabaedc9633c9af9037e4b8ceba504f1115af.cwbkdng4snz0.ap-south-1.rds.amazonaws.com';
 $db['default']['username'] = 'learning';
 $db['default']['port'] = '3306';

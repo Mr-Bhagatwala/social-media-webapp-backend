@@ -14,7 +14,8 @@ class FriendRequestController extends CI_Controller {
         parent::__construct();
         $this->load->model('FriendRequestModel');
         $this->load->model('NotificationModel');
-        $this->load->library('form_validation'); // For input validation    
+        $this->load->library('form_validation'); // For input validation 
+        $this->load->helper('url');   
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -134,8 +135,8 @@ exit; // Terminate the script after the preflight response
         $data = json_decode(file_get_contents('php://input'), true);
 
         $status = $data['status']; // status
-        $request_id = $data['request_id']; // request_id 
-        $user_id = $data['user_id']; // user_id
+        $sender_id = $data['sender_id']; // request_id source id
+        $receiver_id = $data['receiver_id']; // user_id 
         //$user_id = $this->session->userdata('user_data');
         // var_dump($status,$request_id,$user_id);
 
@@ -146,27 +147,33 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid status value.']));
         }
 
-        $response = $this->FriendRequestModel->respondRequest($request_id, $status);
+        $response = $this->FriendRequestModel->respondRequest($sender_id, $receiver_id, $status);
 
         if ($response) {
             if ($status === 'accepted') {
                 $notification = [
-                    'user_id' => $user_id,
-                    'message' => "You are now friends ",
-                   
+                    'user_id' => $receiver_id,
+                    'source_id' => $sender_id,
+                    'message' => "You are now friends ",   
                 ];
                 $this->NotificationModel->addNotification($notification);
 
+                $notification = [
+                    'user_id' => $sender_id,
+                    'source_id' => $receiver_id,
+                    'message' => "You are now friends ",   
+                ];
+                $this->NotificationModel->addNotification($notification);
               //  $this->FriendRequestModel->deleterequest($request_id);
                 return $this->output->set_status_header(200)
                                     ->set_content_type('application/json')
-                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request accepted successfully.','id'=>$request_id]));
+                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request accepted successfully.','id' => $sender_id]));
             }   
             else{
-                $this->FriendRequestModel->deleterequest($request_id);
+                $this->FriendRequestModel->deleterequest($sender_id, $receiver_id);
                 return $this->output->set_status_header(200)
                                     ->set_content_type('application/json')
-                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request rejected successfully.','id'=>$request_id]));
+                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request rejected successfully.']));
 
         }
         } else {
@@ -190,6 +197,9 @@ exit; // Terminate the script after the preflight response
         }
 
         $friends = $this->FriendRequestModel->getFriendsList($userId);
+        foreach($friends as &$friend){
+            $friend['profile_photo'] = base_url().$friend['profile_photo'];
+        }
 
         return $this->output->set_status_header(200)    
                             ->set_content_type('application/json')
