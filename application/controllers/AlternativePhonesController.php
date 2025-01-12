@@ -47,19 +47,26 @@ class AlternativePhonesController extends CI_Controller {
         }
     }
 
-    public function removeAlternativePhone($id) {
-        $user_id = $this->session->userdata('user_id');
+    public function removeAlternativePhone() {
 
-        if (!$user_id) {
-            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($data['user_id']) || empty($data['phone'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing user_id or phone.']);
             return;
         }
 
-        $result = $this->AlternativePhonesModel->removeAlternativePhone($id, $user_id);
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Alternative phone removed successfully.']);
+        $user_id = $data['user_id'];
+        $phone = $data['phone'];
+
+        $this->db->where('user_id', $user_id);
+        $this->db->where('alternate_phone', $phone);
+        $this->db->delete('alternate_phones');
+
+        if ($this->db->affected_rows() > 0) {
+            echo json_encode(['status' => 'success', 'message' => 'Alternate phone deleted successfully.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to remove alternative phone.']);
+            echo json_encode(['status' => 'error', 'message' => 'No matching record found.']);
         }
     }
 

@@ -12,7 +12,7 @@ class EducationDetailsModel extends CI_Model {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return false;
         }
-
+        
         // Prepare the data for insertion
         $data = array(
             'user_id' => $user_id,
@@ -51,7 +51,7 @@ class EducationDetailsModel extends CI_Model {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return false;
         }
-
+        
         // Prepare the data for update
         $data = array(
             'college_school' => $college_school,
