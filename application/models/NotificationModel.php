@@ -21,7 +21,7 @@ class NotificationModel extends CI_Model {
     
         // Join with the users table (alias as source_users) to get source user details (name and profile_photo)
         $this->db->from('notifications');
-        $this->db->join('users AS source_users', 'source_users.user_id = notifications.source_id', 'left'); // Left join on source_id
+        $this->db->join('users AS source_users', 'source_users.id = notifications.source_id', 'left'); // Left join on source_id
     
         // Apply the condition for the specific user
         $this->db->where('notifications.user_id', $userId);

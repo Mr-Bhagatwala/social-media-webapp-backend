@@ -26,7 +26,7 @@ class FriendRequestModel extends CI_Model {
     
         // Join with the users table (alias as sender_users) to get sender details (name and profile_photo)
         $this->db->from('friend_requests');
-        $this->db->join('users AS sender_users', 'sender_users.user_id = friend_requests.sender_id', 'inner'); // Inner join on sender_id
+        $this->db->join('users AS sender_users', 'sender_users.id = friend_requests.sender_id', 'inner'); // Inner join on sender_id
     
         // Apply the conditions for the specific user and the request status
         $this->db->where('friend_requests.receiver_id', $userId);
@@ -58,17 +58,17 @@ class FriendRequestModel extends CI_Model {
     // Get the Friends list of a user
     public function getFriendsList($userId) {
         // Get friends where the user is the receiver
-        $this->db->select('users.user_id as friend_id, users.name, users.profile_photo');
+        $this->db->select('users.id as friend_id, users.name, users.profile_photo');
         $this->db->from('friend_requests');
-        $this->db->join('users', 'friend_requests.sender_id = users.user_id', 'inner');
+        $this->db->join('users', 'friend_requests.sender_id = users.id', 'inner');
         $this->db->where('friend_requests.receiver_id', $userId);
         $this->db->where('friend_requests.status', 'accepted');
         $receiverFriends = $this->db->get()->result_array();
     
         // Get friends where the user is the sender
-        $this->db->select('users.user_id as friend_id, users.name, users.profile_photo');
+        $this->db->select('users.id as friend_id, users.name, users.profile_photo');
         $this->db->from('friend_requests');
-        $this->db->join('users', 'friend_requests.receiver_id = users.user_id', 'inner');
+        $this->db->join('users', 'friend_requests.receiver_id = users.id', 'inner');
         $this->db->where('friend_requests.sender_id', $userId);
         $this->db->where('friend_requests.status', 'accepted');
         $senderFriends = $this->db->get()->result_array();

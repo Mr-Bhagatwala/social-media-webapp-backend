@@ -46,7 +46,7 @@ $route['register'] = 'AuthController/register_user';
 $route['login'] = "AuthController/login_user";
 $route['logout'] = "AuthController/logout";
 $route['details'] = "AuthController/addProfileDetails";
-$route['getUser'] = "AuthController/getUser";
+$route['getUser/(:num)'] = "AuthController/getUser/$1";
 
 
 $route['contact'] = "ContactController/addContactDetails";

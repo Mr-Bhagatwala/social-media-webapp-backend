@@ -35,7 +35,7 @@ class StoriesModel extends CI_Model {
     
         // Join with the users table to get the name and profile photo
         $this->db->from('stories');
-        $this->db->join('users', 'users.user_id = stories.user_id', 'inner'); // Inner join to get user details
+        $this->db->join('users', 'users.id = stories.user_id', 'inner'); // Inner join to get user details
     
         // Apply the conditions
         $this->db->where('stories.user_id', $userId);
