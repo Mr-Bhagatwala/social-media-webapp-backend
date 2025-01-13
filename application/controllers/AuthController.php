@@ -230,5 +230,13 @@ class AuthController extends CI_Controller {
         echo json_encode(['status' => 'success', 'user' => $user]);
     }
 
+    public function fetchUsers(){
+        $users = $this->Auth_Model->getAllUsers();
+        echo json_encode([
+            'success' => true,
+            'data' => $users
+        ]);
+    }
+
 }
 ?>

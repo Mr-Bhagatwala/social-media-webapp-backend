@@ -65,7 +65,14 @@ class Auth_Model extends CI_Model {
     
         return $query->result_array();
     }
+
+    public function getAllUsers(){
+        $query = $this->db->select('id, name, hometown, profile_photo')->get('users');
+        return $query->result_array(); 
+    }
     
+    
+
     public function updateBasicDetails($userId, $name, $bio, $hometown) {
         $data = [
             'name' => $name,
