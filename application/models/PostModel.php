@@ -57,7 +57,7 @@ class PostModel extends CI_Model {
             $this->db->order_by('p.created_at', 'ASC');
         }
 
-        $this->db->limit(10, $offset);
+        $this->db->limit(3, $offset);
         return $this->db->get()->result_array();
     }
 
