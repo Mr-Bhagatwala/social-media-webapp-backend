@@ -20,7 +20,6 @@ class AuthController extends CI_Controller {
         header('Access-Control-Allow-Origin: *');  // Allow all origins
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
-        $this->load->helper('cookie');
     }
     
     public function check_session()
