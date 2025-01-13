@@ -221,6 +221,7 @@ class PostController extends CI_Controller {
         foreach($response as $key => $value){
             $response[$key]['profile_photo'] = base_url().$response[$key]['profile_photo'];
         }
+
         return $this->output->set_content_type('application/json')
                             ->set_output(json_encode($response));
     }

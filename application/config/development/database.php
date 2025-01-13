@@ -48,26 +48,13 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-// $db['default']['hostname'] = 'ls-814eabaedc9633c9af9037e4b8ceba504f1115af.cwbkdng4snz0.ap-south-1.rds.amazonaws.com';
-// $db['default']['username'] = 'learning';
+// $db['default']['hostname'] = 'localhost';
+// $db['default']['username'] = 'root';
 // $db['default']['port'] = '3306';
-// $db['default']['password'] = '2025.2025';
-// $db['default']['database'] = 'learning_social_networking';
-// $db['default']['dbdriver'] = 'mysql';
-// $db['default']['dbprefix'] = '';
-// $db['default']['pconnect'] = TRUE;
-// $db['default']['db_debug'] = TRUE;
-// $db['default']['cache_on'] = FALSE;
-// $db['default']['cachedir'] = '';
-// $db['default']['char_set'] = 'utf8';
-// $db['default']['dbcollat'] = 'utf8_unicode_ci';
-// $db['default']['swap_pre'] = 'utf8mb4';
-// $db['default']['autoinit'] = TRUE;
-// $db['default']['stricton'] = FALSE;
-
-
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
+// $db['default']['password'] = '';
+// $db['default']['database'] = 'alma1';
+$db['default']['hostname'] = 'ls-814eabaedc9633c9af9037e4b8ceba504f1115af.cwbkdng4snz0.ap-south-1.rds.amazonaws.com';
+$db['default']['username'] = 'learning';
 $db['default']['port'] = '3306';
 $db['default']['password'] = '';
 $db['default']['database'] = 'alma1';

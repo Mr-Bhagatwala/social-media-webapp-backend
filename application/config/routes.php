@@ -47,25 +47,31 @@ $route['login'] = "AuthController/login_user";
 $route['logout'] = "AuthController/logout";
 $route['details'] = "AuthController/addProfileDetails";
 $route['getUser'] = "AuthController/getUser";
+$route['check1'] = "AuthController/checkUser";
 
+$route['updateEmail'] = "AuthController/updateEmail";
+$route['search/users/(:any)'] = "AuthController/searchUsers/$1";
+$route['edit/basic-details'] = "AuthController/editBasicDetails";
 
 $route['contact'] = "ContactController/addContactDetails";
 $route['contact/list'] = "ContactController/listContactDetails";
+$route['cont'] = "ContactController/checkContact";
+$route['edit/contact-details'] = "ContactController/editContactDetails";
+
 
 $route['alternativeEmail'] = "AlternativeEmailsController/addAlternativeEmail";
-$route['alternativeEmail/delete/(:num)'] = "AlternativeEmailsController/removeAlternativeEmail/$1";
+$route['alternativeEmail/delete'] = "AlternativeEmailsController/removeAlternativeEmail";
 $route['alternativeEmail/list'] = "AlternativeEmailsController/listAlternativeEmails";
 
 $route['abc/(:num)/(:any)'] = "contorl/func/$1/$2";
 
 $route['alternativePhone'] = "AlternativePhonesController/addAlternativePhone";
-$route['alternativePhone/delete/(:num)'] = "AlternativePhonesController/removeAlternativePhone/$1";
+$route['alternativePhone/delete'] = "AlternativePhonesController/removeAlternativePhone";
 $route['alternativePhone/list'] = "AlternativePhonesController/listAlternativePhones";
 
 $route['education'] = "EducationController/addEducationDetails";
 $route['education/list'] = "EducationController/listEducationHistory";
-$route['education/update/(:num)'] = "EducationController/updateEducationDetails/$1"; // Update education details
-$route['education/delete/(:num)'] = "EducationController/removeEducationDetails/$1";// Delete education details
+$route['education/delete'] = "EducationController/removeEducationDetails";// Delete education details
 
 
 $route['workHistory'] = "WorkController/addWorkDetails"; // Add work details
