@@ -78,7 +78,7 @@ $route['get-requests/(:num)'] = 'FriendRequestController/getRequests/$1';
 // $route['respond-friend-request'] = 'FriendRequestController/respondRequest';
 $route['rfr'] = 'FriendRequestController/respondRequest';
 $route['get-friends/(:num)'] = 'FriendRequestController/getFriends/$1';
-    
+
 // Stories
 $route['upload-story'] = 'StoriesController/uploadStory';
 $route['get-stories/(:num)'] = 'StoriesController/getStoriesofUser/$1';
@@ -102,7 +102,11 @@ $route['posts/like/(:num)'] = 'PostController/likePost/$1';  // POST: Like a pos
 $route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a comment to a post by post ID
 $route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
 $route['posts/post-by-user'] = 'PostController/getUserPost';
+$route['posts/toggle_like'] = 'PostController/toggle_like';
  
+
+
+
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
 

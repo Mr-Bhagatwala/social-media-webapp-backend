@@ -128,7 +128,7 @@ exit; // Terminate the script after the preflight response
     /**
      * Respond to Friend Request
      */
-    //params required: requestid, 
+
     public function respondRequest() {
         //decode in json
         $data = json_decode(file_get_contents('php://input'), true);
@@ -136,6 +136,7 @@ exit; // Terminate the script after the preflight response
         $status = $data['status']; // status
         $request_id = $data['request_id']; // request_id 
         $user_id = $data['user_id']; // user_id
+        // $receiver_id = $data['receiver_id'];
         //$user_id = $this->session->userdata('user_data');
         // var_dump($status,$request_id,$user_id);
 
@@ -175,6 +176,8 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Failed to process request.']));
         }
     }
+
+    
 // lcaohost?k=5
 //$var = $this->input->get('k');
 ///$var2 = this-inut-get('z');
