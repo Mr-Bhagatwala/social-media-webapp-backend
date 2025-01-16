@@ -191,22 +191,41 @@ exit; // Terminate the script after the preflight response
      * Get Friend List of User
      */
     public function getFriends($userId) {
-        
+        // Validate user ID
         if (!is_numeric($userId)) {
             return $this->output->set_status_header(400)
                                 ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.',"data is "=>$data2]));
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
         }
-
+    
+        // Retrieve optional filters from the GET request
+        $filters = $this->input->get();
+    
+        // Fetch the friends list
         $friends = $this->FriendRequestModel->getFriendsList($userId);
-        foreach($friends as &$friend){
-            $friend['profile_photo'] = base_url().$friend['profile_photo'];
+    
+        // Apply filters if present
+        if (!empty($filters)) {
+            $friends = array_filter($friends, function ($friend) use ($filters) {
+                foreach ($filters as $key => $value) {
+                    if (isset($friend[$key]) && strcasecmp($friend[$key], $value) !== 0) {
+                        return false;
+                    }
+                }
+                return true;
+            });
         }
-
-        return $this->output->set_status_header(200)    
+    
+        // Add the full profile photo URL
+        foreach ($friends as &$friend) {
+            $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+        }
+    
+        return $this->output->set_status_header(200)
                             ->set_content_type('application/json')
-                            ->set_output(json_encode(['status' => 'success', 'data' => $friends]));
+                            ->set_output(json_encode(['status' => 'success', 'data' => array_values($friends)]));
     }
+    
 }
 
 ?>
