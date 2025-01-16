@@ -70,6 +70,12 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Friend request already exists.']));
         }
 
+        if ($this->FriendRequestModel->checkExistingRequest($receiver_id, $sender_id)) {
+            return $this->output->set_status_header(409)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Friend request already exists.']));
+        }
+
         // Send friend request
         $response = $this->FriendRequestModel->sendRequest($data);
 
@@ -248,16 +254,24 @@ exit; // Terminate the script after the preflight response
     
         // Fetch friend request status
         $requests_status = $this->FriendRequestModel->getFriendRequest($sender_id, $receiver_id);
-    
         // Handle the response based on the status
         if ($requests_status) {
             return $this->output->set_status_header(200)
                                 ->set_content_type('application/json')
                                 ->set_output(json_encode(['status' => 'success', 'data' => $requests_status]));
         } else {
-            return $this->output->set_status_header(404)
-                                ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'success', 'data' => 'send Request']));
+            
+            $requests_status1 = $this->FriendRequestModel->getFriendRequest($receiver_id, $sender_id);
+            if ($requests_status1) {
+                return $this->output->set_status_header(200)
+                                    ->set_content_type('application/json')
+                                    ->set_output(json_encode(['status' => 'success', 'data' => $requests_status1]));
+            } else {
+                return $this->output->set_status_header(404)
+                                    ->set_content_type('application/json')
+                                    ->set_output(json_encode(['status' => 'success', 'data' => 'send Request']));
+            }
+            
         }
     
     
