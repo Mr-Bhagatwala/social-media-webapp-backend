@@ -92,7 +92,7 @@ class PostController extends CI_Controller {
             $notification = [
                 'user_ids' => $frdIds,
                 'message' => "Your friend created a post.",
-             
+                
             ];
             $this->NotificationModel->addNotificationforPost($notification);
 
@@ -125,7 +125,8 @@ class PostController extends CI_Controller {
 
         $user_id = $this->input->get('user_id');
         $response = $this->PostModel->getFeed($offset, $sort);
-    
+        
+        
         // $data = json_decode(file_get_contents('php://input'), true);
 
         // $user_id = $data['user_id'];
