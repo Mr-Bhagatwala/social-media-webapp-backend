@@ -226,6 +226,7 @@ class AuthController extends CI_Controller {
             return;
         }
         $user = $this->Auth_Model->getUserDetail($user_id);
+      // $user['profile_photo'] = "http://localhost/codeigniter/". $user['profile_photo'];
         echo json_encode(['status' => 'success', 'user' => $user]);
     }
 
