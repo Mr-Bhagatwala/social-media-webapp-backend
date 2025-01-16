@@ -74,6 +74,7 @@ class WorkController extends CI_Controller {
             echo json_encode(['status' => 'error', 'message' => 'Missing required fields: user_id, company_organisation, or designation.']);
             return;
         }
+        
         $this->db->where('user_id', $data['user_id']);
         $this->db->where('company_organisation', $data['company_organisation']);
         $this->db->where('designation', $data['designation']);

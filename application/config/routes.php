@@ -49,6 +49,7 @@ $route['details'] = "AuthController/addProfileDetails";
 $route['getUser'] = "AuthController/getUser";
 $route['check1'] = "AuthController/checkUser";
 $route['getAll'] = "AuthController/fetchUsers";
+$route['profile/uploadPhoto'] = "AuthController/uploadPhoto";
 
 $route['updateEmail'] = "AuthController/updateEmail";
 $route['search/users/(:any)'] = "AuthController/searchUsers/$1";

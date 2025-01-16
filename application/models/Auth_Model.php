@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Auth_Model extends CI_Model {
-
+    
     // Register new user
     public function register($name, $email, $password)
     {
@@ -77,9 +77,26 @@ class Auth_Model extends CI_Model {
         return $this->db->update('users', $data); // Update only basic details
     }    
 
-    public function getAllUsers(){
-        $query = $this->db->select('id, name, hometown, profile_photo')->get('users');
-        return $query->result_array(); 
+    // public function getAllUsers(){
+    //     $query = $this->db->select('id, name, hometown, profile_photo')->get('users');
+    //     return $query->result_array(); 
+    // }
+
+    public function getAllUsers($offset, $limit) {
+        // Use CodeIgniter's query builder to fetch data with pagination
+        $this->db->limit($limit, $offset);
+        $query = $this->db->get('users'); // Replace 'users' with your actual table name
+    
+        // Return results as an array
+        return $query->result_array();
+    }
+    
+
+    public function updateProfilePhoto($userId, $filePath) {
+        $data = ['profile_photo' => $filePath];
+            
+        $this->db->where('id', $userId);
+        return $this->db->update('users', $data);
     }
     
 }

@@ -72,7 +72,7 @@ class PostController extends CI_Controller {
 
         // Save post and media
         $response = $this->PostModel->createPost($userId, $content, $mediaUrls);
-
+        
         $frd = $this->FriendRequestModel->getFriendsList($userId);
         $frdIds = array_column($frd, 'friend_id');
         if($response){
