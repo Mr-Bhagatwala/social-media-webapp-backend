@@ -7,6 +7,7 @@ class AuthController extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->helper('url');
         $this->load->model('Auth_Model'); // Load the model
         $this->load->library('form_validation'); // Load form validation library
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -20,6 +21,7 @@ class AuthController extends CI_Controller {
         header('Access-Control-Allow-Origin: *');  // Allow all origins
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        $this->load->helper('cookie');
     }
     
     public function check_session()
@@ -134,12 +136,6 @@ class AuthController extends CI_Controller {
         }
     }
 
-    // public function editBasicDetails(){
-
-    // }
-    // public function editBasicDetails(){
-
-    // }
     
     // Logout
     public function logout()
@@ -216,6 +212,80 @@ class AuthController extends CI_Controller {
         $result = $this->Auth_Model->searchUsersM($name);
         echo json_encode($result);
     }
+
+    // public function fetchUsers(){
+    //     $users = $this->Auth_Model->getAllUsers();
+    //     echo json_encode([
+    //         'success' => true,
+    //         'data' => $users
+    //     ]);
+    // }
+
+    public function fetchUsers() {
+        // Load input data for offset and limit
+        $offset = $this->input->get('offset', true);
+        $limit = $this->input->get('limit', true);
+    
+        // Provide default values if offset and limit are not provided
+        $offset = $offset !== null ? (int)$offset : 0;
+        $limit = $limit !== null ? (int)$limit : 10;
+    
+        // Fetch users from the model with pagination
+        $users = $this->Auth_Model->getAllUsers($offset, $limit);
+    
+        // Return the response
+        if (!empty($users)) {
+            echo json_encode([
+                'success' => true,
+                'data' => $users
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'No more users found'
+            ]);
+        }
+    }
+    
+
+    public function uploadPhoto() {
+        $userId = $this->input->post('user_id');
+
+        if (!$userId) {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'User ID is required']));
+        }
+
+        if (empty($_FILES['profile_photo']['name'])) {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'No file uploaded']));
+        }
+
+        $config['upload_path'] = './assets/profile_pictures/';
+        $config['allowed_types'] = 'jpg|jpeg|png';
+        $config['max_size'] = 5120;
+        $config['file_name'] = 'profile_' . $userId . '_' . uniqid();
+
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload('profile_photo')) {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => $this->upload->display_errors()]));
+        }
+
+        $uploadData = $this->upload->data();
+        $filePath = 'assets/profile_pictures/' . $uploadData['file_name'];
+
+        $updateStatus = $this->Auth_Model->updateProfilePhoto($userId, $filePath);
+
+        if ($updateStatus) {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'success', 'photo_url' => base_url($filePath)]));
+        } else {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Failed to update profile photo in the database']));
+        }
+
+    }
     
     public function getUser(){
         $user_id = $this->input->get('id');
@@ -226,16 +296,7 @@ class AuthController extends CI_Controller {
             return;
         }
         $user = $this->Auth_Model->getUserDetail($user_id);
-      // $user['profile_photo'] = "http://localhost/codeigniter/". $user['profile_photo'];
         echo json_encode(['status' => 'success', 'user' => $user]);
-    }
-
-    public function fetchUsers(){
-        $users = $this->Auth_Model->getAllUsers();
-        echo json_encode([
-            'success' => true,
-            'data' => $users
-        ]);
     }
 
 }
