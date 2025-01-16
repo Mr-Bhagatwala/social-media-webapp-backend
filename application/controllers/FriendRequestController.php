@@ -129,7 +129,7 @@ exit; // Terminate the script after the preflight response
     /**
      * Respond to Friend Request
      */
-    //params required: requestid, 
+
     public function respondRequest() {
         //decode in json
         $data = json_decode(file_get_contents('php://input'), true);
@@ -182,6 +182,8 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Failed to process request.']));
         }
     }
+
+    
 // lcaohost?k=5
 //$var = $this->input->get('k');
 ///$var2 = this-inut-get('z');
@@ -189,22 +191,80 @@ exit; // Terminate the script after the preflight response
      * Get Friend List of User
      */
     public function getFriends($userId) {
-        
+        // Validate user ID
         if (!is_numeric($userId)) {
             return $this->output->set_status_header(400)
                                 ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.',"data is "=>$data2]));
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
         }
-
+    
+        // Retrieve optional filters from the GET request
+        $filters = $this->input->get();
+    
+        // Fetch the friends list
         $friends = $this->FriendRequestModel->getFriendsList($userId);
-        foreach($friends as &$friend){
-            $friend['profile_photo'] = base_url().$friend['profile_photo'];
+    
+        // Apply filters if present
+        if (!empty($filters)) {
+            $friends = array_filter($friends, function ($friend) use ($filters) {
+                foreach ($filters as $key => $value) {
+                    if (isset($friend[$key]) && strcasecmp($friend[$key], $value) !== 0) {
+                        return false;
+                    }
+                }
+                return true;
+            });
         }
-
-        return $this->output->set_status_header(200)    
+    
+        // Add the full profile photo URL
+        foreach ($friends as &$friend) {
+            $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+        }
+    
+        return $this->output->set_status_header(200)
                             ->set_content_type('application/json')
-                            ->set_output(json_encode(['status' => 'success', 'data' => $friends]));
+                            ->set_output(json_encode(['status' => 'success', 'data' => array_values($friends)]));
     }
+
+    public function getFriendRequestStatus() {
+        $data = json_decode(file_get_contents('php://input'), true);
+    
+        $sender_id = $data['sender_id']; // request_id source id
+        $receiver_id = $data['receiver_id']; // user_id 
+    
+        // Validate sender_id
+        if (!is_numeric($sender_id)) {
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid sender ID.']));
+        }
+    
+        // Validate receiver_id
+        if (!is_numeric($receiver_id)) {
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid receiver ID.']));
+        }
+    
+        // Fetch friend request status
+        $requests_status = $this->FriendRequestModel->getFriendRequest($sender_id, $receiver_id);
+    
+        // Handle the response based on the status
+        if ($requests_status) {
+            return $this->output->set_status_header(200)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'success', 'data' => $requests_status]));
+        } else {
+            return $this->output->set_status_header(404)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'success', 'data' => 'send Request']));
+        }
+    
+    
+
+
+    }
+    
 }
 
 ?>

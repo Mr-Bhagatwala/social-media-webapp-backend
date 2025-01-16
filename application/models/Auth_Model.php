@@ -10,7 +10,7 @@ class Auth_Model extends CI_Model {
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'profile_photo' => "",
+            'profile_photo' => null,
             'gender' => "",
             'marital_status' => "",
             'date_of_birth' => "",

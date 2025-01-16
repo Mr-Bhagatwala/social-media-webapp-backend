@@ -85,6 +85,20 @@ class FriendRequestModel extends CI_Model {
         return $this->db->delete('friend_requests');
         
     }
+
+    public function getFriendRequest($sender_id, $receiver_id) {
+        $this->db->select('status'); // Select only the status column
+        $this->db->where('receiver_id', $receiver_id);
+        $this->db->where('sender_id', $sender_id);
+        $query = $this->db->get('friend_requests'); // Assuming 'friend_requests' is your table name
+    
+        if ($query->num_rows() > 0) {
+            return $query->row()->status; // Return the status directly
+        } else {
+            return null; // No request found
+        }
+    }
+    
     // Add a user to the Friends table
     // public function addFriend($data) {
     //     return $this->db->insert('friends', $data);
