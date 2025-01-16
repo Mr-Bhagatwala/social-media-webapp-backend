@@ -79,9 +79,12 @@ $route['workHistory'] = "WorkController/addWorkDetails"; // Add work details
 $route['workHistory/list'] = "WorkController/listWorkHistory"; // Add work details
 $route['workHistory/update/(:num)'] = "WorkController/updateWorkDetails/$1"; // Update work details
 $route['workHistory/delete/(:num)'] = "WorkController/removeWorkDetails/$1"; // Delete work details
+
+
+
+$route['getFriendRequestStatus'] = 'FriendRequestController/getFriendRequestStatus';
 $route['send-friend-request'] = 'FriendRequestController/sendRequest';
 $route['get-requests/(:num)'] = 'FriendRequestController/getRequests/$1';
-
 // $route['respond-friend-request'] = 'FriendRequestController/respondRequest';
 $route['rfr'] = 'FriendRequestController/respondRequest';
 $route['get-friends/(:num)'] = 'FriendRequestController/getFriends/$1';

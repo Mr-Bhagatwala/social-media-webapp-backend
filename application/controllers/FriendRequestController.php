@@ -225,6 +225,45 @@ exit; // Terminate the script after the preflight response
                             ->set_content_type('application/json')
                             ->set_output(json_encode(['status' => 'success', 'data' => array_values($friends)]));
     }
+
+    public function getFriendRequestStatus() {
+        $data = json_decode(file_get_contents('php://input'), true);
+    
+        $sender_id = $data['sender_id']; // request_id source id
+        $receiver_id = $data['receiver_id']; // user_id 
+    
+        // Validate sender_id
+        if (!is_numeric($sender_id)) {
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid sender ID.']));
+        }
+    
+        // Validate receiver_id
+        if (!is_numeric($receiver_id)) {
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid receiver ID.']));
+        }
+    
+        // Fetch friend request status
+        $requests_status = $this->FriendRequestModel->getFriendRequest($sender_id, $receiver_id);
+    
+        // Handle the response based on the status
+        if ($requests_status) {
+            return $this->output->set_status_header(200)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'success', 'data' => $requests_status]));
+        } else {
+            return $this->output->set_status_header(404)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'success', 'data' => 'send Request']));
+        }
+    
+    
+
+
+    }
     
 }
 
