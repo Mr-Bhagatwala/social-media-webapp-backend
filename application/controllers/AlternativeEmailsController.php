@@ -22,22 +22,8 @@ class AlternativeEmailsController extends CI_Controller{
     }
 
     public function addAlternativeEmail(){
-        // $user_id = $this->session->userdata('user_id');
 
-        // if (!$user_id) {
-        //     echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
-        //     return;
-        // }
-
-        // $data = $this->input->post();
         $data = json_decode(file_get_contents('php://input'), true);
-        // $this->form_validation->set_rules('alternative_email', 'Alternative Email', 'required|valid_email');
-
-        // if ($this->form_validation->run() == FALSE) {
-        //     $response = array('status' => 'error', 'message' => validation_errors());
-        //     echo json_encode($response);
-        //     return;
-        // }
 
         $result = $this->AlternativeEmailsModel->addAlternativeEmail(         
             $data['alternative_email'],
@@ -50,18 +36,25 @@ class AlternativeEmailsController extends CI_Controller{
         }
     }
 
-    public function removeAlternativeEmail($id) {
+    public function removeAlternativeEmail() {
         // Attempt to delete the record
-        $this->db->where('id', $id);
-        $this->db->delete('alternative_emails');
-    
-        // Check the number of affected rows
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (empty($data['user_id']) || empty($data['email'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing user_id or email.']);
+            return;
+        }
+
+        $user_id = $data['user_id'];
+        $email = $data['email'];
+
+        $this->db->where('user_id', $user_id);
+        $this->db->where('alternate_email', $email);
+        $this->db->delete('alternate_emails');
+
         if ($this->db->affected_rows() > 0) {
-            // If a row was deleted
-            echo json_encode(['status' => 'success', 'message' => 'Alternative Email removed successfully.']);
+            echo json_encode(['status' => 'success', 'message' => 'Alternate email deleted successfully.']);
         } else {
-            // If no rows were affected (id does not exist in the database)
-            echo json_encode(['status' => 'error', 'message' => 'ID not found in the database.']);
+            echo json_encode(['status' => 'error', 'message' => 'No matching record found.']);
         }
     }
 

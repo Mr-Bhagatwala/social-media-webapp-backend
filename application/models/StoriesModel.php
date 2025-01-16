@@ -16,13 +16,37 @@ class StoriesModel extends CI_Model {
     }
 
     // Get visible Stories for a user
+    // public function getStories($userId) {
+    //     date_default_timezone_set('Asia/Kolkata');
+    //     $this->db->where('user_id', $userId);
+    //     $this->db->where('expires_at >  ', date('Y-m-d H:i:s'));
+    //     //echo date('Y-m-d H:i:s');
+    //     return $this->db->get('stories')->result_array();
+    // }
     public function getStories($userId) {
         date_default_timezone_set('Asia/Kolkata');
-        $this->db->where('user_id', $userId);
-        $this->db->where('expires_at >  ', date('Y-m-d H:i:s'));
-        //echo date('Y-m-d H:i:s');
-        return $this->db->get('stories')->result_array();
+    
+        // Select fields from both stories and users
+        $this->db->select('
+            stories.*, 
+            users.name AS name, 
+            users.profile_photo AS profile_photo
+        ');
+    
+        // Join with the users table to get the name and profile photo
+        $this->db->from('stories');
+        $this->db->join('users', 'users.id = stories.user_id', 'inner'); // Inner join to get user details
+    
+        // Apply the conditions
+        $this->db->where('stories.user_id', $userId);
+        $this->db->where('stories.expires_at >', date('Y-m-d H:i:s')); // Only active stories
+    
+        // Get the results and return as an array
+        $result = $this->db->get()->result_array();
+    
+        return $result;
     }
+    
 
     // Mark a story as viewed
     public function markAsViewed($storyId, $viewerId) {
@@ -55,6 +79,36 @@ class StoriesModel extends CI_Model {
         $this->db->where('expires_at <', date('Y-m-d H:i:s'));
         $this->db->delete('stories');
         return $this->db->affected_rows();
+    }
+
+    public function isViewedByUser($storyId, $viewerId) {
+        $this->db->where('story_id', $storyId);
+        $this->db->where('viewer_id', $viewerId);
+        return $this->db->get('story_views')->result_array();
+    }
+
+    //get number of views for a story
+    public function getStoryViews($storyId) {
+        $this->db->where('story_id', $storyId);
+        return $this->db->get('story_views')->num_rows();
+    }
+
+    public function like($storyId, $userId) {
+        $data = [
+            'story_id' => $storyId,
+            'user_id' => $userId,
+        ];
+        $this->db->insert('likes', $data);
+        return $this->db->affected_rows() > 0;
+    }
+    public function getLikes($storyId) {
+        $this->db->where('story_id', $storyId);
+        return $this->db->get('likes')->num_rows();
+        }
+    public function isLiked($storyId, $userId) {
+        $this->db->where('story_id', $storyId);
+        $this->db->where('user_id', $userId);
+        return $this->db->get('likes')->result_array();
     }
 }
 ?>

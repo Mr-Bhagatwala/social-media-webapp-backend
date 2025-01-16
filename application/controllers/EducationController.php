@@ -23,95 +23,71 @@ class EducationController extends CI_Controller {
 
     // Add education details
     public function addEducationDetails() {
-        $user_id = $this->session->userdata('user_id');
-
-        if (!$user_id) {
-            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        $data = json_decode(file_get_contents('php://input'), true);
+    
+        // Validate required fields
+        if (!$data['user_id'] || !$data['college_school'] || !$data['degree_program'] || !$data['start_year']) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing required fields.']);
             return;
         }
 
-        $data = $this->input->post();
-
-        $this->form_validation->set_rules('college_school', 'College/School', 'required');
-        $this->form_validation->set_rules('degree_program', 'Degree Program', 'required');
-        $this->form_validation->set_rules('start_year', 'Start Year', 'required');
-        $this->form_validation->set_rules('end_year', 'End Year', 'required');
-        $this->form_validation->set_rules('is_current', 'Is Current', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
-            return;
-        }
-
-        $result = $this->EducationDetailsModel->fillEducationDetails(
-            $data['college_school'],
-            $data['degree_program'],
-            $data['start_year'],
-            $data['end_year'],
-            $data['is_current']
-        );
-
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Education details added successfully.']);
+        // Check if the same degree already exists for the user
+        $this->db->where('user_id', $data['user_id']);
+        $this->db->where('degree_program', $data['degree_program']);
+        $existingRecord = $this->db->get('education')->row();
+    
+        $educationData = [
+            'college_school' => $data['college_school'],
+            'degree_program' => $data['degree_program'],
+            'start_year' => $data['start_year'],
+            'end_year' => $data['is_current'] ? null : $data['end_year'],
+            'is_current' => $data['is_current']
+        ];
+    
+        if ($existingRecord) {
+            // Update the existing record
+            $this->db->where('id', $existingRecord->id);
+            $updated = $this->db->update('education', $educationData);
+            
+            if ($updated) {
+                echo json_encode(['status' => 'success', 'message' => 'Education details updated successfully.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to update education details.']);
+            }
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to add education details.']);
+            // Insert a new record
+            $educationData['user_id'] = $data['user_id'];
+            $inserted = $this->db->insert('education', $educationData);
+    
+            if ($inserted) {
+                echo json_encode(['status' => 'success', 'message' => 'Education details added successfully.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to save education details.']);
+            }
         }
     }
-
+    
     // Remove education details
-    public function removeEducationDetails($id) {
-        $this->db->where('id',$id);
+    public function removeEducationDetails() {
+        $data = json_decode(file_get_contents('php://input'), true);
+    
+        // Validate required fields
+        if (!$data['user_id'] || !$data['degree_program']) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing required fields: user_id or degree_program.']);
+            return;
+        }
+        
+        // Delete the education record matching user_id and degree_program
+        $this->db->where('user_id', $data['user_id']);
+        $this->db->where('degree_program', $data['degree_program']);
         $this->db->delete('education');
-      
-
+    
         if ($this->db->affected_rows() > 0) {
-            // If a row was deleted
-            echo json_encode(['status' => 'success', 'message' => 'education details removed successfully.']);
+            // Successfully deleted
+            echo json_encode(['status' => 'success', 'message' => 'Education details removed successfully.']);
         } else {
-            // If no rows were affected (id does not exist in the database)
-            echo json_encode(['status' => 'error', 'message' => 'ID not found in the database.']);
-        }
-    }
-
-    // Update education details
-    public function updateEducationDetails($id) {
-        $data = $this->input->post();
-    
-        $this->form_validation->set_rules('college_school', 'College/School', 'required');
-        $this->form_validation->set_rules('degree_program', 'Degree Program', 'required');
-        $this->form_validation->set_rules('start_year', 'Start Year', 'required');
-        $this->form_validation->set_rules('end_year', 'End Year', 'required');
-        $this->form_validation->set_rules('is_current', 'Is Current', 'required');
-    
-        if ($this->form_validation->run() == FALSE) {
-            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
-            return;
-        }
-    
-        // Check if the education details exist for the given ID
-        $this->db->where('id', $id);
-        $query = $this->db->get('education');  // Assuming the table is named 'education_details'
-    
-        if ($query->num_rows() == 0) {
-            // If no record is found with the given ID
-            echo json_encode(['status' => 'error', 'message' => 'Education details not found.']);
-            return;
-        }
-    
-        // If the record exists, proceed to update
-        $result = $this->EducationDetailsModel->updateEducationDetails(
-            $id,
-            $data['college_school'],
-            $data['degree_program'],
-            $data['start_year'],
-            $data['end_year'],
-            $data['is_current']
-        );
-    
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Education details updated successfully.']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to update education details.']);
+            // No matching record found
+            echo json_encode(['status' => 'error', 'message' => 'No matching education details found to delete.']);
         }
     }
 

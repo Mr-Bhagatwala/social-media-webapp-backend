@@ -14,7 +14,8 @@ class FriendRequestController extends CI_Controller {
         parent::__construct();
         $this->load->model('FriendRequestModel');
         $this->load->model('NotificationModel');
-        $this->load->library('form_validation'); // For input validation    
+        $this->load->library('form_validation'); // For input validation 
+        $this->load->helper('url');   
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -37,7 +38,7 @@ exit; // Terminate the script after the preflight response
     //new one send as json
     public function sendRequest() {
 
-        // $data = $this->input->post();
+        // $data = $this->input->post(); // form-data
        $data = json_decode(file_get_contents('php://input'), true); // Get raw JSON data
         //$request_id = $data['receiver_id']; // Access the 'receiver_id' value from the associative array
         //$sender_id = $data['sender_id']; // Access the 'sender_id' value from the associative array
@@ -98,6 +99,7 @@ exit; // Terminate the script after the preflight response
     // params required: receiver_id  (current userid), status(optional) bydefault: pending
 
     // send data in query params
+    // loxl/:di
     public function getRequests($userId) {
         $type = $this->input->get('type') ?: 'pending';
         
@@ -127,14 +129,14 @@ exit; // Terminate the script after the preflight response
     /**
      * Respond to Friend Request
      */
-    //params required: requestid, 
+
     public function respondRequest() {
         //decode in json
         $data = json_decode(file_get_contents('php://input'), true);
 
         $status = $data['status']; // status
-        $request_id = $data['request_id']; // request_id 
-        $user_id = $data['user_id']; // user_id
+        $sender_id = $data['sender_id']; // request_id source id
+        $receiver_id = $data['receiver_id']; // user_id 
         //$user_id = $this->session->userdata('user_data');
         // var_dump($status,$request_id,$user_id);
 
@@ -145,27 +147,33 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid status value.']));
         }
 
-        $response = $this->FriendRequestModel->respondRequest($request_id, $status);
+        $response = $this->FriendRequestModel->respondRequest($sender_id, $receiver_id, $status);
 
         if ($response) {
             if ($status === 'accepted') {
                 $notification = [
-                    'user_id' => $user_id,
-                    'message' => "You are now friends ",
-                   
+                    'user_id' => $receiver_id,
+                    'source_id' => $sender_id,
+                    'message' => "You are now friends ",   
                 ];
                 $this->NotificationModel->addNotification($notification);
 
+                $notification = [
+                    'user_id' => $sender_id,
+                    'source_id' => $receiver_id,
+                    'message' => "You are now friends ",   
+                ];
+                $this->NotificationModel->addNotification($notification);
               //  $this->FriendRequestModel->deleterequest($request_id);
                 return $this->output->set_status_header(200)
                                     ->set_content_type('application/json')
-                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request accepted successfully.','id'=>$request_id]));
+                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request accepted successfully.','id' => $sender_id]));
             }   
             else{
-                $this->FriendRequestModel->deleterequest($request_id);
+                $this->FriendRequestModel->deleterequest($sender_id, $receiver_id);
                 return $this->output->set_status_header(200)
                                     ->set_content_type('application/json')
-                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request rejected successfully.','id'=>$request_id]));
+                                    ->set_output(json_encode(['status' => 'success', 'message' => 'Request rejected successfully.']));
 
         }
         } else {
@@ -175,23 +183,49 @@ exit; // Terminate the script after the preflight response
         }
     }
 
+    
+// lcaohost?k=5
+//$var = $this->input->get('k');
+///$var2 = this-inut-get('z');
     /**
      * Get Friend List of User
      */
     public function getFriends($userId) {
-        
+        // Validate user ID
         if (!is_numeric($userId)) {
             return $this->output->set_status_header(400)
                                 ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.',"data is "=>$data2]));
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
         }
-
+    
+        // Retrieve optional filters from the GET request
+        $filters = $this->input->get();
+    
+        // Fetch the friends list
         $friends = $this->FriendRequestModel->getFriendsList($userId);
-
-        return $this->output->set_status_header(200)    
+    
+        // Apply filters if present
+        if (!empty($filters)) {
+            $friends = array_filter($friends, function ($friend) use ($filters) {
+                foreach ($filters as $key => $value) {
+                    if (isset($friend[$key]) && strcasecmp($friend[$key], $value) !== 0) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
+    
+        // Add the full profile photo URL
+        foreach ($friends as &$friend) {
+            $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+        }
+    
+        return $this->output->set_status_header(200)
                             ->set_content_type('application/json')
-                            ->set_output(json_encode(['status' => 'success', 'data' => $friends]));
+                            ->set_output(json_encode(['status' => 'success', 'data' => array_values($friends)]));
     }
+    
 }
 
 ?>

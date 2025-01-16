@@ -10,6 +10,7 @@ class NotificationController extends CI_Controller {
         parent::__construct();
         
         $this->load->model('NotificationModel');
+        $this->load->helper('url');
          // For input validation
     }
 
@@ -17,6 +18,9 @@ class NotificationController extends CI_Controller {
         //from param
         // $userId = $this->input->get('user_id');
         $response = $this->NotificationModel->getNotifications($userId);
+        foreach($response as &$friend){
+            $friend['profile_photo'] = base_url().$friend['profile_photo'];
+        }
 
         if($response){
             return $this->output->set_content_type('application/json')

@@ -25,97 +25,72 @@ class WorkController extends CI_Controller {
 
      // Add work details
      public function addWorkDetails() {
-        $user_id = $this->session->userdata('user_id');
-
-        if (!$user_id) {
-            echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (!$data['user_id'] || !$data['company_organisation'] || !$data['designation'] || !$data['start_year']) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing required fields.']);
             return;
         }
 
-        $data = $this->input->post();
+        $this->db->where('user_id', $data['user_id']);
+        $this->db->where('company_organisation', $data['company_organisation']);
+        $this->db->where('designation', $data['designation']);
+        $existingRecord = $this->db->get('work_history')->row();
 
-        $this->form_validation->set_rules('company_organisation', 'Company_Organisation', 'required');
-        $this->form_validation->set_rules('designation', 'Designation', 'required');
-        $this->form_validation->set_rules('start_year', 'Start Year', 'required');
-        $this->form_validation->set_rules('end_year', 'End Year', 'required');
-        $this->form_validation->set_rules('is_current', 'Is Current', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            $response = array('status' => 'error', 'message' => validation_errors());
-            echo json_encode($response);
-            return;
-        }
-
-        $result = $this->WorkDetailsModel->fillWorkDetails(
-            $data['company_organisation'], 
-            $data['designation'], 
-            $data['start_year'], 
-            $data['end_year'], 
-            $data['is_current']
-        );
-
-        if ($result) {
-            $response = array('status' => 'success', 'message' => 'Work details added successfully.');
+        $workData = [
+            'company_organisation' => $data['company_organisation'],
+            'designation' => $data['designation'],
+            'start_year' => $data['start_year'],
+            'end_year' => $data['is_current'] ? null : $data['end_year'],
+            'is_current' => $data['is_current']
+        ];
+    
+        if ($existingRecord) {
+            $this->db->where('id', $existingRecord->id);
+            $updated = $this->db->update('work_history', $workData);
+            
+            if ($updated) {
+                echo json_encode(['status' => 'success', 'message' => 'Work details updated successfully.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to update work details.']);
+            }
         } else {
-            $response = array('status' => 'error', 'message' => 'Failed to add work details.');
+            
+            $workData['user_id'] = $data['user_id'];
+            $inserted = $this->db->insert('work_history', $workData);
+    
+            if ($inserted) {
+                echo json_encode(['status' => 'success', 'message' => 'Work details added successfully.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to save work details.']);
+            }
         }
-        echo json_encode($response);
+
     }
 
-    public function removeWorkDetails($id) {
-        // Attempt to delete the record
-        $this->db->where('id', $id);
+    public function removeWorkDetails() {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!$data['user_id'] || !$data['company_organisation'] || !$data['designation']) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing required fields: user_id, company_organisation, or designation.']);
+            return;
+        }
+        
+        $this->db->where('user_id', $data['user_id']);
+        $this->db->where('company_organisation', $data['company_organisation']);
+        $this->db->where('designation', $data['designation']);
         $this->db->delete('work_history');
-    
-        // Check the number of affected rows
+
         if ($this->db->affected_rows() > 0) {
-            // If a row was deleted
+            // Successfully deleted
             echo json_encode(['status' => 'success', 'message' => 'Work details removed successfully.']);
         } else {
-            // If no rows were affected (id does not exist in the database)
-            echo json_encode(['status' => 'error', 'message' => 'ID not found in the database.']);
+            // No matching record found
+            echo json_encode(['status' => 'error', 'message' => 'No matching work details found to delete.']);
         }
+        
     }
     
-    public function updateWorkDetails($id) {
-        $data = $this->input->post();
-
-        $this->form_validation->set_rules('company_organisation', 'Company Organisation', 'required');
-        $this->form_validation->set_rules('designation', 'Designation', 'required');
-        $this->form_validation->set_rules('start_year', 'Start Year', 'required');
-        $this->form_validation->set_rules('end_year', 'End Year', 'required');
-        $this->form_validation->set_rules('is_current', 'Is Current', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            echo json_encode(['status' => 'error', 'message' => validation_errors()]);
-            return;
-        }
-        $this->db->where('id', $id);
-        $query = $this->db->get('work_history');  // Assuming the table is named 'education_details'
-    
-        if ($query->num_rows() == 0) {
-            // If no record is found with the given ID
-            echo json_encode(['status' => 'error', 'message' => 'work details not found.']);
-            return;
-        }
-        $result = $this->WorkDetailsModel->updateWorkDetails(
-            $id,
-            $data['company_organisation'],
-            $data['designation'],
-            $data['start_year'],
-            $data['end_year'],
-            $data['is_current']
-        );
-
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Work details updated successfully.']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to update work details.']);
-        }
-    }
-
     public function listWorkHistory(){
-        // $user_id = $this->session->userdata('user_id');
         $data = json_decode(file_get_contents('php://input'), true);
         if (!$data) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);

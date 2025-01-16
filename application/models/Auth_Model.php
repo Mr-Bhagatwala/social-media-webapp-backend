@@ -23,7 +23,6 @@ class Auth_Model extends CI_Model {
         return $this->db->insert_id(); 
     }
     
-
     // Login user by email
     public function login($email)
     {
@@ -37,7 +36,6 @@ class Auth_Model extends CI_Model {
         }
         else
         {
-            echo "phase 2";
             return FALSE;
         }
     }
@@ -52,13 +50,39 @@ class Auth_Model extends CI_Model {
         ); // Fixed: Added semicolon here
         return $this->db->insert('users', $data);
     }
-
-
+    
     public function getUserDetail($user_id){
         $this->db->where('id', $user_id);
         $query = $this->db->get('users');
         return $query->result_array();
     }
 
+    public function searchUsersM($name){
+        $this->db->select('id as userId, name');
+        $this->db->from('users'); 
+        $this->db->like('name', $name);
+        $query = $this->db->get();
+    
+        return $query->result_array();
+    }
+
+    public function getAllUsers(){
+        $query = $this->db->select('id, name, hometown, profile_photo')->get('users');
+        return $query->result_array(); 
+    }
+    
+    
+
+    public function updateBasicDetails($userId, $name, $bio, $hometown) {
+        $data = [
+            'name' => $name,
+            'bio' => $bio,
+            'hometown' => $hometown,
+        ];
+    
+        $this->db->where('id', $userId);
+        return $this->db->update('users', $data); // Update only basic details
+    }    
+    
 }
 ?>
