@@ -16,10 +16,10 @@ class Auth_Model extends CI_Model {
             'date_of_birth' => "",
             'current_city' => "",
             'hometown' => ""
-        );
+        );-
     
         $this->db->insert('users', $data);
-    
+        
         return $this->db->insert_id(); 
     }
     
