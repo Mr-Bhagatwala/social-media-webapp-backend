@@ -402,7 +402,7 @@ class PostController extends CI_Controller {
     // Delete a post
     public function deletePost($postId) {
 
-        $response = $this->PostModel->deletePost($postId, $userId);
+        $response = $this->PostModel->deletePost($postId);
 
         if($response){
         return $this->output->set_content_type('application/json')

@@ -34,7 +34,7 @@ class PostModel extends CI_Model {
     }
 
     // Delete a post
-    public function deletePost($postId, $userId) {
+    public function deletePost($postId) {
         $this->db->where('post_id', $postId);
         $this->db->delete('media');  
     
