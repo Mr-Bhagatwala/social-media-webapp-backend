@@ -10,16 +10,16 @@ class Auth_Model extends CI_Model {
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'profile_photo' => null,
+            'profile_photo' => "", //made changes over here
             'gender' => "",
             'marital_status' => "",
             'date_of_birth' => "",
             'current_city' => "",
             'hometown' => ""
-        );
+        );-
     
         $this->db->insert('users', $data);
-    
+        
         return $this->db->insert_id(); 
     }
     
