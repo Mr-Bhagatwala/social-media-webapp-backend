@@ -1,4 +1,5 @@
 <?php
+
 class NotificationModel extends CI_Model {
 
     // public function __construct(){ 
@@ -119,3 +120,4 @@ class NotificationModel extends CI_Model {
     }
 }
 ?>
+

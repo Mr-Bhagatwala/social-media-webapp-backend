@@ -1,3 +1,7 @@
+
+
+
+
 <?php
 
 class PostModel extends CI_Model {
@@ -139,3 +143,4 @@ class PostModel extends CI_Model {
     }
 }
 ?>
+

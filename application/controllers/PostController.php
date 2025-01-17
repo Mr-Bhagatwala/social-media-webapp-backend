@@ -1,8 +1,8 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-// header('Access-Control-Allow-Origin: *');  // Allow all origins
-//         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
-//         header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+ 
+ <?php
+
+
 
 
 // class PostController extends CI_Controller {
@@ -336,21 +336,11 @@ class PostController extends CI_Controller {
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
     }
 
-    // Create a new post
 
-    // In case of multiple mb_encoding_aliases
-    //$_FILES['userfiles'] = array(
-    //     'name'     => array('file1.jpg', 'file2.mp4'),   // Array of original file names
-    //     'type'     => array('image/jpeg', 'video/mp4'),   // Array of MIME types
-    //     'tmp_name' => array('/tmp/phpYzdqk1', '/tmp/phpYzdqk2'),  // Array of temporary file paths
-    //     'error'    => array(0, 0),                        // Array of error codes (0 means no error)
-    //     'size'     => array(123456, 789012),              // Array of file sizes in bytes
-    // );
     
     public function createPost() {
 
-        // getting user Id from session
-        //$user_id = $this->session->userdata('user_id');
+
 
         $userId = $this->input->post('user_id');
         $content = $this->input->post('content');
@@ -519,7 +509,7 @@ class PostController extends CI_Controller {
         ];
         $this->NotificationModel->addNotification($notification);
         return $this->output->set_content_type('application/json')
-                            ->set_output(json_encode($response));
+                            ->set_output(json_encode(["data"=>$response, "status"=>"success"]));
     }
 
     // get comments of a postid
@@ -625,3 +615,9 @@ class PostController extends CI_Controller {
 }
 
 ?>
+
+
+
+
+
+

@@ -20,6 +20,7 @@ class ContactController extends CI_Controller {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
         $this->load->helper('cookie');
+        
     }
 
     // Add or update contact details

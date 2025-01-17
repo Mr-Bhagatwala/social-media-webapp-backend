@@ -35,7 +35,7 @@ class EducationController extends CI_Controller {
         $this->db->where('user_id', $data['user_id']);
         $this->db->where('degree_program', $data['degree_program']);
         $existingRecord = $this->db->get('education')->row();
-    
+        
         $educationData = [
             'college_school' => $data['college_school'],
             'degree_program' => $data['degree_program'],
@@ -45,7 +45,6 @@ class EducationController extends CI_Controller {
         ];
     
         if ($existingRecord) {
-            // Update the existing record
             $this->db->where('id', $existingRecord->id);
             $updated = $this->db->update('education', $educationData);
             
