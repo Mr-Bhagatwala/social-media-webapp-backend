@@ -57,7 +57,7 @@ class AuthController extends CI_Controller {
         $email = $postData['email']; // Correct variable name
         $password = $postData['password']; // Correct variable name
         // $email = $this->input->post('email');
-        // $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+        $password = password_hash($password, PASSWORD_DEFAULT);
     
         // Save user to database
         $user_id = $this->Auth_Model->register($name, $email, $password);
@@ -87,7 +87,8 @@ class AuthController extends CI_Controller {
     
         if ($user) {
             // Use password_verify for secure password checking
-            if ($password==$user['password']) {
+            // if ($password==$user['password']) {
+            if (password_verify($password, $user['password'])) {
                 // Set session data for logged-in user
 
                 // $this->session->set_userdata('user_id', $user['user_id']);
@@ -138,8 +139,7 @@ class AuthController extends CI_Controller {
 
     
     // Logout
-    public function logout()
-    {
+    public function logout(){
         // Check if the user is logged in
         $user_id = $this->session->userdata('user_id');
         
