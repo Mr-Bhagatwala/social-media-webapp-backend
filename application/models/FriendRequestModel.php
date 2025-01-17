@@ -39,7 +39,6 @@ class FriendRequestModel extends CI_Model {
     public function checkExistingRequest($userId, $recieverId){
         $this->db->where('sender_id', $userId);
         $this->db->where('receiver_id', $recieverId);
-
         return $this->db->get('friend_requests')->result_array();
     }
 

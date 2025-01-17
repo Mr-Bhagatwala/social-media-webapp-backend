@@ -82,7 +82,7 @@ $route['workHistory/update/(:num)'] = "WorkController/updateWorkDetails/$1"; // 
 $route['workHistory/delete'] = "WorkController/removeWorkDetails"; // Delete work details
 $route['send-friend-request'] = 'FriendRequestController/sendRequest';
 $route['get-requests/(:num)'] = 'FriendRequestController/getRequests/$1';
-
+$route['getFriendRequestStatus'] = 'FriendRequestController/getFriendRequestStatus';
 // $route['respond-friend-request'] = 'FriendRequestController/respondRequest';
 $route['rfr'] = 'FriendRequestController/respondRequest';
 $route['get-friends/(:num)'] = 'FriendRequestController/getFriends/$1';
@@ -110,7 +110,8 @@ $route['posts/like/(:num)'] = 'PostController/likePost/$1';  // POST: Like a pos
 $route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a comment to a post by post ID
 $route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
 $route['posts/post-by-user'] = 'PostController/getUserPost';
- 
+$route['posts/toggle_like']='PostController/toggle_like' ;
+
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
 
