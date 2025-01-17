@@ -24,7 +24,7 @@ class NotificationController extends CI_Controller {
 
         if($response){
             return $this->output->set_content_type('application/json')
-            ->set_output(json_encode($response));
+            ->set_output(json_encode(["data"=>$response, "status"=>"success"]));
         }
         return $this->output->set_content_type('application/json')
         ->set_output(json_encode(["status"=> "failed", "message"=>"No Notifications "]));

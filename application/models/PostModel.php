@@ -1,4 +1,5 @@
 <?php
+
 class PostModel extends CI_Model {
 
     public function __construct() {
@@ -45,7 +46,7 @@ class PostModel extends CI_Model {
 
     // Get feed with pagination
     public function getFeed($offset, $sort) {
-        $this->db->select('p.post_id, p.content, p.created_at, u.name, u.profile_photo, GROUP_CONCAT(m.media_url) as media');
+        $this->db->select('p.post_id, p.content, p.created_at, u.id,u.name, u.profile_photo, GROUP_CONCAT(m.media_url) as media');
         $this->db->from('posts p');
         $this->db->join('users u', 'u.id = p.user_id');
         $this->db->join('media m', 'm.post_id = p.post_id', 'left');
