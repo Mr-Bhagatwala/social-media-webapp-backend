@@ -7,6 +7,10 @@ class FriendRequestModel extends CI_Model {
         $this->load->database();  
     } 
     public function sendRequest($data) {
+        //add validation on data
+        if($data == null){
+            return null;
+        }
         return $this->db->insert('friend_requests', $data);
     }
 
@@ -18,6 +22,10 @@ class FriendRequestModel extends CI_Model {
     // }
     public function getRequests($userId, $type = 'pending') {
         // Select friend request details along with the sender's name and profile photo
+        //add validation on userId
+        if($userId == null){
+            return null;
+        }
         $this->db->select('
             friend_requests.*, 
             sender_users.name AS name, 
@@ -37,6 +45,10 @@ class FriendRequestModel extends CI_Model {
     }
     
     public function checkExistingRequest($userId, $recieverId){
+        //add validation checks
+        if($userId == null || $recieverId == null){
+            return null;
+        }
         $this->db->where('sender_id', $userId);
         $this->db->where('receiver_id', $recieverId);
         return $this->db->get('friend_requests')->result_array();
@@ -44,6 +56,11 @@ class FriendRequestModel extends CI_Model {
 
     // Respond to Friend Request (accept/reject)
     public function respondRequest($sender_id, $receiver_id, $status) {
+
+        //add validation checks
+        if($sender_id == null || $receiver_id == null || $status == null){
+            return null;
+        }
         $data = ['status' => $status];
         $this->db->where('sender_id', $sender_id);
         $this->db->where('receiver_id', $receiver_id);
@@ -51,11 +68,19 @@ class FriendRequestModel extends CI_Model {
     }
 
     public function getRequestbyId($requestId){
+        //add validation checks
+        if($requestId == null){
+            return null;
+        }
         $this->db->where('id', $requestId);
         return $this->db->get('friend_requests')->result_array();
     }
     // Get the Friends list of a user
     public function getFriendsList($userId) {
+        //add validation checks
+        if($userId == null){
+            return null;
+        }
         // Get friends where the user is the receiver
         $this->db->select('users.id as friend_id, users.name, users.profile_photo');
         $this->db->from('friend_requests');
@@ -78,6 +103,10 @@ class FriendRequestModel extends CI_Model {
         return $friendsList;
     }
     public function deleterequest($sender_id, $receiver_id){
+        //add validation checks
+        if($sender_id == null || $receiver_id == null){
+            return null;
+        }
         $this->db->where('receiver_id',$receiver_id);
         $this->db->where('sender_id',$sender_id);
         
@@ -86,6 +115,10 @@ class FriendRequestModel extends CI_Model {
     }
 
     public function getFriendRequest($sender_id, $receiver_id) {
+        //add validation checks
+        if($sender_id == null || $receiver_id == null){
+            return null;
+        }
         $this->db->select('status'); // Select only the status column
         $this->db->where('receiver_id', $receiver_id);
         $this->db->where('sender_id', $sender_id);
