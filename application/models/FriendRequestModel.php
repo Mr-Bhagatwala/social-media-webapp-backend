@@ -78,7 +78,7 @@ class FriendRequestModel extends CI_Model {
     // Get the Friends list of a user
     public function getFriendsList($userId) {
         //add validation checks
-        if($userId == null){
+        if($userId == null || !is_numeric($userId)){
             return null;
         }
         // Get friends where the user is the receiver
