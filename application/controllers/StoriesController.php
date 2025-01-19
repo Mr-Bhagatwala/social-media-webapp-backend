@@ -98,10 +98,6 @@ exit; // Terminate the script after the preflight response
         }
         // Get the list of friends
         $friends = $this->FriendRequestModel->getFriendsList($userId);
-        if($friends == null){
-            return $this->output->set_content_type('application/json')
-                            ->set_output(json_encode(['status' => 'error', 'message' => 'something wrong with the user id']));
-        }
         $frds_id = [];
         foreach ($friends as $frd) {
             array_push($frds_id, $frd['friend_id']);
@@ -137,10 +133,6 @@ exit; // Terminate the script after the preflight response
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'User ID is required']));
         }
         $stories = $this->StoriesModel->getStories($userId);
-        if($stories == null){
-            return $this->output->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'something wrong with the user id']));
-        }
         
         // Add base URL to media paths
         foreach ($stories as &$story) {
