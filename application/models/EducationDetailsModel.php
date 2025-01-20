@@ -46,7 +46,7 @@ class EducationDetailsModel extends CI_Model {
     // Update education details
     public function updateEducationDetails($id, $college_school, $degree_program, $start_year, $end_year, $is_current) {
         $user_id = $this->session->userdata('user_id');
-
+        
         if (!$user_id) {
             echo json_encode(['status' => 'error', 'message' => 'User not authenticated.']);
             return false;

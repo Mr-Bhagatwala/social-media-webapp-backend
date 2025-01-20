@@ -114,10 +114,23 @@ $route['posts/toggle_like']='PostController/toggle_like' ;
 
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
+//chats
+$route['get-all-chats/(:num)'] = 'ChatController/getAllChats/$1';
+$route['mute-chat/(:num)/(:num)'] = 'ChatController/muteChat/$1/$2';
+$route['unmute-chat/(:num)/(:num)'] = 'ChatController/unmuteChat/$1/$2';
+$route['block-user/(:num)/(:num)'] = 'ChatController/blockUser/$1/$2';
+$route['unblock-user/(:num)/(:num)'] = 'ChatController/unblockUser/$1/$2';
+$route['clear-chat/(:num)'] = 'ChatController/clearChat/$1';
+$route['delete-chat/(:num)'] = 'ChatController/deleteChat/$1';
+
+//messsages
+$route['message/past'] = 'MessageController/getPastMessages';
+$route['message/send'] = 'MessageController/sendMessage';
+$route['message/delete'] = 'MessageController/deleteMessage';
+$route['message/reply'] = 'MessageController/replyToMessage';
+$route['message/fetch'] = 'MessageController/fetchMessage';
 
 $route['404_override'] = '';
-
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

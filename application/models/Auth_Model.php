@@ -10,7 +10,7 @@ class Auth_Model extends CI_Model {
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'profile_photo' => "", //made changes over here
+            // 'profile_photo' => null,
             'gender' => "",
             'marital_status' => "",
             'date_of_birth' => "",
@@ -26,7 +26,6 @@ class Auth_Model extends CI_Model {
     // Login user by email
     public function login($email)
     {
-       
         $this->db->where('email', $email);
         $query = $this->db->get('users');
         // $query = $this->db->from('users')->where('email', $email)->get();
@@ -91,13 +90,13 @@ class Auth_Model extends CI_Model {
         return $query->result_array();
     }
     
-
+    
     public function updateProfilePhoto($userId, $filePath) {
         $data = ['profile_photo' => $filePath];
             
         $this->db->where('id', $userId);
         return $this->db->update('users', $data);
     }
-    
+
 }
 ?>

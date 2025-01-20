@@ -3,14 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AuthController extends CI_Controller {
 
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
-        $this->load->library('session');
-        $this->load->helper('url');
-        $this->load->model('Auth_Model'); // Load the model
-        $this->load->library('form_validation'); // Load form validation library
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -18,9 +13,13 @@ class AuthController extends CI_Controller {
             http_response_code(200);  // Respond with HTTP OK status
             exit;  // Terminate the script after the preflight response
         }
-        header('Access-Control-Allow-Origin: *');  // Allow all origins
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        $this->load->library('session');
+        $this->load->helper('url');
+        $this->load->model('Auth_Model'); // Load the model
+        $this->load->library('form_validation'); // Load form validation library
         $this->load->helper('cookie');
     }
     
@@ -57,7 +56,7 @@ class AuthController extends CI_Controller {
         $email = $postData['email']; // Correct variable name
         $password = $postData['password']; // Correct variable name
         // $email = $this->input->post('email');
-        // $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+        $password = password_hash($password, PASSWORD_DEFAULT);
     
         // Save user to database
         $user_id = $this->Auth_Model->register($name, $email, $password);
@@ -87,7 +86,8 @@ class AuthController extends CI_Controller {
     
         if ($user) {
             // Use password_verify for secure password checking
-            if ($password==$user['password']) {
+            // if ($password==$user['password']) {
+            if (password_verify($password, $user['password'])) {
                 // Set session data for logged-in user
 
                 // $this->session->set_userdata('user_id', $user['user_id']);
@@ -138,8 +138,7 @@ class AuthController extends CI_Controller {
 
     
     // Logout
-    public function logout()
-    {
+    public function logout(){
         // Check if the user is logged in
         $user_id = $this->session->userdata('user_id');
         
@@ -298,6 +297,5 @@ class AuthController extends CI_Controller {
         $user = $this->Auth_Model->getUserDetail($user_id);
         echo json_encode(['status' => 'success', 'user' => $user]);
     }
-
 }
 ?>

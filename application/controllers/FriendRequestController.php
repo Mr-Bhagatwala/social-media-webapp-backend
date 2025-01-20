@@ -46,7 +46,12 @@ exit; // Terminate the script after the preflight response
 
         $sender_id = $data['sender_id'];
         $receiver_id = $data['receiver_id'];
-        
+        //add validation for input
+        if($sender_id == null || $receiver_id == null || !is_numeric($sender_id)|| !is_numeric($receiver_id)){
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid input data.','data' => $data]));
+        }        
         // optimisation
         //$sender_id = $this->session->userdata('user_data');
         // $receiver_id  from sendRequest($receiver_id);
@@ -64,17 +69,19 @@ exit; // Terminate the script after the preflight response
         // }
 
         // Check if a request already exists
-        if ($this->FriendRequestModel->checkExistingRequest($sender_id, $receiver_id)) {
+        $alreadyExists = $this->FriendRequestModel->checkExistingRequest($sender_id, $receiver_id);
+        if ($alreadyExists!=null) {
             return $this->output->set_status_header(409)
                                 ->set_content_type('application/json')
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Friend request already exists.']));
+        }
+        else{
+            //inputs are nor vailid
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid input data.','data' => $data]));
         }
 
-        if ($this->FriendRequestModel->checkExistingRequest($receiver_id, $sender_id)) {
-            return $this->output->set_status_header(409)
-                                ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Friend request already exists.']));
-        }
 
         // Send friend request
         $response = $this->FriendRequestModel->sendRequest($data);
@@ -94,7 +101,7 @@ exit; // Terminate the script after the preflight response
         } else {
             return $this->output->set_status_header(500)
                                 ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Failed to send friend request.']));
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Failed to send friend request. Try again later.']));
         }
     }
 
@@ -108,24 +115,19 @@ exit; // Terminate the script after the preflight response
     // loxl/:di
     public function getRequests($userId) {
         $type = $this->input->get('type') ?: 'pending';
-        
-        //        $data = $this->input->get() || json_decode(file_get_contents('php://input'), true);
-        if ($this->input->get()) {
-            // If query parameters exist, use them
-            $data = $this->input->get();
-        } else {
-            // If no query parameters, check the body (JSON).
-            $data = json_decode(file_get_contents('php://input'), true);
-        }
-        // $userId = $data['user_id'];
-        if (!$userId) {
-
+        if (!$userId || !is_numeric($userId)) {
             return $this->output->set_status_header(400)
                                 ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.','data'=>$data]));
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
         }
 
         $requests = $this->FriendRequestModel->getRequests($userId, $type);
+        // if request is null
+        if (!$requests) {
+            return $this->output->set_status_header(404)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
+        }
 
         return $this->output->set_status_header(200)
                             ->set_content_type('application/json')
@@ -145,16 +147,18 @@ exit; // Terminate the script after the preflight response
         $receiver_id = $data['receiver_id']; // user_id 
         //$user_id = $this->session->userdata('user_data');
         // var_dump($status,$request_id,$user_id);
-
-
+        // Validate IDs
+        if (!is_numeric($sender_id) || !is_numeric($receiver_id)) {
+            return $this->output->set_status_header(400)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid sender ID.']));
+        }
         if (!in_array($status, ['accepted', 'rejected'])) {
             return $this->output->set_status_header(400)
                                 ->set_content_type('application/json')
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid status value.']));
         }
-
         $response = $this->FriendRequestModel->respondRequest($sender_id, $receiver_id, $status);
-
         if ($response) {
             if ($status === 'accepted') {
                 $notification = [
@@ -344,30 +348,32 @@ exit; // Terminate the script after the preflight response
         $sender_id = $data['sender_id']; // request_id source id
         $receiver_id = $data['receiver_id']; // user_id 
     
-        // Validate sender_id
-        if (!is_numeric($sender_id)) {
+        // Validate IDs
+        if (!is_numeric($sender_id)   ||  !is_numeric($receiver_id)) {
             return $this->output->set_status_header(400)
                                 ->set_content_type('application/json')
                                 ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid sender ID.']));
         }
-    
-        // Validate receiver_id
-        if (!is_numeric($receiver_id)) {
-            return $this->output->set_status_header(400)
-                                ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid receiver ID.']));
-        }
-    
+
         // Fetch friend request status
         $requests_status = $this->FriendRequestModel->getFriendRequest($sender_id, $receiver_id);
+        if($requests_status==null){
+            return $this->output->set_status_header(404)
+                                ->set_content_type('application/json')
+                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid sender ID.']));
+        }
         // Handle the response based on the status
         if ($requests_status) {
             return $this->output->set_status_header(200)
                                 ->set_content_type('application/json')
                                 ->set_output(json_encode(['status' => 'success', 'data' => $requests_status]));
         } else {
-            
             $requests_status1 = $this->FriendRequestModel->getFriendRequest($receiver_id, $sender_id);
+            if($requests_status1==null){
+                return $this->output->set_status_header(404)
+                                    ->set_content_type('application/json')
+                                    ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid sender ID.']));
+            }
             if ($requests_status1) {
                 return $this->output->set_status_header(200)
                                     ->set_content_type('application/json')
@@ -375,14 +381,10 @@ exit; // Terminate the script after the preflight response
             } else {
                 return $this->output->set_status_header(404)
                                     ->set_content_type('application/json')
-                                    ->set_output(json_encode(['status' => 'success', 'data' => 'send Request']));
+                                    ->set_output(json_encode(['status' => 'error', 'data' => 'not have any friend request']));
             }
             
         }
-    
-    
-
-
     }
     
 }
