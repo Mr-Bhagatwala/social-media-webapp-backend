@@ -196,41 +196,147 @@ exit; // Terminate the script after the preflight response
     /**
      * Get Friend List of User
      */
-    public function getFriends($userId) {
-        // Validate user ID
-        if (!is_numeric($userId)) {
-            return $this->output->set_status_header(400)
-                                ->set_content_type('application/json')
-                                ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
-        }
+    // public function getFriends($userId) {
+    //     // Validate user ID
+    //     if (!is_numeric($userId)) {
+    //         return $this->output->set_status_header(400)
+    //                             ->set_content_type('application/json')
+    //                             ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
+    //     }
     
-        // Retrieve optional filters from the GET request
-        $filters = $this->input->get();
+    //     // Retrieve optional filters from the GET request
+    //     $filters = $this->input->get();
     
-        // Fetch the friends list
-        $friends = $this->FriendRequestModel->getFriendsList($userId);
+    //     // Fetch the friends list
+    //     $friends = $this->FriendRequestModel->getFriendsList($userId);
     
-        // Apply filters if present
-        if (!empty($filters)) {
-            $friends = array_filter($friends, function ($friend) use ($filters) {
-                foreach ($filters as $key => $value) {
-                    if (isset($friend[$key]) && strcasecmp($friend[$key], $value) !== 0) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-        }
+    //     // Apply filters if present
+    //     if (!empty($filters)) {
+    //         $friends = array_filter($friends, function ($friend) use ($filters) {
+    //             foreach ($filters as $key => $value) {
+    //                 if (isset($friend[$key]) && strcasecmp($friend[$key], $value) !== 0) {
+    //                     return false;
+    //                 }
+    //             }
+    //             return true;
+    //         });
+    //     }
     
-        // Add the full profile photo URL
-        foreach ($friends as &$friend) {
-            $friend['profile_photo'] = base_url() . $friend['profile_photo'];
-        }
+    //     // Add the full profile photo URL
+    //     foreach ($friends as &$friend) {
+    //         $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+    //     }
     
-        return $this->output->set_status_header(200)
-                            ->set_content_type('application/json')
-                            ->set_output(json_encode(['status' => 'success', 'data' => array_values($friends)]));
+    //     return $this->output->set_status_header(200)
+    //                         ->set_content_type('application/json')
+    //                         ->set_output(json_encode(['status' => 'success', 'data' => array_values($friends)]));
+    // }
+    
+    // public function getFriends($userId) {
+    //     // Validate user ID
+    //     if (!is_numeric($userId)) {
+    //         return $this->output->set_status_header(400)
+    //                             ->set_content_type('application/json')
+    //                             ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
+    //     }
+    
+    //     // Pagination parameters
+    //     $page = (int)$this->input->get('page') ?: 1; // Default to page 1
+    //     $limit = (int)$this->input->get('limit') ?: 10; // Default limit to 10
+    //     $offset = ($page - 1) * $limit;
+    
+    //     // Search parameter
+    //     $search = $this->input->get('search');
+    
+    //     // Fetch the friends list with pagination and search
+    //     $friends = $this->FriendRequestModel->getFriendsList($userId, $limit, $offset, $search);
+    
+    //     // Add the full profile photo URL
+        // foreach ($friends as &$friend) {
+        //     $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+        // }
+    
+    //     return $this->output->set_status_header(200)
+    //                         ->set_content_type('application/json')
+    //                         ->set_output(json_encode([
+    //                             'status' => 'success',
+    //                             'data' => $friends,
+    //                             'page' => $page,
+    //                             'limit' => $limit
+    //                         ]));
+    // }
+    
+    // public function getFriends($userId){
+    //     // Validate user ID
+    //     if (!is_numeric($userId)) {
+    //         return $this->output
+    //             ->set_status_header(400)
+    //             ->set_content_type('application/json')
+    //             ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
+    //     }
+    
+    //     // Get pagination parameters
+    //     $page = $this->input->get('page') ?: 1;
+    //     $limit = $this->input->get('limit') ?: 10;
+    
+    //     // Sanitize pagination parameters
+    //     $page = (int) max(1, $page);
+    //     $limit = (int) max(1, $limit);
+    //     $offset = ($page - 1) * $limit;
+    
+    //     // Get friends list
+    //     $friends = $this->FriendRequestModel->getFriendsList($userId, $limit, $offset);
+        
+    //     foreach ($friends as &$friend) {
+    //         $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+    //     }
+    //     return $this->output
+    //         ->set_status_header(200)
+    //         ->set_content_type('application/json')
+    //         ->set_output(json_encode([
+    //             'status' => 'success',
+    //             'data' => $friends,
+    //             'page' => $page,
+    //             'limit' => $limit,
+    //         ]));
+    // }
+      
+    public function getFriends($userId)
+{
+    // Validate user ID
+    if (!is_numeric($userId)) {
+        return $this->output
+            ->set_status_header(400)
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['status' => 'error', 'message' => 'Invalid user ID.']));
     }
+
+    // Get pagination parameters
+    $page = $this->input->get('page') ?: 1;
+    $limit = $this->input->get('limit') ?: 10;
+    $search = $this->input->get('search') ?: '';
+
+    // Sanitize inputs
+    $page = (int) max(1, $page);
+    $limit = (int) max(1, $limit);
+    $offset = ($page - 1) * $limit;
+
+    // Get friends list
+    $friends = $this->FriendRequestModel->getFriendsListPagination($userId, $limit, $offset, $search);
+    foreach ($friends as &$friend) {
+        $friend['profile_photo'] = base_url() . $friend['profile_photo'];
+    }
+    return $this->output
+        ->set_status_header(200)
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+            'status' => 'success',
+            'data' => $friends,
+            'page' => $page,
+            'limit' => $limit,
+        ]));
+}
+
 
     public function getFriendRequestStatus() {
         $data = json_decode(file_get_contents('php://input'), true);

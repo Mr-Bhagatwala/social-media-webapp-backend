@@ -77,6 +77,82 @@ class FriendRequestModel extends CI_Model {
     
         return $friendsList;
     }
+
+    // public function getFriendsList($userId, $limit, $offset, $search = null) {
+    //     // Common SELECT fields
+    //     $this->db->select('users.id as friend_id, users.name, users.profile_photo');
+    
+    //     // Get friends where the user is the receiver
+    //     $this->db->from('friend_requests');
+    //     $this->db->join('users', 'friend_requests.sender_id = users.id', 'inner');
+    //     $this->db->where('friend_requests.receiver_id', $userId);
+    //     $this->db->where('friend_requests.status', 'accepted');
+    //     if ($search) {
+    //         $this->db->like('users.name', $search); // Filter by search term
+    //     }
+    //     $this->db->limit($limit, $offset);
+    //     $receiverFriends = $this->db->get()->result_array();
+    
+    //     // Get friends where the user is the sender
+    //     $this->db->select('users.id as friend_id, users.name, users.profile_photo');
+    //     $this->db->from('friend_requests');
+    //     $this->db->join('users', 'friend_requests.receiver_id = users.id', 'inner');
+    //     $this->db->where('friend_requests.sender_id', $userId);
+    //     $this->db->where('friend_requests.status', 'accepted');
+    //     if ($search) {
+    //         $this->db->like('users.name', $search); // Filter by search term
+    //     }
+    //     $this->db->limit($limit, $offset);
+    //     $senderFriends = $this->db->get()->result_array();
+    
+    //     // Combine both sets of friends
+    //     $friendsList = array_merge($receiverFriends, $senderFriends);
+    
+    //     return $friendsList;
+    // }
+
+    // public function getFriendsList($userId, $limit, $offset){
+    //     // Query to fetch friends (both sender and receiver relationships)
+    //     $query = "
+    //         SELECT DISTINCT u.id AS friend_id, u.name, u.profile_photo
+    //         FROM friend_requests fr
+    //         INNER JOIN users u ON (u.id = fr.sender_id AND fr.receiver_id = ?) 
+    //                             OR (u.id = fr.receiver_id AND fr.sender_id = ?)
+    //         WHERE fr.status = 'accepted'
+    //         LIMIT ? OFFSET ?
+    //     ";
+
+    //     // Execute the query with bindings
+    //     $result = $this->db->query($query, [$userId, $userId, $limit, $offset]);
+    //     return $result->result_array();
+    // }
+
+    public function getFriendsListPagination($userId, $limit, $offset, $search = ''){
+        $query = "
+            SELECT DISTINCT u.id AS friend_id, u.name, u.profile_photo
+            FROM friend_requests fr
+            INNER JOIN users u ON (u.id = fr.sender_id AND fr.receiver_id = ?) 
+                                OR (u.id = fr.receiver_id AND fr.sender_id = ?)
+            WHERE fr.status = 'accepted'
+        ";
+
+        // Add search functionality
+        if (!empty($search)) {
+            $query .= " AND u.name LIKE ?";
+            $bindings = [$userId, $userId, "%{$search}%", $limit, $offset];
+        } else {
+            $bindings = [$userId, $userId, $limit, $offset];
+        }
+
+        $query .= " LIMIT ? OFFSET ?";
+
+        $result = $this->db->query($query, $bindings);
+        return $result->result_array();
+    }
+
+    
+
+
     public function deleterequest($sender_id, $receiver_id){
         $this->db->where('receiver_id',$receiver_id);
         $this->db->where('sender_id',$sender_id);

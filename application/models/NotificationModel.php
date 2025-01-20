@@ -116,7 +116,12 @@ class NotificationModel extends CI_Model {
             ];
             $this->db->insert('notifications', $notificationdata);
         }
-        return $this->db->affected_rows();
+         if( $this->db->affected_rows()){
+
+            return ["status"=>"success", "message"=>"Post created succesfully"];
+         }else{
+            return ["status"=>"failed", "message"=>"Not able to send notifications || No friends"];
+         }
     }
 }
 ?>
