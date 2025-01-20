@@ -114,9 +114,9 @@ $route['posts/toggle_like']='PostController/toggle_like' ;
 
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
-
 $route['404_override'] = '';
 
+$route['message/past']='MessageController/getPastMessages';
 
 
 /* End of file routes.php */

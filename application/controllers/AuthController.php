@@ -3,14 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AuthController extends CI_Controller {
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->library('session');
-        $this->load->helper('url');
-        $this->load->model('Auth_Model'); // Load the model
-        $this->load->library('form_validation'); // Load form validation library
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    public function __construct()if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -21,6 +14,13 @@ class AuthController extends CI_Controller {
         header('Access-Control-Allow-Origin: *');  // Allow all origins
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Allow these methods
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    {
+        parent::__construct();
+        $this->load->library('session');
+        $this->load->helper('url');
+        $this->load->model('Auth_Model'); // Load the model
+        $this->load->library('form_validation'); // Load form validation library
+        
         $this->load->helper('cookie');
     }
     
