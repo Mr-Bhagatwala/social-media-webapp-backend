@@ -8,22 +8,17 @@ class StoriesModel extends CI_Model {
 
     // Upload a Story
     public function uploadStory($data) {
+
         $this->db->insert('stories', $data);
         if ($this->db->affected_rows() > 0) {
             return ['status' => 'success', 'story_id' => $this->db->insert_id()];
         }
         return ['status' => 'error', 'message' => 'Failed to upload story'];
     }
-
-    // Get visible Stories for a user
-    // public function getStories($userId) {
-    //     date_default_timezone_set('Asia/Kolkata');
-    //     $this->db->where('user_id', $userId);
-    //     $this->db->where('expires_at >  ', date('Y-m-d H:i:s'));
-    //     //echo date('Y-m-d H:i:s');
-    //     return $this->db->get('stories')->result_array();
-    // }
     public function getStories($userId) {
+        if($userId == null){
+            return null;
+        }
         date_default_timezone_set('Asia/Kolkata');
     
         // Select fields from both stories and users
@@ -50,6 +45,9 @@ class StoriesModel extends CI_Model {
 
     // Mark a story as viewed
     public function markAsViewed($storyId, $viewerId) {
+        if($storyId == null || $viewerId == null){
+            return null;
+        }
         date_default_timezone_set('Asia/Kolkata');
         $data = [
             'story_id' => $storyId,
@@ -82,6 +80,9 @@ class StoriesModel extends CI_Model {
     }
 
     public function isViewedByUser($storyId, $viewerId) {
+        if($storyId == null || $viewerId == null){
+            return null;
+        }
         $this->db->where('story_id', $storyId);
         $this->db->where('viewer_id', $viewerId);
         return $this->db->get('story_views')->result_array();
@@ -89,11 +90,17 @@ class StoriesModel extends CI_Model {
 
     //get number of views for a story
     public function getStoryViews($storyId) {
+        if($storyId == null){
+            return null;
+        }
         $this->db->where('story_id', $storyId);
         return $this->db->get('story_views')->num_rows();
     }
 
     public function like($storyId, $userId) {
+        if($storyId == null || $userId == null){
+            return null;
+        }
         $data = [
             'story_id' => $storyId,
             'user_id' => $userId,
@@ -102,10 +109,16 @@ class StoriesModel extends CI_Model {
         return $this->db->affected_rows() > 0;
     }
     public function getLikes($storyId) {
+        if($storyId == null){
+            return null;
+        }
         $this->db->where('story_id', $storyId);
         return $this->db->get('likes')->num_rows();
         }
     public function isLiked($storyId, $userId) {
+        if($storyId == null || $userId == null){
+            return null;
+        }
         $this->db->where('story_id', $storyId);
         $this->db->where('user_id', $userId);
         return $this->db->get('likes')->result_array();
