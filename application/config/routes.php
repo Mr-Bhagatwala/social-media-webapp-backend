@@ -123,10 +123,14 @@ $route['unblock-user/(:num)/(:num)'] = 'ChatController/unblockUser/$1/$2';
 $route['clear-chat/(:num)'] = 'ChatController/clearChat/$1';
 $route['delete-chat/(:num)'] = 'ChatController/deleteChat/$1';
 
+//messsages
+$route['message/past'] = 'MessageController/getPastMessages';
+$route['message/send'] = 'MessageController/sendMessage';
+$route['message/delete'] = 'MessageController/deleteMessage';
+$route['message/reply'] = 'MessageController/replyToMessage';
+$route['message/fetch'] = 'MessageController/fetchMessage';
+
 $route['404_override'] = '';
-
-$route['message/past']='MessageController/getPastMessages';
-
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
