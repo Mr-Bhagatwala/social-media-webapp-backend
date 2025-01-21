@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MessageController extends CI_Controller {
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct();  
         $this->load->model('MessageModel');
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             
