@@ -182,5 +182,41 @@ class ChatModel extends CI_Model {
     
         return true; // Successfully deleted
     }
+    //pin chat
+    public function pinChat($chatId) {
+        // Validate chatId
+        if (empty($chatId) || !is_numeric($chatId)) {
+            return false; // Invalid chatId
+        }
+        
+        // Update the chat's pinned status
+        $this->db->where('chat_id', $chatId);
+        $this->db->update('chats', array('pinned' => 1));
+        
+        // Check if the update was successful
+        if ($this->db->affected_rows() == 1) {
+            return true; // Successfully pinned
+        } else {
+            return false; // Failed to pin
+            }
+        }
+    // unpin chat
+    public function unpinChat($chatId) {
+        // Validate chatId
+        if (empty($chatId) || !is_numeric($chatId)) {
+            return false; // Invalid chatId
+        }
+        
+        // Update the chat's pinned status
+        $this->db->where('chat_id', $chatId);
+        $this->db->update('chats', array('pinned' => 0));
+        
+        // Check if the update was successful
+        if ($this->db->affected_rows() == 1) {
+            return true; // Successfully unpinned
+        } else {
+            return false; // Failed to unpin
+        }
+    }
 }
 ?>

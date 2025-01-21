@@ -5,6 +5,7 @@ class ChatController extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('ChatModel');
+        $this->load->helper('url'); 
 
         // CORS headers for all requests
         header('Access-Control-Allow-Origin: *');
@@ -30,7 +31,9 @@ class ChatController extends CI_Controller {
             ];
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
-    
+        foreach ($data as &$res) {
+            $res['profile_photo'] = base_url() . $res['profile_photo'] ;// Add the base URL to media URL
+        }
         $response = [
             'status' => 'success',
             'message' => 'Chats fetched successfully',
@@ -177,6 +180,7 @@ class ChatController extends CI_Controller {
             ];
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
+        var_dump($response);
         $response = [
             'status' => 'success',
            'message' => 'Chat data cleared successfully.'
@@ -203,6 +207,53 @@ class ChatController extends CI_Controller {
         $response = [
             'status' => 'success',
            'message' => 'Chat data deleted successfully.'
+        ];
+        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+
+    //pin a chat
+    public function pinChat($chatId) {
+        if ($chatId == null || !is_numeric($chatId)) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Chat ID is required.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+        $response = $this->ChatModel->pinChat($chatId);
+        if ($response === false) { // Check if the chat was pinned successfully
+            $response = [
+                'status' => 'error',
+               'message' => 'Failed to pin chat.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+        $response = [
+            'status' =>'success',
+           'message' => 'Chat pinned successfully.'
+        ];
+        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+    //unpin chat
+    public function unpinChat($chatId) {
+        if ($chatId == null || !is_numeric($chatId)) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Chat ID is required.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+        $response = $this->ChatModel->unpinChat($chatId);
+        if ($response === false) { // Check if the chat was unpinned successfully
+            $response = [
+                'status' => 'error',
+               'message' => 'Failed to unpin chat.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+        $response = [
+            'status' =>'success',
+           'message' => 'Chat unpinned successfully.'
         ];
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }

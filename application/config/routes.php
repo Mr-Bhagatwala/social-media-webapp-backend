@@ -122,6 +122,8 @@ $route['block-user/(:num)/(:num)'] = 'ChatController/blockUser/$1/$2';
 $route['unblock-user/(:num)/(:num)'] = 'ChatController/unblockUser/$1/$2';
 $route['clear-chat/(:num)'] = 'ChatController/clearChat/$1';
 $route['delete-chat/(:num)'] = 'ChatController/deleteChat/$1';
+$route['pin-chat/(:num)'] = 'ChatController/pinChat/$1';
+$route['unpin-chat/(:num)'] = 'ChatController/unpinChat/$1';
 
 //messsages
 $route['message/past'] = 'MessageController/getPastMessages';
