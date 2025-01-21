@@ -163,6 +163,10 @@ class ChatModel extends CI_Model {
     
         // Begin a database transaction to ensure consistency
         $this->db->trans_start();
+
+        //delete from muted_chats table
+        $this->db->where('chat_id', $chatId);
+        $this->db->delete('muted_chats');
     
         // Delete messages associated with the chat
         $this->db->where('chat_id', $chatId);
