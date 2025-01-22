@@ -160,7 +160,7 @@ class FriendRequestModel extends CI_Model {
                                 OR (u.id = fr.receiver_id AND fr.sender_id = ?)
             WHERE fr.status = 'accepted'
         ";
-
+        
         // Add search functionality
         if (!empty($search)) {
             $query .= " AND u.name LIKE ?";

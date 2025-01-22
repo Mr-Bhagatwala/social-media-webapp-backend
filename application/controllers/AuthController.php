@@ -224,13 +224,15 @@ class AuthController extends CI_Controller {
         // Load input data for offset and limit
         $offset = $this->input->get('offset', true);
         $limit = $this->input->get('limit', true);
-    
+        $search = $this->input->get('search') ?: '';
+        
+        
         // Provide default values if offset and limit are not provided
         $offset = $offset !== null ? (int)$offset : 0;
         $limit = $limit !== null ? (int)$limit : 10;
     
         // Fetch users from the model with pagination
-        $users = $this->Auth_Model->getAllUsers($offset, $limit);
+        $users = $this->Auth_Model->getAllUsers($offset, $limit, $search);
     
         // Return the response
         if (!empty($users)) {

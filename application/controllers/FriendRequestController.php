@@ -305,8 +305,7 @@ exit; // Terminate the script after the preflight response
     //         ]));
     // }
       
-    public function getFriends($userId)
-{
+    public function getFriends($userId){
     // Validate user ID
     if (!is_numeric($userId)) {
         return $this->output
