@@ -1,0 +1,318 @@
+/* General feed container */
+.feed-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 15px;
+  font-family: Arial, sans-serif;
+  background-color: #f3f2ef;
+}
+
+/* Individual feed card */
+.feed-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 15px;
+  position: relative;
+}
+
+/* Header Section */
+.feed-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.feed-header h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0073b1; /* LinkedIn blue */
+  margin: 0;
+}
+
+.feed-header small {
+  font-size: 12px;
+  color: #777;
+}
+
+/* Content Section */
+.feed-content p {
+  font-size: 14px;
+  color: #333;
+  margin: 10px 0;
+}
+
+/* Media Section */
+.feed-media {
+  position: relative;
+  margin-top: 10px;
+}
+
+.media-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  border-radius: 8px;
+  max-height: 300px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.media-slider .prev-btn,
+.media-slider .next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 10;
+}
+
+.media-slider .prev-btn {
+  left: 10px;
+}
+
+.media-slider .next-btn {
+  right: 10px;
+}
+
+.media-slider .prev-btn:hover,
+.media-slider .next-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Footer Section */
+.feed-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.feed-footer button {
+  background-color: transparent;
+  border: none;
+  color: #0073b1;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.feed-footer button:hover {
+  color: #005582;
+}
+
+.feed-footer .likes-comments {
+  display: flex;
+  gap: 15px;
+}
+
+.feed-footer .likes-comments span {
+  font-size: 12px;
+  color: #555;
+}
+
+/* Comments Section */
+.feed-comments {
+  margin-top: 15px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-input textarea {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.comment-input button {
+  padding: 8px 12px;
+  background-color: #0073b1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comments-list .comment {
+  margin-bottom: 10px;
+  padding-left: 15px;
+  border-left: 2px solid #0073b1;
+}
+
+.comment-reply-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  margin-left: 20px;
+}
+.nested-comment {
+  margin-left: 20px;
+  border-left: 2px solid #0073b1;
+  padding-left: 10px;
+}
+
+.pdf-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.pdf-preview iframe {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.pdf-preview a {
+  margin-top: 10px;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Base style for the reply button */
+.reply-btn {
+  display: flex;
+  align-items: center;
+  padding: 3px 4px;
+  border: 1px solid #0073b1; /* LinkedIn blue color */
+  background-color: transparent;
+  color: #0073b1; /* LinkedIn blue */
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+/* Style for the reply icon */
+.reply-btn i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+/* Hover effect */
+.reply-btn:hover {
+  background-color: #f1f4f7; /* Light background on hover */
+  color: #0073b1; /* Keep text color LinkedIn blue */
+  border-color: #0073b1;
+}
+
+/* Active effect when the button is pressed */
+.reply-btn:active {
+  background-color: #0073b1; /* Background turns LinkedIn blue */
+  color: white;
+  border-color: #0073b1;
+}
+
+/* Focused state, to highlight the button when selected */
+.reply-btn:focus {
+  box-shadow: 0 0 0 2px rgba(0, 115, 177, 0.3); /* Blue glow */
+}
+
+.like-btn {
+  background-color: #fff;
+  border: 1px solid #0073b1;
+  color: #0073b1;
+
+  border-radius: 20px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}
+
+.like-btn:hover {
+  background-color: #f1f4f7;
+}
+
+.like-btn.liked {
+  background-color: #0085b1;
+  color: white;
+}
+
+.like-btn i {
+  margin-right: 8px;
+}
+
+/* Delete Button */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  color: #d9534f; /* Red color */
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #c9302c; /* Darker red on hover */
+  transform: scale(1.2) rotate(15deg); /* Zooms in slightly and rotates */
+}
+
+/* Bin Throw Animation */
+.delete-btn.throw {
+  animation: throwToBin 0.8s ease-out forwards;
+}
+
+@keyframes throwToBin {
+  0% {
+    top: 10px;
+    right: 10px;
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    top: 5px;
+    right: 20px;
+    transform: scale(1.3) rotate(30deg);
+    opacity: 0.8;
+  }
+  100% {
+    top: -50px;
+    right: 100%;
+    transform: scale(0) rotate(120deg);
+    opacity: 0;
+  }
+}
+
+.no-post {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

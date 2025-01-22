@@ -1,0 +1,45 @@
+.container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-grow: 1;
+  height: 90vh;
+  /* overflow: hidden; */
+  background-color: #0c1317;
+  min-width: 100%;
+}
+
+.sidebar {
+  width: 30%;
+  background-color: #01182e;
+  color: white;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Enable vertical scroll for sidebar */
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  background-color: #34495e;
+}
+
+.main-content {
+  width: 70%;
+  position: relative;
+  margin: 0;
+  background-color: #ecf0f1;
+  box-sizing: border-box;
+  overflow-y: auto; 
+}

@@ -1,0 +1,309 @@
+.user-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.profile-card .card-content {
+  display: flex;
+  align-items: center;
+}
+
+.profile-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.profile-photo-container {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+}
+.profile-photo-container img {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
+  border: 2px solid #3f51b5;
+  margin-right: 10px;
+  /* padding: 10px; */
+}
+
+.upload-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-button:hover {
+  background-color: #303f9f;
+}
+
+.profile-info {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin: 0 0 10px 0;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #666666;
+  margin: 5px 0;
+}
+
+.edit-button {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #303f9f;
+}
+
+.edit-edu-work {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.contact-info-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.contact-info {
+  flex-basis: 48%;
+}
+
+.contact-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #444444;
+  margin: 0 0 10px 0;
+}
+
+.linkedin-link {
+  color: #3f51b5;
+  text-decoration: none;
+}
+
+.linkedin-link:hover {
+  text-decoration: underline;
+}
+
+.education-info,
+.work-history-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.education-item,
+.work-history-item {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.education-item:last-child,
+.work-history-item:last-child {
+  border-bottom: none;
+}
+
+.card-subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #444444;
+  margin: 0 0 5px 0;
+}
+
+@media (max-width: 600px) {
+  .profile-card .card-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-photo {
+    margin-bottom: 15px;
+  }
+
+  .contact-info {
+    flex-basis: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+.dialog-analyze {
+  width: fit-content !important;
+  height: 75%;
+}
+
+.logoutBtn {
+  background-color: red;
+  color: white;
+  border: 1px solid red;
+  border-radius: 10%;
+  padding: 6px;
+  /* justify-content: end; */
+}
+
+.divLog {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* General dialog box styles */
+.dialog-try {
+  width: 60%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Dialog header */
+.dialog-try h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Form styles */
+.dialog-try form {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-try label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+.dialog-try input,
+.dialog-try select {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+.dialog-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialog-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* .submit-btn {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
+} */
+
+.dialog-actions button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.dialog-actions button:first-child:disabled {
+  background-color: #76b078;
+  cursor: not-allowed;
+}
+
+.dialog-actions button:nth-child(2) {
+  background-color: #f44336;
+  color: white;
+}
+
+.dialog-actions button:last-child {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dialog-try {
+    width: 90%;
+  }
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.checkbox-container div {
+  margin-left: -8px;
+}
+
+.checkbox-container p {
+  margin-left: 10px;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

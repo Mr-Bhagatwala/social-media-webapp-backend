@@ -1,0 +1,29 @@
+<div class="practice-container">
+    <div class="practice-box">
+        <form name="alternateEmailForm" ng-submit="onSubmit(alternateEmailForm)" novalidate>
+            <h4 class="practice-heading">Add Alternate Email</h4>
+
+    
+            <label class="input-label">Alternate Email</label>
+            <input
+                type="email"
+                placeholder="Enter alternate email"
+                class="input-box"
+                name="alternateEmail"
+                ng-model="alternateEmail"
+                required
+            />
+            <div
+                ng-show="alternateEmailForm.alternateEmail.$touched && alternateEmailForm.alternateEmail.$invalid"
+                class="error-message"
+            >
+                Please enter a valid email address.
+            </div>
+
+
+            <button type="submit" class="btn-primary" ng-disabled="alternateEmailForm.$invalid">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>

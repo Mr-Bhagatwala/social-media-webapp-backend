@@ -1,0 +1,91 @@
+<!-- <div class="friends-container" ng-controller="userFriendsController">
+  <input
+    type="text"
+    placeholder="Search Friends..."
+    ng-model="searchTerm"
+    class="search-input"
+  />
+
+  <h2>Your Friends</h2>
+  <div class="friends-flex">
+    <div class="friend-card" ng-repeat="friend in filterFriends()">
+      <img
+        class="profile-photo"
+        ng-src="{{ friend.profile_photo }}"
+        alt="{{ friend.name }}"
+      />
+      <div class="friend-details">
+        <h3>{{ friend.name }}</h3>
+        <button
+          class="view-profile-btn"
+          ng-click="viewProfile(friend.name, friend.friend_id)"
+        >
+          View Profile
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- 
+<div class="friends-container">
+  <h2>Friends List</h2>
+  <input
+    type="text"
+    class="search-input"
+    ng-model="searchTerm"
+    placeholder="Search friends..."
+    ng-change="searchFriends()"
+  />
+  <div class="friends-flex">
+    <div
+      class="friend-card"
+      ng-repeat="friend in friends"
+      ng-click="viewProfile(friend.name, friend.friend_id)"
+    >
+      <img
+        ng-src="{{ friend.profile_photo }}"
+        alt="{{ friend.name }}"
+        class="profile-photo"
+      />
+      <div class="friend-details">
+        <h3>{{ friend.name }}</h3>
+        <button class="view-profile-btn">View Profile</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="friends-container">
+  <h2>Friends List</h2>
+  <input
+    type="text"
+    class="search-input"
+    ng-model="searchTerm"
+    placeholder="Search friends..."
+    ng-change="searchFriends()"
+  />
+  <div class="friends-flex">
+    <div
+      class="friend-card"
+      ng-repeat="friend in friends"
+      ng-click="viewProfile(friend.name, friend.friend_id)"
+    >
+      <img
+        ng-src="{{ friend.profile_photo }}"
+        alt="{{ friend.name }}"
+        class="profile-photo"
+      />
+      <div class="friend-details">
+        <h3>{{ friend.name }}</h3>
+        <button
+          class="view-profile-btn"
+          ng-click="viewProfile(friend.name, friend.friend_id)"
+        >
+          View Profile
+        </button>
+      </div>
+    </div>
+  </div>
+  <p ng-if="isLoading">Loading more friends...</p>
+  <p ng-if="!hasMore && friends.length === 0">No friends found.</p>
+</div>

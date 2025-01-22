@@ -1,0 +1,72 @@
+<div class="signup-container">
+    <div class="signup-box">
+      <form name="signupForm" ng-submit="onSubmit(signupForm)" novalidate>
+        <h4 class="signup-heading">Sign Up</h4>
+  
+        <!-- Name Input -->
+        <label class="input-label">Name</label>
+        <input
+          type="text"
+          placeholder="Name"
+          class="input-box"
+          name="name"
+          ng-model="name"
+          ng-minlength="2"
+          required
+        />
+        <div
+          ng-show="signupForm.name.$touched && signupForm.name.$invalid"
+          class="error-message"
+        >
+          Name is required and must be at least 2 characters.
+        </div>
+  
+        <!-- Email Input -->
+        <label class="input-label">Email</label>
+        <input
+          type="email"
+          placeholder="Email"
+          class="input-box"
+          name="email"
+          ng-model="email"
+          required
+        />
+        <div
+          ng-show="signupForm.email.$touched && signupForm.email.$invalid"
+          class="error-message"
+        >
+          Please enter a valid email address.
+        </div>
+  
+        <!-- Password Input -->
+        <label class="input-label">Password</label>
+        <input
+          type="password"
+          placeholder="Password"
+          class="input-box"
+          name="password"
+          ng-model="password"
+          ng-minlength="6"
+          required
+        />
+        <div
+          ng-show="signupForm.password.$touched && signupForm.password.$invalid"
+          class="error-message"
+        >
+          Password must be at least 6 characters.
+        </div>
+  
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary" ng-disabled="signupForm.$invalid">
+          Sign Up
+        </button>
+  
+        <!-- Link to Login -->
+        <p class="login-link">
+          Already have an account?
+          <a href="#!/login" class="link">Log in</a>
+        </p>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-box">
+    <form name="loginForm" ng-submit="onSubmit(loginForm)" novalidate>
+      <h4 class="login-heading">Login</h4>
+
+      <!-- Email Input -->
+      <label class="input-label">Email</label>
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        class="input-box"
+        ng-model="email"
+        required
+      />
+      <div
+        ng-show="loginForm.email.$touched && loginForm.email.$error.required"
+        class="error-message"
+      >
+        Email is required.
+      </div>
+      <div
+        ng-show="loginForm.email.$touched && loginForm.email.$error.email"
+        class="error-message"
+      >
+        Please enter a valid email address.
+      </div>
+      
+      
+      <!-- Password Input -->
+      <label class="input-label">Password</label>
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        class="input-box"
+        ng-model="password"
+        required
+      />
+      <div
+        ng-show="loginForm.password.$touched && loginForm.password.$invalid"
+        class="error-message"
+      >
+        Password is required.
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-primary" ng-disabled="loginForm.$invalid">
+        Login
+      </button>
+
+      <!-- Sign Up Link -->
+      <p class="signup-link">
+        Not registered yet?
+        <a href="#/signup" class="link">Create an account</a>
+      </p>
+    </form>
+  </div>
+</div>
+  

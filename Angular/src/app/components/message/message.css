@@ -1,0 +1,135 @@
+#parent{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%
+}
+
+#parentNS{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#childNS{
+    /* margin: 100px; */
+    text-align: center;
+}
+
+#childNS h3{
+    font-weight: bold;
+}
+
+.msg-nav{
+    display: flex;
+    height: 60px;
+    top: 0;
+    background-color: #fff;
+    position: sticky;
+    z-index: 10;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); 
+}
+
+.nav-img img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;   
+    margin: 10px;
+}
+
+.nav-con :first-child {
+    margin-top: 10px;
+}
+
+.nav-con :last-child {
+    margin-bottom: -10px;
+}
+
+#pname{
+    font-weight: bold;
+}
+
+#chat-msg{
+    flex-grow: 1;
+}
+
+.sticky-input-container{
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    background-color: #fff;
+    z-index: 20;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); 
+    align-content: center;
+    height: auto;
+    padding: 5px;
+}
+
+.attach, .send{
+    margin: 10px;
+}
+
+.text-input {
+    flex-grow: 1;
+    border-radius: 5px;
+    resize: none;
+    overflow: hidden;
+    /* padding: 5px; */
+    height: 2px;
+    font-size: 16px;
+    line-height: 1.5;
+    max-height: 150px; 
+    min-height: 20px;
+    transform-origin: bottom;
+}
+
+.file-input {   
+    display: none;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+    /* border-radius: 5px; */
+}
+
+span:hover{
+    cursor: pointer;
+}
+
+/* span{
+    align-items: center;
+} */
+
+.file-dialog{
+    outline: none;
+    position: fixed; 
+    bottom: -44vh; 
+    left: -6%; 
+    transform: translateX(-50%);
+    background: #fff; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  
+    padding: 15px; 
+    z-index: 1000;
+}
+
+.dialog-div{
+    display: flex;
+    justify-content: space-between;
+}
+
+#cancel{
+    position: relative;
+    bottom: -15px;
+    left: -2px;
+    border-radius: 5px;
+    outline: none;
+}
+
+#send-dialog{
+    position: relative;
+    margin-right: -1px;
+    bottom: -8px;
+}
+
