@@ -59,7 +59,7 @@ exit; // Terminate the script after the preflight response
     public function uploadStory() {
         $config['upload_path'] = FCPATH .'assets/stories/';
         $config['allowed_types'] = 'jpg|png|gif|mp4|avi|mov|mkv';
-        $config['max_size'] = 10240; // 10 MB
+        $config['max_size'] = 10240; // 100 MB
 
         $this->load->library('upload', $config);
 
@@ -118,6 +118,9 @@ exit; // Terminate the script after the preflight response
         // Add base URL to the media paths of each story
         foreach ($res as &$story) {
             $story['media_url'] = base_url().($story['media_url']); // Add the base URL to media URL
+        }
+        foreach ($res as &$story) {
+            $story['profile_photo'] = base_url().($story['profile_photo']); // Add the base URL to media URL
         }
     
         // Return the response as JSON

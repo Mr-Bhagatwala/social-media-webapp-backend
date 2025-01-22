@@ -24,7 +24,7 @@
     <div class="story-circle" ng-class="{'not-viewed': !story.viewed}">
       <img
         class="story-img"
-        ng-src="{{'http://localhost/codeigniter/' + story.profile_photo}}"
+        ng-src="{{story.profile_photo}}"
         alt="{{story.name}}"
       />
     </div>
@@ -44,11 +44,23 @@
     </div>
 
     <div class="story-content">
-      <img
-        class="story-media"
-        ng-src="{{$ctrl.activeStory.media_url}}"
-        alt="Story Media"
-      />
+      <!-- Conditional rendering for media type -->
+      <div ng-if="$ctrl.isImage($ctrl.activeStory.media_url)">
+        <img
+          class="story-media"
+          ng-src="{{$ctrl.activeStory.media_url}}"
+          alt="Story Media"
+        />
+      </div>
+      <div ng-if="!$ctrl.isImage($ctrl.activeStory.media_url)">
+        <video
+          class="story-media"
+          ng-src="{{$ctrl.activeStory.media_url}}"
+          controls
+          autoplay
+          muted
+        ></video>
+      </div>
     </div>
 
     <div class="story-footer">

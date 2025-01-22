@@ -6,7 +6,16 @@ angular.module("myApp").component("storyBar", {
     this.currentUser = UserService.getUserData(); // Replace with the actual current user ID
 
     const API_BASE_URL = "http://localhost/codeigniter/index.php"; // Replace with your actual backend URL
+    // Example function in your controller
+    this.isImage = function (mediaUrl) {
+      const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+      const videoExtensions = ["mp4", "webm", "ogg"];
 
+      if (!mediaUrl) return false;
+
+      const extension = mediaUrl.split(".").pop().toLowerCase();
+      return imageExtensions.includes(extension);
+    };
     this.fetchStories = function () {
       $http
         .get(`${API_BASE_URL}/get-stories/${this.currentUser}`)
