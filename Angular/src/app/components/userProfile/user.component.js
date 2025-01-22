@@ -76,7 +76,7 @@ angular
           nae: "",
           nap: "",
           alternatePhones: [],
-          linkedinUrl: "",
+          linkedinUrl: null,
         },
         education: [],
         workHistory: [],
