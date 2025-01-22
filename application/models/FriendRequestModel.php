@@ -160,8 +160,6 @@ class FriendRequestModel extends CI_Model {
         return $result->result_array();
     }
 
-    
-
 
     public function deleterequest($sender_id, $receiver_id){
         //add validation checks

@@ -259,28 +259,43 @@ class ChatController extends CI_Controller {
     }
 
     //create a new chat
-    public function createChat($senderId, $receiverId) {
+    public function createChat($senderId, $receiverId)
+    {
+        // Validate senderId and receiverId
         if ($senderId == null || !is_numeric($senderId) || $receiverId == null || !is_numeric($receiverId)) {
             $response = [
                 'status' => 'error',
-                'message' => 'User IDs are required.'
+                'message' => 'User IDs are required and must be numeric.'
             ];
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
+
+        // Call the model method to create or find the chat
         $response = $this->ChatModel->createChat($senderId, $receiverId);
-        if ($response === false) { // Check if the chat was created successfully
+
+        if ($response === false) { // Failed to create or find chat
             $response = [
                 'status' => 'error',
-               'message' => 'Failed to create chat.'
+                'message' => 'Failed to create chat. It may already exist or an error occurred.'
             ];
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
-        $response = [
-            'status' =>'success',
-            'chatId' => $response,
-           'message' => 'Chat created successfully.'
-        ];
+
+        if (is_array($response)) { // Existing chat found
+            $response = [
+                'status' => 'success',
+                'chatId' => $response['chat_id'], // Return the existing chat ID
+                'message' => 'Chat already exists.'
+            ];
+        } else { // New chat created
+            $response = [
+                'status' => 'success',
+                'chatId' => $response, // Return the new chat ID
+                'message' => 'Chat created successfully.'
+            ];
+        }
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
+
 }
 ?>
