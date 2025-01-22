@@ -17,7 +17,7 @@ class NotificationController extends CI_Controller {
     public function getNotificationofUser($userId){
         //from param
         // $userId = $this->input->get('user_id');
-        if (empty($uId) || !is_numeric($uId)) {
+        if (empty($userId) || !is_numeric($userId)) {
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid or missing User ID.']));
