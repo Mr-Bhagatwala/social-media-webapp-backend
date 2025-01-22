@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<nav ng-module="navbar" class="navbar">
+  <div class="left-side">
+    <img src="./almashines logo.png" alt="Logo" class="navbar-logo" />
+  </div>
+  <div class="navbar-links" ng-class="{ 'active': isMenuOpen }">
+    <div class="navbar-item">
+      <span
+        class="material-icons menu-icon"
+        ng-click="toggleMenu()"
+        ng-if="!isMenuOpen"
+        >menu</span
+      >
+      <span
+        class="material-icons menu-icon"
+        ng-click="toggleMenu()"
+        ng-if="isMenuOpen"
+      >
+        close
+      </span>
+    </div>
+    <div class="laptop">
+      <a href="#/friend_search">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">group_add</span>
+          <span class="navbar-text">Explore</span>
+        </div>
+      </a>
+      <a href="#/chat">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">question_answer</span>
+          <span class="navbar-text">Chats</span>
+        </div>
+      </a>
+      <a href="#/friends/:uId">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">group</span>
+          <span class="navbar-text">Friends</span>
+        </div>
+      </a>
+      <a href="#/home">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">home</span>
+          <span class="navbar-text">Home</span>
+        </div>
+      </a>
+      <a href="#/friend_request">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">group_add</span>
+          <span class="navbar-text">My Network</span>
+        </div>
+      </a>
+      <a href="#/notification">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">notifications_active</span>
+          <span class="navbar-text">Notifications</span>
+        </div>
+      </a>
+      <a ng-href="#/{{userDetails[0].name}}/{{userDetails[0].id}}">
+        <div class="navbar-item">
+          <span class="material-icons navbar-icon">account_circle</span>
+          <span class="navbar-text">Profile</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="mobile" ng-if="isMenuOpen">
+  <a href="#/friend_search" ng-click="toggleMenu()">
+    <div class="navbar-item">
+      <span class="material-icons navbar-icon">group_add</span>
+      <span class="navbar-text">Explore</span>
+    </div>
+  </a>
+  <a href="#/chat" ng-click="toggleMenu()">
+    <div class="navbar-item">
+      <span class="material-icons navbar-icon">question_answer</span>
+      <span class="navbar-text">Chats</span>
+    </div>
+  </a>
+  <a href="#/friends/:uId" ng-click="toggleMenu()">
+    <div class="navbar-item">
+      <span class="material-icons navbar-icon">group</span>
+      <span class="navbar-text">Friends</span>
+    </div>
+  </a>
+  <a href="#/home">
+    <div class="navbar-item" ng-click="toggleMenu()">
+      <span class="material-icons navbar-icon">home</span>
+      <span class="navbar-text">Home</span>
+    </div>
+  </a>
+  <a href="#/friend_request" ng-click="toggleMenu()">
+    <div class="navbar-item">
+      <span class="material-icons navbar-icon">group_add</span>
+      <span class="navbar-text">My Network</span>
+    </div>
+  </a>
+  <a href="#/notification" ng-click="toggleMenu()">
+    <div class="navbar-item">
+      <span class="material-icons navbar-icon">notifications_active</span>
+      <span class="navbar-text">Notifications</span>
+    </div>
+  </a>
+  <a
+    ng-href="#/{{userDetails[0].name}}/{{userDetails[0].id}}"
+    ng-click="toggleMenu()"
+  >
+    <div class="navbar-item">
+      <span class="material-icons navbar-icon">account_circle</span>
+      <span class="navbar-text">Profile</span>
+    </div>
+  </a>
+</div>

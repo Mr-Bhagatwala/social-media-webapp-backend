@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./app/components/navbar/navbar.css" />
+    <link rel="stylesheet" href="./app/components/friend_request/fr.css" />
+    <link rel="stylesheet" href="./app/components/friend_search/fs.css" />
+    <link
+      rel="stylesheet"
+      href="./app/components/signup/signup.component.css"
+    />
+    <link rel="stylesheet" href="./app/components/login/login.component.css" />
+    <link
+      rel="stylesheet"
+      href="./app/components/profile/profile.component.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="./app/components/userProfile/user.component.css"
+    />
+    <!-- <link rel="stylesheet" href="./app/components/dialogBox/dialog.component.css"/> -->
+
+    <link
+      rel="stylesheet"
+      href="./app/components/userProfile/user.component.css"
+    />
+
+    <link rel="stylesheet" href="./app/components/feed/feed.component.css" />
+    <link
+      rel="stylesheet"
+      href="./app/components/notification/notification.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
+    />
+    <link rel="stylesheet" href="./app/components/story/story.css" />
+    <link
+      rel="stylesheet"
+      href="./app/components/createPost/createpost.component.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="./app/components/userpost/userpost.component.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="./app/components/userfriend/userfriend.component.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./app/components/chatApplication/chatApplication.component.css"
+    />
+
+    <link rel="stylesheet" href="./app/components/chat/chat.css" />
+    <link rel="stylesheet" href="./app/components/message/message.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../node_modules/angular-route/angular-route.js"></script>
+    <script src="./app/app.module.js"></script>
+    <script src="./app/app.js"></script>
+
+    <script src="./app/components/navbar/nav.component.js"></script>
+    <script src="./app/components/navbar/nav.module.js"></script>
+    <script src="./app/components/notification/notification.component.js"></script>
+    <script src="./app/components/notification/notification.module.js"></script>
+    <script src="./app/components/friend_request/fr.component.js"></script>
+    <script src="./app/components/friend_request/fr.module.js"></script>
+
+    <script src="./app/components/friend_search/fs.component.js"></script>
+    <script src="./app/components/friend_search/fs.module.js"></script>
+
+    <script src="./app/components/alternateEmail/alternateEmail.component.js"></script>
+    <script src="./app/components/alternateEmail/alternateEmail.module.js"></script>
+
+    <script src="./app/components/alternatePhone/alternatePhone.component.js"></script>
+    <script src="./app/components/alternatePhone/alternatePhone.module.js"></script>
+
+    <script src="./app/components/signup/signup.component.js"></script>
+    <script src="./app/components/signup/signup.module.js"></script>
+
+    <script src="./app/components/login/login.component.js"></script>
+    <script src="./app/components/login/login.module.js"></script>
+
+    <script src="./app/components/contactDetails/contactDetails.component.js"></script>
+    <script src="./app/components/contactDetails/contactDetails.module.js"></script>
+
+    <script src="./app/components/profile/profile.component.js"></script>
+    <script src="./app/components/profile/profile.module.js"></script>
+
+    <script src="./app/components/story/story.component.js"></script>
+    <script src="./app/components/story/story.module.js"></script>
+
+    <script src="./app/components/userProfile/user.component.js"></script>
+    <script src="./app/components/userProfile/user.module.js"></script>
+
+    <script src="./app/services/user.service.js"></script>
+
+    <!-- <script src="./app/components/dialogBox/dialog.component.js"></script>
+    <script src="./app/components/dialogBox/dialog.module.js"></script> -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=group"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+
+    <script src="./app/components/feed/feed.component.js"></script>
+    <script src="./app/components/feed/feed.module.js"></script>
+
+    <script src="./app/components/createPost/createpost.component.js"></script>
+    <script src="./app/components/createPost/createpost.module.js"></script>
+
+    <script src="./app/components/userpost/userpost.component.js"></script>
+    <script src="./app/components/userpost/userpost.module.js"></script>
+
+    <script src="./app/components/userfriend/userfriend.component.js"></script>
+    <script src="./app/components/userfriend/userfriend.module.js"></script>
+    <script src="./app/components/chatApplication/chatApplication.module.js"></script>
+    <script src="./app/components/chatApplication/chatApplication.component.js"></script>
+    <script src="./app/components/chat/chat.component.js"></script>
+    <script src="./app/components/chat/chat.module.js"></script>
+    <script src="./app/components/message/message.module.js"></script>
+    <script src="./app/components/message/message.component.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
+    />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.1/angular-material.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.1/angular-material.min.js"></script> -->
+
+    <title>Document</title>
+  </head>
+  <body ng-controller="MainController">
+    <div ng-if="!isLoginOrSignupPage()">
+      <navbar></navbar>
+    </div>
+    <div ng-if="isHomePage()">
+      <story-bar></story-bar>
+    </div>
+    <!-- <a href="#/profile">Profile</a>
+    <a href="#/signup">Signup</a>
+    <a href="#/login">Login</a>
+    <a href="#/user">User</a> -->
+
+    <div ng-view>
+      <!-- <h1>Done</h1> -->
+    </div>
+  </body>
+</html>

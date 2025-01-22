@@ -1,0 +1,136 @@
+<!-- <div class="container">
+    <form class="profile-form" name="profileForm" ng-submit="onSubmit(profileForm)" novalidate>
+        <h2 class="form-heading">Complete Your Profile</h2>
+        
+        <h3 class="section-heading">Basic Details</h3>
+        <div class="form-group">
+            <div class="input-group">
+            <input type="text" placeholder="Name" ng-minlength="2" ng-model="name" value="name" required/>
+            <div ng-show="profileForm.name.$touched && profileForm.name.$invalid"class="error-message">
+                Name is required and must be of 2 characters.
+            </div>    
+            </div> 
+            <div class="input-group">
+                <label class="input-label">Gender</label>
+                <select title="gender" ng-model="gender" type="text" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Marital Status</label>
+                <select title="marital" ng-model="marital" type="text" required>
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                </select>
+            
+            </div>
+                <input type="date" placeholder="Date of Birth" ng-model="date" required/>
+            <div class="input-group">
+                
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Current City" ng-model="currentCity" required/>
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Hometown" ng-model="homeTown" required/> 
+            </div>
+
+        </div>
+        
+        <button type="submit" class="submit-btn" ng-disabled="profileForm.$invalid">Save & Continue</button>
+    </form>
+</div>
+   -->
+
+<div class="profile-container">
+    <form class="profile-form" name="profileForm" ng-submit="onSubmit(profileForm)" novalidate>
+        <h2 class="form-heading">Complete Your Profile</h2>
+        
+        <!-- Basic Details -->
+        <h3 class="section-heading">Basic Details</h3>
+        <div class="form-group">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Name" 
+                    ng-minlength="2" 
+                    ng-model="name" 
+                    required />
+                <div ng-show="profileForm.name.$touched && profileForm.name.$invalid" class="error-message">
+                    Name is required and must be at least 2 characters.
+                </div>
+            </div> 
+            
+            <div class="input-group">
+                <label class="input-label">Gender</label>
+                <select 
+                    name="gender" 
+                    title="gender" 
+                    ng-model="gender" 
+                    required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <div ng-show="profileForm.gender.$touched && profileForm.gender.$invalid" class="error-message">
+                    Gender is required.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Marital Status</label>
+                <select 
+                    name="maritalStatus" 
+                    title="marital" 
+                    ng-model="marital" 
+                    required>
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                </select>
+                <div ng-show="profileForm.maritalStatus.$touched && profileForm.maritalStatus.$invalid" class="error-message">
+                    Marital status is required.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input 
+                    type="date" 
+                    name="dateOfBirth" 
+                    placeholder="Date of Birth" 
+                    ng-model="date" 
+                    required />
+                <div ng-show="profileForm.dateOfBirth.$touched && profileForm.dateOfBirth.$invalid" class="error-message">
+                    Date of Birth is required.
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="currentCity" 
+                    placeholder="Current City" 
+                    ng-model="currentCity" 
+                    required />
+                <div ng-show="profileForm.currentCity.$touched && profileForm.currentCity.$invalid" class="error-message">
+                    Current City is required.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="homeTown" 
+                    placeholder="Hometown" 
+                    ng-model="homeTown" 
+                    required /> 
+                <div ng-show="profileForm.homeTown.$touched && profileForm.homeTown.$invalid" class="error-message">
+                    Hometown is required.
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="submit-btn" ng-disabled="profileForm.$invalid">Save & Continue</button>
+    </form>
+</div>

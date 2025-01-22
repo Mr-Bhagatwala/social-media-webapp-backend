@@ -1,0 +1,109 @@
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+  
+/* Form */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+  
+.section-heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+  
+.form-group {
+    margin-bottom: 20px;
+}
+  
+.input-group {
+    margin-bottom: 15px;
+}
+  
+.input-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+  
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+  
+.flex-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+  
+button {
+    cursor: pointer;
+}
+  
+.submit-btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+}
+  
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+  
+.add-btn,
+.remove-btn {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+}
+  
+.add-btn {
+    margin-bottom: 10px;
+}
+  
+.remove-btn {
+    background-color: #dc3545;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 10px;
+}

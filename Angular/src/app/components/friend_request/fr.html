@@ -1,0 +1,39 @@
+<div class="network-component" ng-controller="FriendRequestController">
+  <h3 class="network-title">Connection Requests</h3>
+
+  <!-- Show message if no requests -->
+  <div class="no-request" ng-if="requests.length === 0">
+    <p>No pending friend requests.</p>
+  </div>
+
+  <!-- List of friend requests -->
+  <ul class="network-list">
+    <li class="network-item" ng-repeat="request in requests">
+      <div class="network-details">
+        <img
+          ng-src="{{'http://localhost/codeigniter/' + request.profile_photo}}"
+          class="network-avatar"
+          alt="Avatar"
+        />
+        <p class="network-name">{{request.name}}</p>
+        <!-- <p class="network-title">{{request.title}}</p> -->
+      </div>
+      <div class="network-actions">
+        <!-- Accept request button -->
+        <button
+          class="network-accept-btn"
+          ng-click="acceptRequest(request.sender_id, request.receiver_id)"
+        >
+          Accept
+        </button>
+        <!-- Reject request button -->
+        <button
+          class="network-reject-btn"
+          ng-click="rejectRequest(request.id, request.receiver_id)"
+        >
+          Reject
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

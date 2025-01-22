@@ -1,0 +1,23 @@
+<div ng-controller="NotificationController">
+  <div class="notification-component">
+    <div class="notification-header">
+      <h3 class="notification-title">Notifications</h3>
+    </div>
+    <ul class="notification-list">
+      <li class="notification-item" ng-repeat="notification in notifications">
+        <img
+          ng-src="{{notification.profile_photo}}"
+          alt="User"
+          class="notification-avatar"
+        />
+        <div class="notification-content">
+          <p class="notification-text">
+            <strong>{{notification.name}}</strong>
+            {{notification.message}}
+          </p>
+          <span class="notification-time">{{notification.created_at}}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

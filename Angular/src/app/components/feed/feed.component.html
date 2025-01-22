@@ -1,0 +1,248 @@
+<div class="feed-container" ng-controller="feedController">
+  <button class="create-post-btn" ng-click="navigateToCreatePost()">
+    <span class="icon">+</span> Create Post
+  </button>
+  <div class="sorting-controls">
+    <label for="sortCriteria">Sort By:</label>
+    <select
+      id="sortCriteria"
+      ng-model="sortCriteria"
+      ng-change="filterChange()"
+    >
+      <option value="recent">Recent</option>
+      <option value="oldest">Oldest</option>
+    </select>
+  </div>
+
+  <div class="feed-card" ng-repeat="feed in feeds">
+    <div class="feed-header">
+      <img
+        src="{{ feed.profile_photo }}"
+        alt="Profile Image"
+        style="width: 40px; height: 40px; border-radius: 50%"
+      />
+      <div>
+        <h3>{{ feed.name }}</h3>
+        <small>{{ feed.created_at }}</small>
+      </div>
+    </div>
+
+    <div class="feed-content">
+      <p>{{ feed.content }}</p>
+    </div>
+
+    <div class="feed-media" ng-if="feed.mediaFiles.length > 0">
+      <div class="media-slider">
+        <div
+          class="media-item"
+          ng-repeat="media in feed.mediaFiles track by $index"
+          ng-show="$index === feed.currentIndex"
+        >
+          <img
+            ng-if="
+              media.endsWith('.png') ||
+              media.endsWith('.jpg') ||
+              media.endsWith('.jpeg')
+            "
+            ng-src="{{ media }}"
+            alt="Media"
+          />
+          <video ng-if="media.endsWith('.mp4')" controls>
+            <source ng-src="{{ media }}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="pdf-preview" ng-if="media.endsWith('.pdf')">
+            <!-- Option 1: Embedded PDF Viewer -->
+            <!-- <iframe ng-src="{{ media }}" width="100%" height="400px"> </iframe> -->
+            <!-- <object
+              class="pdf"
+              ng-data="{{
+                media
+              }}"
+              width="800"
+              height="500"
+            ></object> -->
+            <!-- <embed
+              class="pdf"
+              ng-src="{{
+                media
+              }}"
+              width="800"
+              height="500"
+            /> -->
+            <a ng-href="{{ media }}" target="_blank" download>
+              📄 Download PDF
+            </a>
+          </div>
+        </div>
+        <button
+          class="prev-btn"
+          ng-if="feed.mediaFiles.length > 1 && feed.currentIndex > 0"
+          ng-click="feed.currentIndex = (feed.currentIndex - 1 + feed.mediaFiles.length) % feed.mediaFiles.length"
+        >
+          ‹
+        </button>
+        <button
+          class="next-btn"
+          ng-if="
+            feed.mediaFiles.length > 1 &&
+            feed.currentIndex < feed.mediaFiles.length - 1
+          "
+          ng-click="feed.currentIndex = (feed.currentIndex + 1) % feed.mediaFiles.length"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+
+    <div class="feed-footer">
+      <div class="likes-comments">
+        <span>
+          <button
+            ng-click="toggleLike(feed)"
+            ng-class="{ liked: feed.islike }"
+            class="like-btn"
+          >
+            <i class="material-icons" ng-if="feed.islike">thumb_up</i>
+            <i class="material-icons" ng-if="!feed.islike">thumb_up_alt</i>
+            {{ feed.likesCount || 0 }}
+          </button>
+        </span>
+      </div>
+
+      <button ng-click="toggleComments(feed)">
+        <i class="fa fa-comment"></i>{{ feed.commentCount || 0 }} Comment
+      </button>
+    </div>
+
+    <div class="feed-comments" ng-if="feed.showComments">
+      <div class="comment-input">
+        <textarea
+          ng-model="feed.newComment"
+          placeholder="Write a comment..."
+        ></textarea>
+        <button
+          ng-click="submitComment(feed.post_id, feed.newComment, null, feed.id)"
+        >
+          Post
+        </button>
+      </div>
+
+      <div class="comments-list">
+        <div
+          class="comment"
+          ng-repeat="comment in feed.comments | filter:{parent_comment_id: null}"
+        >
+          <p>
+            <img
+              ng-src="{{ comment.profile_photo }}"
+              alt="Profile Image"
+              style="width: 30px; height: 30px; border-radius: 50%"
+            />
+            <strong>{{ comment.user_name }}:</strong>
+            {{ comment.content }}
+          </p>
+
+          <button
+            class="reply-btn"
+            ng-click="feed.replyingTo = comment.comment_id"
+          >
+            Reply
+          </button>
+
+          <div
+            class="comment-reply-input"
+            ng-if="feed.replyingTo === comment.comment_id"
+          >
+            <textarea
+              ng-model="feed.replyContent"
+              placeholder="Write a reply..."
+            ></textarea>
+            <button
+              ng-click="submitComment(feed.post_id, feed.replyContent, comment.comment_id, feed.id)"
+              class="reply-btn"
+            >
+              Post
+            </button>
+          </div>
+
+          <div
+            class="nested-comment"
+            ng-repeat="reply in feed.comments | filter:{parent_comment_id: comment.comment_id}"
+          >
+            <p>
+              <img
+                ng-src="{{ reply.profile_photo }}"
+                alt="Profile Image"
+                style="width: 30px; height: 30px; border-radius: 50%"
+              />
+              <strong> {{ reply.user_name }}:</strong>
+              {{ reply.content }}
+            </p>
+            <button
+              class="reply-btn"
+              ng-click="feed.replyingTo = reply.comment_id"
+            >
+              Reply
+            </button>
+            <div
+              class="comment-reply-input"
+              ng-if="feed.replyingTo === reply.comment_id"
+            >
+              <textarea
+                ng-model="feed.replyContent"
+                placeholder="Write a reply..."
+              ></textarea>
+              <button
+                ng-click="submitComment(feed.post_id, feed.replyContent, reply.comment_id, feed.id)"
+                ng-class="reply - btn"
+              >
+                Post
+              </button>
+            </div>
+
+            <div
+              class="nested-comment"
+              ng-repeat="nestedReply in feed.comments | filter:{parent_comment_id: reply.comment_id}"
+            >
+              <p>
+                <img
+                  ng-src="{{ nestedReply.profile_photo }}"
+                  alt="Profile Image"
+                  style="width: 30px; height: 30px; border-radius: 50%"
+                />
+                <strong> {{ nestedReply.user_name }}:</strong>
+                {{ nestedReply.content }}
+              </p>
+              <button
+                class="reply-btn"
+                ng-click="feed.replyingTo = nestedReply.comment_id"
+              >
+                Reply
+              </button>
+              <div
+                class="comment-reply-input"
+                ng-if="feed.replyingTo === nestedReply.comment_id"
+              >
+                <textarea
+                  ng-model="feed.replyContent"
+                  placeholder="Write a reply..."
+                ></textarea>
+                <button
+                  ng-click="submitComment(feed.post_id, feed.replyContent, nestedReply.comment_id, feed.id)"
+                  class="reply-btn"
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="feed-loader" ng-if="loading && !allLoaded">
+    Loading more posts...
+  </div>
+  <div class="feed-loader" ng-if="allLoaded">No more posts to display.</div>
+</div>
