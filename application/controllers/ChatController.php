@@ -257,5 +257,30 @@ class ChatController extends CI_Controller {
         ];
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
+
+    //create a new chat
+    public function createChat($senderId, $receiverId) {
+        if ($senderId == null || !is_numeric($senderId) || $receiverId == null || !is_numeric($receiverId)) {
+            $response = [
+                'status' => 'error',
+                'message' => 'User IDs are required.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+        $response = $this->ChatModel->createChat($senderId, $receiverId);
+        if ($response === false) { // Check if the chat was created successfully
+            $response = [
+                'status' => 'error',
+               'message' => 'Failed to create chat.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+        $response = [
+            'status' =>'success',
+            'chatId' => $response,
+           'message' => 'Chat created successfully.'
+        ];
+        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
 }
 ?>

@@ -1,0 +1,74 @@
+/* Login Component Styles */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+  height: 100%;
+}
+
+.login-box {
+  width: 500px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 20px 30px;
+}
+
+.login-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-box {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  background-color: #95a5a6;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.link {
+  color: #3498db;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 668px) {
+  .login-box {
+    width: 50%;
+  }
+}

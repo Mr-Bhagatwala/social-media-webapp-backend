@@ -1,0 +1,78 @@
+.profile-list-container {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  padding: 0 25% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-input {
+  width: 96% !important;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.profile-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.profile-row:hover {
+  cursor: pointer;
+}
+
+.profile-photo {
+  width: 20px; /* Set the width of the div */
+  height: 20px; /* Set the height of the div */
+  border-radius: 50%; /* Optional: keep the circular shape */
+  overflow: hidden; /* Hide any overflow from the image */
+  display: flex; /* Center the image if needed */
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-photo img {
+  width: 100%; /* Make the image fill the width of the div */
+  height: 100%; /* Make the image fill the height of the div */
+  object-fit: cover; /* Ensure the image covers the entire div */
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-name {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+}
+
+.profile-location {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.connect-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #007bff;
+  background-color: transparent;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.connect-button.connected {
+  color: #fff;
+  background-color: #007bff;
+}

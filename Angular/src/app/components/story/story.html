@@ -1,0 +1,80 @@
+<div class="story-bar">
+  <!-- Add Story Section -->
+  <div class="story">
+    <div class="story-circle add-story" ng-click="$ctrl.triggerFileInput()">
+      <div class="add-icon">+</div>
+    </div>
+
+    <!-- File input for uploading a story (hidden) -->
+    <input
+      type="file"
+      id="file-input"
+      style="display: none"
+      onchange="angular.element(this).scope().$ctrl.uploadMediaFile(event)"
+    />
+  </div>
+
+  <!-- Story Section -->
+  <!-- Story Section -->
+  <div
+    class="story"
+    ng-repeat="story in $ctrl.stories | orderBy:'viewed':false"
+    ng-click="$ctrl.openStory(story)"
+  >
+    <div class="story-circle" ng-class="{'not-viewed': !story.viewed}">
+      <img
+        class="story-img"
+        ng-src="{{'http://localhost/codeigniter/' + story.profile_photo}}"
+        alt="{{story.name}}"
+      />
+    </div>
+  </div>
+
+  <!-- Story Full-Screen Modal -->
+  <div class="story-full-modal" ng-if="$ctrl.activeStory">
+    <div class="story-header">
+      <img class="story-avatar" ng-src="{{$ctrl.activeStory.profile_photo}}" />
+      <div class="story-user-info">
+        <div class="story-username">{{$ctrl.activeStory.name}}</div>
+        <div class="story-time">
+          {{ $ctrl.getFormattedTime($ctrl.activeStory.created_at) }}
+        </div>
+      </div>
+      <button class="close-modal" ng-click="$ctrl.closeStory()">✖</button>
+    </div>
+
+    <div class="story-content">
+      <img
+        class="story-media"
+        ng-src="{{$ctrl.activeStory.media_url}}"
+        alt="Story Media"
+      />
+    </div>
+
+    <div class="story-footer">
+      <!-- For the current user's stories, show views and likes -->
+      <div class="story-actions" ng-if="$ctrl.activeStory.isCurrentUserStory">
+        <div class="reply-button">{{$ctrl.activeStory.views}} Views</div>
+        <div class="reply-button">{{$ctrl.activeStory.likes}} Likes</div>
+      </div>
+
+      <!-- For others' stories, show the like button -->
+      <div class="story-buttons" ng-if="!$ctrl.activeStory.isCurrentUserStory">
+        <div
+          class="like-button-container"
+          ng-click="$ctrl.like($ctrl.activeStory)"
+        >
+          <i class="material-icons not-liked" ng-if="!$ctrl.activeStory.liked"
+            >favorite_border</i
+          >
+          <i class="material-icons liked" ng-if="$ctrl.activeStory.liked"
+            >favorite</i
+          >
+        </div>
+        <button class="next-story-button" ng-click="$ctrl.nextUnviewedStory()">
+          ➡
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

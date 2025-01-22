@@ -1,0 +1,457 @@
+<div class="user-container">
+  <div class="card profile-card">
+    <div class="card-content">
+      <div class="profile-photo-container">
+        <img
+          ng-src="{{
+            'http://localhost/codeigniter/' + profile.basicDetails.profile_photo
+          }}"
+          alt="Profile Photo"
+          class="profile-photo"
+        />
+        <button ng-if="admin" class="upload-button" ng-click="openFileDialog()">
+          +
+        </button>
+        <input
+          type="file"
+          id="profilePhotoInput"
+          accept="image/*"
+          style="display: none"
+          onchange="angular.element(this).scope().uploadProfilePhoto(this)"
+        />
+      </div>
+      <div class="profile-info">
+        <h1 class="card-title">{{ profile.basicDetails.name }}</h1>
+        <p class="card-text">{{ profile.basicDetails.bio }}</p>
+        <p class="card-text">{{ userDetails[0].hometown }}</p>
+        <button
+          class="edit-button"
+          ng-if="!admin"
+          ng-click="sendRequest()"
+          ng-click="getButtonStatus()"
+        >
+          {{ requestStatus }}
+        </button>
+
+        <button class="edit-button" ng-click="navigationUserPost()">
+          posts
+        </button>
+      </div>
+    </div>
+
+    <button
+      class="edit-button"
+      ng-if="admin"
+      ng-click="openDialog('basicDetails')"
+    >
+      Edit
+    </button>
+  </div>
+
+  <div class="card contact-card">
+    <div class="card-header">
+      <h2 class="card-title">Contact Details</h2>
+      <button
+        class="edit-button"
+        ng-if="admin"
+        ng-click="openDialog('contactDetails')"
+      >
+        Edit
+      </button>
+    </div>
+    <div class="contact-info-container">
+      <div class="contact-info primary-contact-info">
+        <h3 class="contact-subtitle">Primary Contact</h3>
+        <p class="card-text">
+          Primary Email: {{ profile.contactDetails.primaryEmail }}
+        </p>
+        <p class="card-text">
+          Primary Phone: {{ profile.contactDetails.primaryPhone }}
+        </p>
+        <p class="card-text">
+          LinkedIn:
+          <span ng-if="profile.contactDetails.linkedinUrl === 'Not provided'"
+            >Not provided</span
+          >
+          <a
+            ng-if="profile.contactDetails.linkedinUrl !== 'Not provided'"
+            href="{{ profile.contactDetails.linkedinUrl }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="linkedin-link"
+          >
+            {{ profile.contactDetails.linkedinUrl }}
+          </a>
+        </p>
+      </div>
+      <div class="contact-info alternate-contact-info">
+        <h3 class="contact-subtitle">Alternate Contact</h3>
+        <p class="card-text">
+          Alternate Email:
+          {{ profile.contactDetails.alternateEmails[0].alternate_email }}
+        </p>
+        <p class="card-text">
+          Alternate Phone:
+          {{ profile.contactDetails.alternatePhones[0].alternate_phone }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card education-card">
+    <div class="card-header">
+      <h2 class="card-title">Education</h2>
+      <button
+        class="edit-button"
+        ng-if="admin"
+        ng-click="openDialog('education', null)"
+      >
+        Add Education
+      </button>
+    </div>
+    <div class="education-info">
+      <div class="education-item" ng-repeat="edu in profile.education">
+        <div class="edit-edu-work">
+          <h3 class="card-subtitle">{{ edu.institution }}</h3>
+          <button
+            class="edit-button"
+            ng-if="admin"
+            ng-click="openDialog('education', edu, $index)"
+          >
+            Edit
+          </button>
+        </div>
+        <p class="card-text">
+          {{ edu.startYear }} -
+          {{ edu.isCurrent ? "Present" : edu.endYear }}
+        </p>
+        <p class="card-text">{{ edu.degree }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card work-history-card">
+    <div class="card-header">
+      <h2 class="card-title">Work History</h2>
+      <button
+        class="edit-button"
+        ng-if="admin"
+        ng-click="openDialog('work', null)"
+      >
+        Add Work Experience
+      </button>
+    </div>
+    <div class="work-history-info">
+      <div class="work-history-item" ng-repeat="work in profile.workHistory">
+        <div class="edit-edu-work">
+          <h3 class="card-subtitle">{{ work.position }}</h3>
+          <button
+            class="edit-button"
+            ng-if="admin"
+            ng-click="openDialog('work', work, $index)"
+          >
+            Edit
+          </button>
+        </div>
+        <p class="card-text">
+          {{ work.startYear }} -
+          {{ work.isCurrent ? "Present" : work.endYear }}
+        </p>
+        <p class="card-text">{{ work.company }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="divLog">
+    <button class="logoutBtn" ng-if="admin" ng-click="onLogout()">
+      Logout
+    </button>
+  </div>
+
+  <!-- <dialog class="mdl-dialog">
+    <dialogBox
+      dialog-title="dialogTitle"
+      edit-type="editType"
+      edit-data="editData"
+      on-save="saveDetails()"
+      on-close="closeDialog()"
+      on-delete="deleteDetail()"
+    >
+    </dialogBox>
+  </dialog> -->
+
+  <!-- Dialog box -->
+  <dialog id="userDialog" class="mdl-dialog dialog-try">
+    <h2>Edit {{ dialogTitle }}</h2>
+    <form name="editForm">
+      <div ng-if="editType === 'basicDetails'">
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          ng-model="editData.name"
+          name="name"
+          required
+          ng-minlength="2"
+        />
+        <div
+          ng-show="editForm.name.$touched && editForm.name.$invalid"
+          class="error-message"
+        >
+          <span ng-show="editForm.name.$error.required">
+            Name is required.
+          </span>
+          <span ng-show="editForm.name.$error.minlength">
+            Name must be at least 2 characters long.
+          </span>
+        </div>
+
+        <label for="bio">Bio:</label>
+        <input type="text" id="bio" ng-model="editData.bio" />
+
+        <label for="city">City:</label>
+        <input type="text" id="city" ng-model="editData.hometown" />
+      </div>
+
+      <div ng-if="editType === 'contactDetails'">
+        <label for="primaryEmail">Primary Email:</label>
+        <input
+          type="email"
+          id="primaryEmail"
+          name="primaryEmail"
+          ng-model="editData.primaryEmail"
+          required
+        />
+        <div
+          ng-show="
+            editForm.primaryEmail.$touched && editForm.primaryEmail.$invalid
+          "
+          class="error-message"
+        >
+          <span ng-show="editForm.primaryEmail.$error.required">
+            Primary email is required.
+          </span>
+          <span ng-show="editForm.primaryEmail.$error.email">
+            Enter a valid email.
+          </span>
+        </div>
+
+        <label for="primaryPhone">Primary Phone:</label>
+        <input
+          type="tel"
+          id="primaryPhone"
+          name="primaryPhone"
+          ng-model="editData.primaryPhone"
+          required
+          ng-pattern="/^[0-9]{10}$/"
+        />
+        <div
+          ng-show="
+            editForm.primaryPhone.$touched && editForm.primaryPhone.$invalid
+          "
+          class="error-message"
+        >
+          <span ng-show="editForm.primaryPhone.$error.required">
+            Primary phone is required.
+          </span>
+          <span ng-show="editForm.primaryPhone.$error.pattern">
+            Enter a valid 10-digit phone number.
+          </span>
+        </div>
+
+        <label for="linkedinUrl">LinkedIn URL:</label>
+        <input
+          type="text"
+          id="linkedinUrl"
+          ng-model="editData.linkedinUrl"
+          name="linkedinUrl"
+          ng-pattern="/^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/"
+        />
+        <div
+          ng-show="
+            editForm.linkedinUrl.$touched && editForm.linkedinUrl.$invalid
+          "
+          class="error-message"
+        >
+          <span ng-show="contactDetails.linkedinUrl.$error.pattern">
+            Please enter a valid LinkedIn URL (e.g.,
+            https://www.linkedin.com/in/username).
+          </span>
+        </div>
+
+        <hr />
+        <label for="alternateEmail">Alternate Emails:</label>
+        <ul>
+          <li ng-repeat="email in editData.alternateEmails track by $index">
+            <span>{{ email.alternate_email }}</span>
+            <button type="button" ng-click="removeAlternateEmail($index)">
+              Remove
+            </button>
+          </li>
+        </ul>
+        <label for="alternateEmail">Add email:</label>
+        <input
+          type="email"
+          id="alternateEmail"
+          ng-model="editData.nae"
+          name="nae"
+          placeholder="Add new email"
+        />
+        <div
+          ng-show="editForm.nae.$touched && editForm.nae.$invalid"
+          class="error-message"
+        >
+          <span ng-show="editForm.nae.$error.email">
+            Enter a valid email.
+          </span>
+        </div>
+
+        <button
+          type="button"
+          ng-disabled="!editData.nae"
+          ng-click="addAlternateEmail()"
+        >
+          Add Email
+        </button>
+        <hr />
+
+        <label for="alternatePhone">Alternate Phone:</label>
+        <ul>
+          <li ng-repeat="phone in editData.alternatePhones track by $index">
+            <span>{{ phone.alternate_phone }}</span>
+            <button type="button" ng-click="removeAlternatePhone($index)">
+              Remove
+            </button>
+          </li>
+        </ul>
+        <input
+          type="tel"
+          id="alternatePhone"
+          ng-model="editData.nap"
+          name="nap"
+          placeholder="Add new phone"
+          ng-pattern="/^[0-9]{10}$/"
+        />
+        <div
+          ng-show="editForm.nap.$touched && editForm.nap.$invalid"
+          class="error-message"
+        >
+          <span ng-show="editForm.nap.$error.pattern">
+            Enter a valid 10-digit phone number.
+          </span>
+        </div>
+
+        <button
+          type="button"
+          ng-disabled="!editData.nap"
+          ng-click="addAlternatePhone()"
+        >
+          Add Phone
+        </button>
+      </div>
+
+      <div ng-if="editType === 'education'">
+        <label for="institution">Institution:</label>
+        <input type="text" id="institution" ng-model="editData.institution" />
+
+        <label for="degree">Degree:</label>
+        <input type="text" id="degree" ng-model="editData.degree" />
+
+        <label for="startYear">Start Year:</label>
+        <select
+          id="startYear"
+          ng-model="editData.startYear"
+          ng-options="year for year in years"
+        >
+          <option value="">Select Start Year</option>
+        </select>
+        <br />
+        <label for="endYear">End Year:</label>
+        <select
+          id="endYear"
+          ng-model="editData.endYear"
+          ng-options="year for year in years"
+          ng-disabled="editData.isCurrent"
+        >
+          <option value="">Select End Year</option>
+        </select>
+        <br />
+        <div class="checkbox-container">
+          <div>
+            <input
+              type="checkbox"
+              ng-model="editData.isCurrent"
+              ng-change="clearEndYear()"
+              ng-true-value="true"
+              ng-false-value="false"
+            />
+          </div>
+          <p>Currently Pursuing</p>
+        </div>
+      </div>
+
+      <div ng-if="editType === 'work'">
+        <label for="position">Position:</label>
+        <input
+          type="text"
+          id="position"
+          required
+          ng-model="editData.position"
+        />
+
+        <label for="company">Company:</label>
+        <input type="text" id="company" required ng-model="editData.company" />
+
+        <label for="startYear">Start Year:</label>
+        <select
+          required
+          id="startYear"
+          ng-model="editData.startYear"
+          ng-options="year for year in years"
+        >
+          <option value="">Select Start Year</option>
+        </select>
+        <br />
+        <label for="endYear">End Year:</label>
+        <select
+          id="endYear"
+          ng-model="editData.endYear"
+          ng-options="year for year in years"
+          ng-disabled="editData.isCurrent"
+        >
+          <option value="">Select End Year</option>
+        </select>
+        <br />
+        <div class="checkbox-container">
+          <div>
+            <input
+              type="checkbox"
+              ng-model="editData.isCurrent"
+              ng-change="clearEndYear()"
+              ng-true-value="true"
+              ng-false-value="false"
+            />
+          </div>
+          <p>Currently Working</p>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button
+          type="submit"
+          ng-disabled="editForm.$invalid"
+          ng-click="saveDetails() "
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          ng-if="editType === 'education' || editType === 'work'"
+          ng-click="deleteDetail()"
+        >
+          Delete
+        </button>
+        <button type="button" ng-click="closeDialog()">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+</div>

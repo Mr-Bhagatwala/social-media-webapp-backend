@@ -1,0 +1,35 @@
+<div ng-controller="FriendSearchController" class="profile-list-container">
+  <input
+    type="text"
+    placeholder="Search profiles..."
+    ng-model="searchTerm"
+    class="search-input"
+    style="width: 300px; margin-left: 20px"
+  />
+  <div>
+    <div
+      ng-repeat="profile in filteredProfiles()"
+      class="profile-row"
+      ng-click="handleRoute(profile.id, profile.name)"
+    >
+      <div class="profile-photo">
+        <img
+          ng-src="{{ 'http://localhost/codeigniter/' + profile.profile_photo}}"
+          alt="{{profile.name}}"
+        />
+      </div>
+      <div class="profile-info">
+        <h3 class="profile-name">{{profile.name}}</h3>
+        <p class="profile-location">{{profile.hometown}}</p>
+      </div>
+      <button
+        ng-click="handleConnect(profile.id)"
+        ng-class="{'connected': isConnected(profile.id)}"
+        class="connect-button"
+      >
+        <!-- {{isConnected(profile.id) ? 'Connected' : 'Connect'}} -->
+        Connect
+      </button>
+    </div>
+  </div>
+</div>

@@ -12,7 +12,7 @@ class MessageModel extends CI_Model {
         $this->db->from('messages');
         $this->db->where('chat_id', $chatId);
         $this->db->where('deleted', false);
-        $this->db->order_by('timestamp', 'DESC');
+        $this->db->order_by('timestamp', 'AESC');
 
         $query = $this->db->get();
         return $query->result_array();
@@ -21,6 +21,10 @@ class MessageModel extends CI_Model {
     public function insertMessage($data) {
         return $this->db->insert('messages', $data);
     }
+    public function insertFile($fileData) {
+        return $this->db->insert('messages', $fileData);
+    }
+    
     
     public function deleteMessageById($messageId) {
         $this->db->where('message_id', $messageId);

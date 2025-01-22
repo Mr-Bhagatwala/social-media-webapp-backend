@@ -1,0 +1,122 @@
+<div ng-module="chat" class="chat-container">
+  <div class="top-bar">
+    <h1 class="top">Chats</h1>
+    <div class="icons">
+      <span class="material-icons">add_comment</span>
+      <span class="material-icons">more_vert</span>
+    </div>
+  </div>
+
+  <div class="search-text" ng-if="!checkInput()" id="search-text">Search</div>
+  <div class="search-container">
+    <input
+      type="text"
+      class="search-bar"
+      id="search-bar"
+      ng-model="searchs"
+      style="border: 1px"
+    />
+    <svg
+      class="search-icon"
+      id="search-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      ng-if="!checkInput()"
+    >
+      <circle cx="11" cy="11" r="6"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </div>
+  <div class="filters">
+    <div class="fil">All</div>
+    <div class="fil">Unread</div>
+    <div class="fil">Favorites</div>
+    <div class="fil">Groups</div>
+  </div>
+  <div class="chat-list">
+    <div
+      class="chat-item"
+      ng-repeat="chat in chats"
+      ng-mouseover="chat.hover = true"
+      ng-mouseleave="chat.hover = false"
+      ng-click="$ctrl.displayChatDetails(chat)"
+    >
+      <img
+        class="profile-pic"
+        ng-src="{{chat.profile_photo}}"
+        alt="Profile Picture"
+      />
+      <div class="chat-details">
+        <div class="chat-name">{{chat.name}}</div>
+        <div class="chat-time">{{chat.last_message}}</div>
+      </div>
+      <div class="chat-status">
+        <span class="material-icons" ng-if="chat.is_blocked==1"> block </span>
+        <span ng-if="chat.pinned==1" class="material-icons">push_pin</span>
+        <span ng-if="chat.is_muted==1" class="material-icons">volume_off</span>
+      </div>
+
+      <!-- The dropdown button (expand_more icon) -->
+      <span
+        class="material-icons chat-hover-arrow"
+        ng-click="$ctrl.toggleMenu($event, chat)"
+      >
+        expand_more
+      </span>
+
+      <!-- Dropdown Menu shown on hover -->
+      <div class="dropdown-menu" ng-if="chat.toggle">
+        <button
+          class="menu-item"
+          ng-click="$ctrl.muteNotifications(chat)"
+          ng-if="chat.is_muted==0"
+        >
+          Mute notifications
+        </button>
+        <button
+          class="menu-item"
+          ng-click="$ctrl.muteNotifications(chat)"
+          ng-if="chat.is_muted==1"
+        >
+          Unmute notifications
+        </button>
+        <button
+          class="menu-item"
+          ng-click="$ctrl.pinChat(chat)"
+          ng-if="chat.pinned==0"
+        >
+          Pin chat
+        </button>
+        <button
+          class="menu-item"
+          ng-click="$ctrl.pinChat(chat)"
+          ng-if="chat.pinned==1"
+        >
+          Unpin chat
+        </button>
+        <button
+          class="menu-item"
+          ng-click="$ctrl.blockChat(chat)"
+          ng-if="chat.is_blocked ==0"
+        >
+          Block
+        </button>
+        <button
+          class="menu-item"
+          ng-click="$ctrl.blockChat(chat)"
+          ng-if="chat.is_blocked==1"
+        >
+          Unblock
+        </button>
+        <button class="menu-item" ng-click="$ctrl.deleteChat(chat)">
+          Delete chat
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

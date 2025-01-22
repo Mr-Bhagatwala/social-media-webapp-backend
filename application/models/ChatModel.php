@@ -163,6 +163,10 @@ class ChatModel extends CI_Model {
     
         // Begin a database transaction to ensure consistency
         $this->db->trans_start();
+
+        //delete from muted_chats table
+        $this->db->where('chat_id', $chatId);
+        $this->db->delete('muted_chats');
     
         // Delete messages associated with the chat
         $this->db->where('chat_id', $chatId);
@@ -216,6 +220,29 @@ class ChatModel extends CI_Model {
             return true; // Successfully unpinned
         } else {
             return false; // Failed to unpin
+        }
+    }
+    //create chat
+    public function createChat($senderId,$receiverId){
+        // Validate senderId and receiverId
+        if (empty($senderId) || empty($receiverId) || !is_numeric($senderId) || !is_numeric($receiverId)){
+            return false; // Invalid senderId or receiverId
+        }
+        
+        // Check if the sender and receiver are not the same
+        if ($senderId == $receiverId) {
+            return false; // Sender and receiver cannot be the same
+        }
+        
+        // Insert a new chat record
+        $data = ['sender_id' => $senderId,'receiver_id' => $receiverId];
+        $this->db->insert('chats', $data);
+        
+        // Check if the insert was successful
+        if ($this->db->affected_rows() == 1) {
+            return true; // Return the newly created chat's ID
+        } else {
+            return false; // Failed to create the chat
         }
     }
 }

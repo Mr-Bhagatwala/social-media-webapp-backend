@@ -68,23 +68,66 @@ class MessageController extends CI_Controller {
         }
     }
 
+
+
+    public function sendFile() {
+        if (!isset($_FILES['file'])) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => 'No file was uploaded']));
+        }
+        $this->load->helper('url');
+        $config['upload_path'] = './assets/messageFile/';
+        $config['allowed_types'] = 'gif|jpg|png|pdf|docx|txt'; // Define allowed file types
+        $config['max_size'] = 2048; // Set max file size (in KB)
+    
+        $this->load->library('upload', $config);
+    
+        if (!$this->upload->do_upload('file')) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => $this->upload->display_errors()]));
+        } else {
+            $uploadData = $this->upload->data();
+            $file_url = base_url('assets/messageFile/' . $uploadData['file_name']);
+    
+            // Optional: Save file metadata or associate it with a message in the database
+            $fileData = [
+                'chat_id' => $this->input->post('chat_id'), // Optional, for associating file with chat
+                'sender_id' => $this->input->post('sender_id'), // Optional, for tracking the uploader
+                'file_url' => $file_url,
+                'timestamp' => date('Y-m-d H:i:s'),
+            ];
+    
+            // Example: Save file data in the database (optional)
+            $this->MessageModel->insertFile($fileData);
+    
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode(['success' => 'File uploaded successfully', 'file_url' => $file_url]));
+        }
+    }
+    
+
     public function deleteMessage() {
         $data = json_decode(file_get_contents('php://input'), true);
-
+    
         if (empty($data['message_id'])) {
             return $this->output
                         ->set_content_type('application/json')
                         ->set_status_header(400)
                         ->set_output(json_encode(['error' => 'message_id is required']));
         }
-
+    
         $deleted = $this->MessageModel->deleteMessageById($data['message_id']);
-
+    
         if ($deleted) {
             return $this->output
                         ->set_content_type('application/json')
                         ->set_status_header(200)
-                        ->set_output(json_encode(['success' => 'Message deleted successfully']));
+                        ->set_output(json_encode(['status' => 'success', 'data' => 'Message deleted successfully']));
         } else {
             return $this->output
                         ->set_content_type('application/json')
@@ -92,7 +135,7 @@ class MessageController extends CI_Controller {
                         ->set_output(json_encode(['error' => 'Failed to delete message']));
         }
     }
-
+    
     public function replyToMessage(){
         $data = json_decode(file_get_contents('php://input'), true);
 
