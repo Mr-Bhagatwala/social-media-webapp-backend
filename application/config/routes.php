@@ -128,6 +128,7 @@ $route['unpin-chat/(:num)'] = 'ChatController/unpinChat/$1';
 //messsages
 $route['message/past'] = 'MessageController/getPastMessages';
 $route['message/send'] = 'MessageController/sendMessage';
+$route['message/sendFile'] = 'MessageController/sendFile';
 $route['message/delete'] = 'MessageController/deleteMessage';
 $route['message/reply'] = 'MessageController/replyToMessage';
 $route['message/fetch'] = 'MessageController/fetchMessage';
