@@ -223,21 +223,32 @@ class ChatModel extends CI_Model {
         }
     }
     //create chat
-    public function createChat($senderId,$receiverId){
+    public function createChat($senderId, $receiverId) {
         // Validate senderId and receiverId
-        if (empty($senderId) || empty($receiverId) || !is_numeric($senderId) || !is_numeric($receiverId)){
+        if (empty($senderId) || empty($receiverId) || !is_numeric($senderId) || !is_numeric($receiverId)) {
             return false; // Invalid senderId or receiverId
         }
-        
+    
         // Check if the sender and receiver are not the same
         if ($senderId == $receiverId) {
             return false; // Sender and receiver cannot be the same
         }
-        
+    
+        // Check if a chat already exists
+        $this->db->where("(sender_id = $senderId AND receiver_id = $receiverId) OR (sender_id = $receiverId AND receiver_id = $senderId)");
+        $existingChat = $this->db->get('chats')->row_array();
+    
+        if (!empty($existingChat)) {
+            return true; // Return the existing chat's ID
+        }
+    
         // Insert a new chat record
-        $data = ['sender_id' => $senderId,'receiver_id' => $receiverId];
+        $data = [
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId
+        ];
         $this->db->insert('chats', $data);
-        
+    
         // Check if the insert was successful
         if ($this->db->affected_rows() == 1) {
             return true; // Return the newly created chat's ID
@@ -245,5 +256,6 @@ class ChatModel extends CI_Model {
             return false; // Failed to create the chat
         }
     }
+    
 }
 ?>
