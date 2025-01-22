@@ -27,7 +27,7 @@ angular
           $scope.admin = false;
           fetchProfileFromURL(urlUserName, urlUserId);
         }
-      } else {
+      } else {                    
         console.log("User is not authenticated.");
       }
 
@@ -723,10 +723,40 @@ angular
         //     }
         //   });
       };
+
+      $scope.openChat = function openChat() {
+        
+        // Validate IDs
+        if (!user_id || !urlUserId) {
+            alert("Invalid user information.");
+            return;
+        }
+        
+        $http
+            .post(`http://localhost/codeigniter/index.php/create-chat/${user_id}/${urlUserId}`)
+            .then(function (response) {
+                if (response.data.status === "success") {
+                    console.log("Chat created or already exists:", response.data);
+                    // Navigate to the chat page
+                    $location.path('/chat');
+                } else {
+                    console.error("Failed to create chat:", response.data.message);
+                    alert("Could not create chat: " + response.data.message);
+                }
+            })
+            .catch(function (error) {
+                console.error("Error while creating chat:", error);
+                alert("An error occurred while creating the chat.");
+            });
+      };
+    
+
+
       $scope.navigationUserPost = function navigationUserPost() {
         const route = `/user-post/${urlUserId}`;
         $location.path(route);
       };
+
       $scope.openFileDialog = function openFileDialog() {
         const fileInput = document.getElementById("profilePhotoInput");
         console.log("I got triggered");
@@ -916,11 +946,11 @@ angular
           }
         });
 
-      $scope.navigationUserPost = function () {
-        const urlUserId = $routeParams.userId;
-        const route = `user-post/${urlUserId}`;
-        $location.path(route);
-      };
+      // $scope.navigationUserPost = function () {
+      //   const urlUserId = $routeParams.userId;
+      //   const route = `user-post/${urlUserId}`;
+      //   $location.path(route);
+      // };
       $scope.uploadProfilePhoto = function uploadProfilePhoto(input) {
         if (input.files && input.files[0]) {
           const file = input.files[0];

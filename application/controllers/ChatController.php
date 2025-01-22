@@ -14,6 +14,8 @@ class ChatController extends CI_Controller {
     }
 
     public function getAllChats($userId) {
+        $searchQuery = $this->input->get('searchQuery'); // Get the search query
+    
         if ($userId == null || !is_numeric($userId)) {
             $response = [
                 'status' => 'error',
@@ -22,25 +24,28 @@ class ChatController extends CI_Controller {
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
     
-        $data = $this->ChatModel->getAllChats($userId);
+        $data = $this->ChatModel->getAllChats($userId, $searchQuery);
     
-        if ($data === null || empty($data)) { // Check if data is null or empty
+        if ($data === null || empty($data)) {
             $response = [
                 'status' => 'error',
                 'message' => 'No chats found or something went wrong.'
             ];
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
+    
         foreach ($data as &$res) {
-            $res['profile_photo'] = base_url() . $res['profile_photo'] ;// Add the base URL to media URL
+            $res['profile_photo'] = base_url() . $res['profile_photo'];
         }
+    
         $response = [
             'status' => 'success',
             'message' => 'Chats fetched successfully',
             'data' => $data
         ];
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
-    }
+    }    
+
     //mute a chat
     public function muteChat($userId, $chatId) {
         if ($userId == null || !is_numeric($userId)) {

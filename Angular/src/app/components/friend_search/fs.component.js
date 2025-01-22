@@ -1,3 +1,4 @@
+
 "use strict";
 
 angular
@@ -12,58 +13,54 @@ angular
       $scope.loading = false;
       $scope.allLoaded = false;
 
+      // Function to load profiles with the current search term
       $scope.loadProfiles = function () {
         if ($scope.loading || $scope.allLoaded) return;
         $scope.loading = true;
-
+      
         $http
           .get(
-            `http://localhost/codeigniter/index.php/getAll?offset=${$scope.offset}&limit=${$scope.limit}`
+            `http://localhost/codeigniter/index.php/getAll?offset=${$scope.offset}&limit=${$scope.limit}&search=${encodeURIComponent(
+              $scope.searchTerm
+            )}`
           )
           .then(function (response) {
-            if (
-              response.data &&
-              response.data.data &&
-              response.data.data.length > 0
-            ) {
-              console.log(response.data.data);
-              $scope.profiles = $scope.profiles.concat(response.data.data);
-              $scope.offset += $scope.limit;
+            if (response.data.success) {
+              if (response.data.data && response.data.data.length > 0) {
+                console.log(response.data.data);
+                $scope.profiles = $scope.profiles.concat(response.data.data);
+                $scope.offset += $scope.limit;
+              } else {
+                // No more users found
+                $scope.allLoaded = true;
+              }
             } else {
-              $scope.allLoaded = true; // No more profiles to load
+              // If the success field is false, set allLoaded to true
+              console.warn("No more users found:", response.data.message);
+              $scope.allLoaded = true;
             }
-            $scope.loading = false;
           })
           .catch(function (error) {
             console.error("Error fetching profiles:", error);
+            $scope.allLoaded = true; // Prevent further attempts on error
+          })
+          .finally(function () {
             $scope.loading = false;
-            $scope.allLoaded = true; // Set to true on error to prevent further attempts
           });
       };
+      
 
-      $scope.filteredProfiles = function () {
-        // If no profiles or empty array, return empty array
-        if (!$scope.profiles || !$scope.profiles.length) {
-          return [];
-        }
-
-        // If no search term, return all profiles
-        if (!$scope.searchTerm) {
-          return $scope.profiles;
-        }
-
-        const term = $scope.searchTerm.toLowerCase().trim();
-
-        return $scope.profiles.filter(
-          (profile) =>
-            profile && profile.name && profile.name.toLowerCase().includes(term)
-        );
+      // Function to handle search input changes
+      $scope.searchProfiles = function () {
+        // Reset state for a fresh search
+        $scope.profiles = [];
+        $scope.offset = 0;
+        $scope.allLoaded = false;
+        $scope.loadProfiles(); // Trigger profile loading
       };
 
       // Handle profile connection (placeholder function)
       $scope.handleConnect = function (profileId) {
-        console.log("I clicked " + profileId);
-
         const requestData = {
           sender_id: user_id,
           receiver_id: profileId,
@@ -75,10 +72,7 @@ angular
             requestData
           )
           .then(function (response) {
-            console.log("Response from backend:", response.data);
-
             if (response.data.status === "success") {
-              // Remove the phone from the list in the frontend
               alert(response.data.message);
             } else {
               alert(
@@ -87,21 +81,14 @@ angular
             }
           })
           .catch(function (error) {
-            console.error("Error while sending friend request:", error);
-            if (error.data) {
-              alert("Error: " + error.data.message);
-            } else {
-              alert("Error while sending friend request. Please try again.");
-            }
+            console.error("Error sending friend request:", error);
+            alert("Error while sending friend request. Please try again.");
           });
-        console.log("I clicked " + profileId);
       };
 
       // Handle profile routing
       $scope.handleRoute = function (profileId, profileName) {
-        console.log("I clicked " + profileId, profileName);
         const route = `/${profileName}/${profileId}`;
-        console.log("Navigating to:", route);
         $location.path(route);
       };
 
@@ -124,6 +111,6 @@ angular
         angular.element($window).unbind("scroll");
       });
 
-      $scope.loadProfiles(); // Initial load
+      $scope.loadProfiles(); 
     }
-  );
+);

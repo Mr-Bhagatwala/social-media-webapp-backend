@@ -7,8 +7,7 @@ class ChatModel extends CI_Model {
         $this->load->database();
     }
     
-    // Get all chats from database
-    public function getAllChats($userId) {
+    public function getAllChats($userId, $searchQuery = null) {
         if ($userId == null || !is_numeric($userId)) {
             return null; // Return null for error cases
         }
@@ -43,12 +42,22 @@ class ChatModel extends CI_Model {
         $this->db->join('muted_chats', 'chats.chat_id = muted_chats.chat_id AND muted_chats.user_id = ' . intval($userId), 'left');
         $this->db->join('blocked_users', 'blocked_users.blocked_id = chats.receiver_id AND blocked_users.blocker_id = ' . intval($userId), 'left');
         $this->db->where("(chats.sender_id = {$userId} OR chats.receiver_id = {$userId})", null, false);
+    
+        if ($searchQuery) {
+            $this->db->like("(CASE 
+                WHEN chats.sender_id != " . intval($userId) . " THEN users.name
+                ELSE receiver_user.name 
+            END)", $searchQuery);
+        }
+    
         $this->db->order_by('chats.pinned', 'DESC');
         $this->db->order_by('chats.last_message', 'DESC');
     
         $query = $this->db->get();
         return $query->result_array(); // Return the result directly
-    }  
+    }
+    
+    
     //mute a chat
     public function muteChat($userId, $chatId) {
         if ($userId == null || !is_numeric($userId) || $chatId == null || !is_numeric($chatId)) {

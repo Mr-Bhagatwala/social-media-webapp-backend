@@ -45,6 +45,7 @@
       ng-mouseover="chat.hover = true"
       ng-mouseleave="chat.hover = false"
       ng-click="$ctrl.displayChatDetails(chat)"
+      ng-if="isThere"
     >
       <img
         class="profile-pic"
@@ -56,7 +57,6 @@
         <div class="chat-time">{{chat.last_message}}</div>
       </div>
       <div class="chat-status">
-        <span class="material-icons" ng-if="chat.is_blocked==1"> block </span>
         <span ng-if="chat.pinned==1" class="material-icons">push_pin</span>
         <span ng-if="chat.is_muted==1" class="material-icons">volume_off</span>
       </div>
@@ -118,5 +118,6 @@
         </button>
       </div>
     </div>
+    <p ng-if="!isThere">No chat found</p>
   </div>
 </div>

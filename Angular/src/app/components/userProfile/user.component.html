@@ -33,6 +33,16 @@
           {{ requestStatus }}
         </button>
 
+        <button class="edit-button" ng-if="!admin" ng-click="openChat()">
+          <span class="material-icons">
+            chat
+          </span>
+          <!-- <span>
+            Message
+
+          </span> -->
+        </button>
+
         <button class="edit-button" ng-click="navigationUserPost()">
           posts
         </button>
