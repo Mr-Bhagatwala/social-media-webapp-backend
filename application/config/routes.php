@@ -115,6 +115,7 @@ $route['posts/toggle_like']='PostController/toggle_like' ;
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 
 //chats
+$route['create-chat/(:num)/(:num)'] = 'ChatController/createChat/$1/$2';
 $route['get-all-chats/(:num)'] = 'ChatController/getAllChats/$1';
 $route['mute-chat/(:num)/(:num)'] = 'ChatController/muteChat/$1/$2';
 $route['unmute-chat/(:num)/(:num)'] = 'ChatController/unmuteChat/$1/$2';
