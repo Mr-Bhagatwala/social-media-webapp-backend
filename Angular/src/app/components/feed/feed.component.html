@@ -52,24 +52,14 @@
             Your browser does not support the video tag.
           </video>
           <div class="pdf-preview" ng-if="media.endsWith('.pdf')">
-            <!-- Option 1: Embedded PDF Viewer -->
-            <!-- <iframe ng-src="{{ media }}" width="100%" height="400px"> </iframe> -->
-            <!-- <object
-              class="pdf"
-              ng-data="{{
-                media
-              }}"
-              width="800"
-              height="500"
-            ></object> -->
-            <!-- <embed
-              class="pdf"
-              ng-src="{{
-                media
-              }}"
-              width="800"
-              height="500"
-            /> -->
+            <iframe
+              ng-src="{{ media }}"
+              frameborder="0"
+              width="100%"
+              height="300px"
+            >
+            </iframe>
+            <embed class="pdf" ng-src="{{ media }}" width="800" height="500" />
             <a ng-href="{{ media }}" target="_blank" download>
               📄 Download PDF
             </a>
