@@ -58,11 +58,8 @@ exit; // Terminate the script after the preflight response
     // Upload a Story
     public function uploadStory() {
         $config['upload_path'] = FCPATH .'assets/stories/';
-        $config['allowed_types'] = 'jpg|png|gif|mp4|avi|mov|mkv';
-        $config['max_size'] = 10240; // 100 MB
-
+        $config['allowed_types'] = '*';
         $this->load->library('upload', $config);
-
         if (!$this->upload->do_upload('media')) {
         $error = $this->upload->display_errors();
         echo json_encode(['status' => 'error', 'messages' => $error]);

@@ -8,7 +8,6 @@ class StoriesModel extends CI_Model {
 
     // Upload a Story
     public function uploadStory($data) {
-
         $this->db->insert('stories', $data);
         if ($this->db->affected_rows() > 0) {
             return ['status' => 'success', 'story_id' => $this->db->insert_id()];

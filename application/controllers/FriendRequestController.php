@@ -346,5 +346,4 @@ exit; // Terminate the script after the preflight response
     }
     
 }
-
 ?>

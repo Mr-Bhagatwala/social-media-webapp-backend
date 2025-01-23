@@ -1,26 +1,55 @@
 angular.module("myApp").component("storyBar", {
   templateUrl: "./app/components/story/story.html",
-  controller: function ($http, $element, UserService) {
+  controller: function ($http, $element, UserService, $sce) {
     this.stories = [];
     this.activeStory = null;
     this.currentUser = UserService.getUserData(); // Replace with the actual current user ID
 
     const API_BASE_URL = "http://localhost/codeigniter/index.php"; // Replace with your actual backend URL
     // Example function in your controller
+    // Define helper functions in your controller
     this.isImage = function (mediaUrl) {
       const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
-      const videoExtensions = ["mp4", "webm", "ogg"];
-
-      if (!mediaUrl) return false;
-
+      if (!mediaUrl) {
+        alert("no media url specified");
+        this.activeStory = null;
+      }
       const extension = mediaUrl.split(".").pop().toLowerCase();
       return imageExtensions.includes(extension);
     };
+
+    this.isVideo = function (mediaUrl) {
+      const videoExtensions = ["mp4", "webm", "ogg"];
+      if (!mediaUrl) {
+        alert("no media url specified");
+        this.activeStory = null;
+      }
+      const extension = mediaUrl.split(".").pop().toLowerCase();
+      return videoExtensions.includes(extension);
+    };
+
+    this.isPDF = function (mediaUrl) {
+      if (!mediaUrl) {
+        alert("no media url specified");
+        this.activeStory = null;
+      }
+      const extension = mediaUrl.split(".").pop().toLowerCase();
+      return extension === "pdf";
+    };
+
+    // Use $sce to handle trusted URLs for iframe sources
+    this.getTrustedUrl = function (mediaUrl) {
+      if (!mediaUrl) {
+        alert("no media url specified");
+        this.activeStory = null;
+      }
+      return $sce.trustAsResourceUrl(mediaUrl);
+    };
+
     this.fetchStories = function () {
       $http
         .get(`${API_BASE_URL}/get-stories/${this.currentUser}`)
         .then((response) => {
-          console.log("Stories fetched successfully", response.data);
           this.stories = response.data;
           this.stories.forEach((story) => {
             story.isCurrentUserStory = story.user_id == this.currentUser;
@@ -66,16 +95,20 @@ angular.module("myApp").component("storyBar", {
       const formData = new FormData();
       formData.append("userId", this.currentUser); // Add userId as a form field
       formData.append("media", file); // Add the file to the form data
-      // console.log("Uploading file", file);
-      // Upload the file using $http
       $http
         .post(`${API_BASE_URL}/upload-story`, formData, {
           transformRequest: angular.identity,
           headers: { "Content-Type": undefined }, // Let the browser set the content type
         })
         .then((response) => {
-          alert("File uploaded successfully");
-          this.fetchStories(); // Refresh the stories after the upload
+          if (response.data.status == "success") {
+            alert("File uploaded successfully");
+            this.fetchStories();
+          } else if (response.data.status == "error") {
+            alert("Error uploading file", response.data.message);
+          } else {
+            alert("Failed to upload file");
+          }
         })
         .catch((error) => {
           alert("Error uploading file. Please try again.");
