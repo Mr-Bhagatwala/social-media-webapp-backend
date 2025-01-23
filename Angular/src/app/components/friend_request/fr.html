@@ -11,7 +11,14 @@
     <li class="network-item" ng-repeat="request in requests">
       <div class="network-details">
         <img
+          ng-if="request.profile_photo"
           ng-src="{{'http://localhost/codeigniter/' + request.profile_photo}}"
+          class="network-avatar"
+          alt="Avatar"
+        />
+        <img
+          ng-if="!request.profile_photo"
+          ng-src="http://localhost/codeigniter/Angular/src/app/components/navbar/almashines%20logo.png"
           class="network-avatar"
           alt="Avatar"
         />

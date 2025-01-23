@@ -99,7 +99,16 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'word'	=>	array('application/msword', 'application/octet-stream'),
 				'xl'	=>	'application/excel',
 				'eml'	=>	'message/rfc822',
-				'json' => array('application/json', 'text/json')
+				'json' => array('application/json', 'text/json'),
+				'webp'  =>	'image/webp',
+				'ico'	=>	'image/x-icon',
+				'flv'	=>	'video/x-flv',
+				'wmv'	=>	'video/x-ms-wmv',
+				'mkv'	=>	'video/x-matroska',
+				'3gp'	=>	'video/3gpp',
+				'ogv'	=>	'video/ogg',
+				'heic'	=>	'image/heic',
+				'heif'	=>	'image/heif'
 			);
 
 
