@@ -28,24 +28,6 @@ angular.module("myApp").component("storyBar", {
       return videoExtensions.includes(extension);
     };
 
-    this.isPDF = function (mediaUrl) {
-      if (!mediaUrl) {
-        alert("no media url specified");
-        this.activeStory = null;
-      }
-      const extension = mediaUrl.split(".").pop().toLowerCase();
-      return extension === "pdf";
-    };
-
-    // Use $sce to handle trusted URLs for iframe sources
-    this.getTrustedUrl = function (mediaUrl) {
-      if (!mediaUrl) {
-        alert("no media url specified");
-        this.activeStory = null;
-      }
-      return $sce.trustAsResourceUrl(mediaUrl);
-    };
-
     this.fetchStories = function () {
       $http
         .get(`${API_BASE_URL}/get-stories/${this.currentUser}`)
@@ -90,7 +72,7 @@ angular.module("myApp").component("storyBar", {
         alert("Please select a file to upload");
         return;
       }
-
+      console.log(file);
       // Create a FormData object
       const formData = new FormData();
       formData.append("userId", this.currentUser); // Add userId as a form field
@@ -105,7 +87,7 @@ angular.module("myApp").component("storyBar", {
             alert("File uploaded successfully");
             this.fetchStories();
           } else if (response.data.status == "error") {
-            alert("Error uploading file", response.data.message);
+            alert("Error uploading file", response.messages);
           } else {
             alert("Failed to upload file");
           }

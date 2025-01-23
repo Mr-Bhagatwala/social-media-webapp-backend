@@ -58,7 +58,7 @@ exit; // Terminate the script after the preflight response
     // Upload a Story
     public function uploadStory() {
         $config['upload_path'] = FCPATH .'assets/stories/';
-        $config['allowed_types'] = '*';
+        $config['allowed_types'] = 'video/mp4|jpg|jpeg|png|gif|webp|mp4|webm|ogg|mkv|avi|mov|video/mp4';
         $this->load->library('upload', $config);
         if (!$this->upload->do_upload('media')) {
         $error = $this->upload->display_errors();

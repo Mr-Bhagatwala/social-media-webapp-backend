@@ -594,7 +594,6 @@ class CI_Upload {
 		}
 
 		$ext = strtolower(ltrim($this->file_ext, '.'));
-
 		if ( ! in_array($ext, $this->allowed_types))
 		{
 			return FALSE;
@@ -626,7 +625,7 @@ class CI_Upload {
 			}
 		}
 		elseif ($mime == $this->file_type)
-		{
+		{		
 				return TRUE;
 		}
 
@@ -661,6 +660,7 @@ class CI_Upload {
 	 */
 	public function is_allowed_dimensions()
 	{
+		
 		if ( ! $this->is_image())
 		{
 			return TRUE;
@@ -734,7 +734,7 @@ class CI_Upload {
 	 * @return	string
 	 */
 	public function get_extension($filename)
-	{
+	{	
 		$x = explode('.', $filename);
 		return '.'.end($x);
 	}
@@ -961,7 +961,6 @@ class CI_Upload {
 			$this->mimes = $mimes;
 			unset($mimes);
 		}
-
 		return ( ! isset($this->mimes[$mime])) ? FALSE : $this->mimes[$mime];
 	}
 
@@ -1061,7 +1060,6 @@ class CI_Upload {
 				return;
 			}
 		}
-
 		$this->file_type = $file['type'];
 	}
 

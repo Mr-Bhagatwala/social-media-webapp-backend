@@ -65,28 +65,6 @@
           height="380px"
         ></video>
       </div>
-
-      <!-- Render PDF -->
-      <div ng-if="$ctrl.isPDF($ctrl.activeStory.media_url)">
-        <iframe
-          class="story-media"
-          ng-src="{{$ctrl.getTrustedUrl($ctrl.activeStory.media_url)}}"
-          frameborder="0"
-          width="100%"
-          height="400px"
-        >
-        </iframe>
-      </div>
-
-      <!-- Unsupported File Type -->
-      <div
-        ng-if="!($ctrl.isImage($ctrl.activeStory.media_url) || $ctrl.isVideo($ctrl.activeStory.media_url) || $ctrl.isPDF($ctrl.activeStory.media_url))"
-      >
-        <p>Unsupported file type. Please download the file to view it:</p>
-        <a ng-href="{{$ctrl.activeStory.media_url}}" target="_blank"
-          >Download File</a
-        >
-      </div>
     </div>
 
     <div class="story-footer">
