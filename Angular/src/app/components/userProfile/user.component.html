@@ -267,22 +267,26 @@
             Enter a valid 10-digit phone number.
           </span>
         </div>
-
+        
         <label for="linkedinUrl">LinkedIn URL:</label>
         <input
-          type="text"
-          id="linkedinUrl"
-          ng-model="editData.linkedinUrl"
-          name="linkedinUrl"
-          ng-pattern="/^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/"
+        type="text"
+        id="linkedinUrl"
+        ng-model="editData.linkedinUrl"
+        name="linkedinUrl"
+        ng-pattern="/^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/"
         />
         <div
-          ng-show="
-            editForm.linkedinUrl.$touched && editForm.linkedinUrl.$invalid
-          "
-          class="error-message"
+        ng-show="
+        editForm.linkedinUrl.$touched && editForm.linkedinUrl.$invalid
+        "
+        class="error-message"
         >
-          <span ng-show="contactDetails.linkedinUrl.$error.pattern">
+          <!-- <span ng-show="editForm.linkedinUrl.$error.required">
+            Linekdin url is required.
+          </span> -->
+          <!-- <span ng-show="contactDetails.linkedinUrl.$error.pattern"> -->
+          <span ng-show="editForm.linkedinUrl.$error.pattern">
             Please enter a valid LinkedIn URL (e.g.,
             https://www.linkedin.com/in/username).
           </span>
