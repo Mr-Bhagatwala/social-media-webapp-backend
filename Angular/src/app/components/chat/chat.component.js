@@ -10,7 +10,7 @@ angular.module("myApp").component("chat", {
     $scope.searchs = "";
     $scope.chats = [];
     $scope.isThere = true;
-    // Function to check if input is empty
+    
     $scope.checkInput = function () {
       return $scope.searchs.trim() !== "";
     };
@@ -217,8 +217,10 @@ angular.module("myApp").component("chat", {
         alert("Error in fetching chats");
       });
 
-      this.displayChatDetails = function (chat){
-        this.onChatClick({chat: chat})
-      }
+    console.log("I am inside chat hello");
+    
+    this.displayChatDetails = function (chat){
+      this.onChatClick({chat: chat})
+    }
   },
 });
