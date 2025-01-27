@@ -4,9 +4,10 @@
   display: flex;
   flex-grow: 1;
   height: 90vh;
-  /* overflow: hidden; */
-  background-color: #0c1317;
-  min-width: 100%;
+  overflow: hidden;
+  /* background-color: #0c1317; */
+  border: 2px solid red;
+  min-width: 99%;
 }
 
 .sidebar {
@@ -15,8 +16,8 @@
   color: white;
   padding: 10px;
   box-sizing: border-box;
-  overflow-y: auto; /* Enable vertical scroll for sidebar */
-}
+  overflow-y: auto; 
+} 
 
 .sidebar h2 {
   margin-top: 0;
@@ -41,7 +42,7 @@
   margin: 0;
   background-color: #ecf0f1;
   box-sizing: border-box;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 @media (max-width: 768px) {
