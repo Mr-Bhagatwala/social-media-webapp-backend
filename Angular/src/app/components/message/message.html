@@ -8,7 +8,7 @@
 <div ng-if="chatData" id="parent">
   <div class="msg-nav">
     <div class="nav-img">
-      <img src="{{chatData.profile_photo}}" alt="prof"/>
+      <img src="{{chatData.profile_photo}}" alt="prof" />
     </div>
     <div class="nav-con">
       <div>
@@ -26,61 +26,46 @@
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
       massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-    sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
+      sodales elit sollicitudin. Quisque nec eros non dolor malesuada
+      ullamcorper.
     </p>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
       massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
+      sodales elit sollicitudin. Quisque nec eros non dolor malesuada
+      ullamcorper.
     </p>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
       massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
+      sodales elit sollicitudin. Quisque nec eros non dolor malesuada
+      ullamcorper.
     </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada ullamcorper.
-    </p>
+    <h1>Hello kdlsklj </h1>
+    <h1>Hello kdlsklj </h1>
+    <h1>Hello kdlsklj </h1>         
   </div>
-  
+
   <div class="sticky-input-container">
     <span class="material-icons attach" ng-click="triggerFileInput()">
       attachment
     </span>
-    <input type="file" class="file-input" id="fileInput" hidden onchange="angular.element(this).scope().logSelectedFile(this)"/>
-    <textarea rows="1" class="text-input" placeholder="Type your message here..." ng-model="message" ng-keyup="adjustHeight($event)">
-
+    <input
+      type="file"
+      class="file-input"
+      id="fileInput"
+      hidden
+      onchange="angular.element(this).scope().logSelectedFile(this)"
+    />
+    <textarea
+      rows="1"
+      class="text-input"
+      placeholder="Type your message here..."
+      ng-model="message"
+      ng-keyup="adjustHeight($event)"
+    >
     </textarea>
-    <span class="material-icons send" ng-click="sendMessage()">
-      send
-    </span>
+    <span class="material-icons send" ng-click="sendMessage()"> send </span>
   </div>
 
   <dialog id="fileDialog" class="file-dialog">
@@ -89,15 +74,16 @@
     <p><strong>Type:</strong> {{ selectedFile.type || 'Unknown' }}</p>
     <p><strong>Size:</strong> {{ (selectedFile.size / 1024).toFixed(2) }} KB</p>
     <div class="dialog-div">
-      
       <span ng-click="closeDialog()" id="cancel" class="material-icons">
         close
-        </span>
-      <span id="send-dialog" class="material-icons send" ng-click="sendMessage()">
+      </span>
+      <span
+        id="send-dialog"
+        class="material-icons send"
+        ng-click="sendMessage()"
+      >
         send
       </span>
     </div>
   </dialog>
 </div>
-
-
