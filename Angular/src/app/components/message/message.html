@@ -15,59 +15,134 @@
         <p id="pname">{{chatData.name}}</p>
       </div>
       <div>
-        <p>{{ getLastSeenMessage(chatData.last_message) }}</p>
+        <p>Last seen at {{ chatData.last_message }}</p>
       </div>
     </div>
   </div>
 
-  <div id="chat-msg">
-    <h1>Welcome</h1>
-    <p>This is the main content area.</p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada
-      ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada
-      ullamcorper.
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus ac
-      massa tincidunt feugiat. Integer ultricies dolor a est fermentum, quis
-      sodales elit sollicitudin. Quisque nec eros non dolor malesuada
-      ullamcorper.
-    </p>
-    <h1>Hello kdlsklj </h1>
-    <h1>Hello kdlsklj </h1>
-    <h1>Hello kdlsklj </h1>         
+  <!--  display of messages-->>
+
+  <div id="chat-msg" class="messages" ng-repeat="message in messages track by $index">
+    <div ng-class="{
+      'my-message': message.sender_id === userDetails, 
+      'other-message': message.sender_id !== userDetails
+    }">
+      
+      <!-- Reply Preview for Messages -->
+      <div class="reply-preview" ng-if="message.parent_message_id ">
+        <!-- Text Message Preview -->
+        <p class="reply-text" ng-if="!getParentMessage(message.parent_message_id).file_url">
+          {{ getParentMessage(message.parent_message_id).message_text || 'No text' }}
+        </p>
+  
+        <!-- Image Preview -->
+        <div ng-if="getParentMessage(message.parent_message_id).file_url && 
+                     (getParentMessage(message.parent_message_id).file_url.endsWith('.jpg') || 
+                      getParentMessage(message.parent_message_id).file_url.endsWith('.jpeg') || 
+                      getParentMessage(message.parent_message_id).file_url.endsWith('.png') || 
+                      getParentMessage(message.parent_message_id).file_url.endsWith('.gif'))">
+          <img ng-src="{{ getParentMessage(message.parent_message_id).file_url }}" alt="Image preview" class="image-preview" />
+          <p>{{ getParentMessage(message.parent_message_id).file_url.split("/").pop() || 'No image name' }}</p>
+        </div>
+  
+        <!-- PDF Preview -->
+        <div ng-if="getParentMessage(message.parent_message_id).file_url && 
+                     getParentMessage(message.parent_message_id).file_url.endsWith('.pdf')">
+          <object ng-attr-data="{{ getParentMessage(message.parent_message_id).file_url }}" type="application/pdf" class="pdf-preview">
+            <p>Your browser does not support PDFs. Please download the PDF to view it:</p>
+            <a ng-href="{{ getParentMessage(message.parent_message_id).file_url }}" download>Download PDF</a>
+          </object>
+          <p>{{ getParentMessage(message.parent_message_id).file_url.split("/").pop() || 'No file name' }}</p>
+        </div>
+      </div>
+  
+      <!-- Main Message Content -->
+      <div class="message-content">
+        <!-- Text Message -->
+        <p ng-if="!message.file_url">{{ message.message_text }}</p>
+  
+        <!-- Image Preview -->
+        <div ng-if="message.file_url && 
+                     (message.file_url.endsWith('.jpg') || 
+                      message.file_url.endsWith('.jpeg') || 
+                      message.file_url.endsWith('.png') || 
+                      message.file_url.endsWith('.gif'))">
+          <img ng-src="{{ message.file_url }}" alt="Image preview" class="image-preview" />
+          <p>{{ message.file_url.split("/").pop() || 'No image name' }}</p>
+        </div>
+  
+        <!-- PDF Preview -->
+        <div ng-if="message.file_url && message.file_url.endsWith('.pdf')">
+          <object ng-attr-data="{{ message.file_url }}" type="application/pdf" class="pdf-preview">
+            <p>Your browser does not support PDFs. Please download the PDF to view it:</p>
+            <a ng-href="{{ message.file_url }}" download>Download PDF</a>
+          </object>
+          <p>{{ message.file_url.split("/").pop() || 'No file name' }}</p>
+        </div>
+      </div>
+  
+      <!-- Timestamp -->
+      <small class="timestamp">{{ message.timestamp }}</small>
+  
+      <!-- Options Icon -->
+      <div class="options-container">
+        <span class="options-icon">&#8942;</span>
+        <div class="dropdown-menu">
+          <button class="menu-item" ng-click="replyToMessage(message)">Reply</button>
+          <button class="menu-item" ng-click="deleteMessage(message.message_id)">Delete</button>
+          <button class="menu-item" ng-if="message.file_url">
+            <a class="download-button"   ng-href="{{ message.file_url }}" download>Download</a>
+          </button>
+        </div>
+      </div> 
+
+    </div>
   </div>
+  
+  
+
+
+
+
+<!-- Reply Preview -->
+<div ng-if="replyMessage" class="reply-preview">
+  <p class="reply-text">
+    <!-- Text Message -->
+    <span ng-if="!replyMessage.file_url">{{ replyMessage.message_text || 'No text' }}</span>
+
+    <!-- Image Preview -->
+    <div ng-if="replyMessage.file_url && (replyMessage.file_url.endsWith('.jpg') || replyMessage.file_url.endsWith('.jpeg') || replyMessage.file_url.endsWith('.png') || replyMessage.file_url.endsWith('.gif'))">
+      <img ng-src="{{ replyMessage.file_url }}" alt="Image preview" class="image-preview"/>
+      <p>{{ replyMessage.file_name || 'No image name' }}</p>
+    </div>
+    
+    <!-- PDF Preview -->
+    <div ng-if="replyMessage.file_url && replyMessage.file_url.endsWith('.pdf')">
+      <object ng-attr-data="{{ replyMessage.file_url }}" type="application/pdf" class="pdf-preview">
+        <p>Your browser does not support PDFs. Please download the PDF to view it:</p>
+        <a ng-href="{{ replyMessage.file_url }}" download>Download PDF</a>
+      </object>
+      <p>{{ replyMessage.file_name || 'No image name' }}</p>
+    </div>
+  </p>
+  <span ng-click="clearReply()" class="cancel-reply">X</span>
+</div>
+
+
 
   <div class="sticky-input-container">
-    <span class="material-icons attach" ng-click="triggerFileInput()">
-      attachment
-    </span>
-    <input
-      type="file"
-      class="file-input"
-      id="fileInput"
-      hidden
-      onchange="angular.element(this).scope().logSelectedFile(this)"
-    />
-    <textarea
-      rows="1"
-      class="text-input"
-      placeholder="Type your message here..."
-      ng-model="message"
-      ng-keyup="adjustHeight($event)"
-    >
-    </textarea>
-    <span class="material-icons send" ng-click="sendMessage()"> send </span>
+    <span class="material-icons attach" ng-click="triggerFileInput()">attachment</span>
+    <input type="file" class="file-input" id="fileInput" hidden onchange="angular.element(this).scope().logSelectedFile(this)"/>
+    
+    <textarea rows="1"  id="myTextarea" class="text-input" placeholder="Type your message here..." ng-model="message" ng-keyup="adjustHeight($event)"></textarea>
+
+    <span class="material-icons send" ng-if="!replyMessage" ng-click="sendMessage(message)">send</span>
+    <span class="material-icons send" ng-if="replyMessage" ng-click="sendReplyMessage(message)   ">send</span>
   </div>
 
+
+  
+  <!-- File Dialog for File Upload -->
   <dialog id="fileDialog" class="file-dialog">
     <h3>File Details</h3>
     <p><strong>Name:</strong> {{ selectedFile.name }}</p>
@@ -77,13 +152,8 @@
       <span ng-click="closeDialog()" id="cancel" class="material-icons">
         close
       </span>
-      <span
-        id="send-dialog"
-        class="material-icons send"
-        ng-click="sendMessage()"
-      >
-        send
-      </span>
+      <span id="send-dialog" ng-if="!replyMessage" class="material-icons send" ng-click="sendFile()">send</span>
+      <span id="send-dialog" ng-if="replyMessage" class="material-icons send" ng-click="sendFileReplyMessage()">send</span>
     </div>
   </dialog>
 </div>

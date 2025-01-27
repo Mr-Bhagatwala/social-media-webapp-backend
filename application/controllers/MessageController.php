@@ -99,6 +99,7 @@ class MessageController extends CI_Controller {
                 'sender_id' => $this->input->post('sender_id'), // Optional, for tracking the uploader
                 'file_url' => $file_url,
                 'timestamp' => date('Y-m-d H:i:s'),
+                'parent_message_id' => $this->input->post('parent_message_id'),
             ];
     
             // Example: Save file data in the database (optional)
@@ -170,6 +171,11 @@ class MessageController extends CI_Controller {
                         ->set_output(json_encode(['error' => 'Failed to send reply']));
         }
     }
+
+
+
+
+ 
 }
 
 ?>
