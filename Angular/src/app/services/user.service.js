@@ -37,10 +37,6 @@ angular.module("myApp").service("UserService", [
         );
 
         if (response.data.status === "success") {
-          console.log(
-            "User data fetched successfully from backend:",
-            response.data.user
-          );
           cachedUserData = response.data.user;
           return cachedUserData;
         } else {

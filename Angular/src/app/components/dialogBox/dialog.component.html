@@ -2,7 +2,6 @@
     
     <h3>{{$ctrl.dialogTitle}}</h3>
     
-    
     <div ng-if="$ctrl.editType === 'basicDetails'">
         <label for="name">Name:</label>
         <input type="text" id="name" ng-model="$ctrl.editData.name" />
@@ -11,7 +10,6 @@
         <label for="currentCity">Current City:</label>
         <input type="text" id="currentCity" ng-model="$ctrl.editData.currentCity" />
     </div>
-    
     
     <div ng-if="$ctrl.editType === 'contactDetails'">
         <label for="primaryEmail">Primary Email:</label>

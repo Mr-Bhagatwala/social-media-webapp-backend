@@ -58,11 +58,8 @@ exit; // Terminate the script after the preflight response
     // Upload a Story
     public function uploadStory() {
         $config['upload_path'] = FCPATH .'assets/stories/';
-        $config['allowed_types'] = 'jpg|png|gif|mp4|avi|mov|mkv';
-        $config['max_size'] = 10240; // 10 MB
-
+        $config['allowed_types'] = 'video/mp4|jpg|jpeg|png|gif|webp|mp4|webm|ogg|mkv|avi|mov|video/mp4';
         $this->load->library('upload', $config);
-
         if (!$this->upload->do_upload('media')) {
         $error = $this->upload->display_errors();
         echo json_encode(['status' => 'error', 'messages' => $error]);
@@ -118,6 +115,11 @@ exit; // Terminate the script after the preflight response
         // Add base URL to the media paths of each story
         foreach ($res as &$story) {
             $story['media_url'] = base_url().($story['media_url']); // Add the base URL to media URL
+        }
+        foreach ($res as &$story) {
+            if(strlen($story['profile_photo'])!=0) {
+                $story['profile_photo'] = base_url().($story['profile_photo']); // Add the base URL to media URL
+            }
         }
     
         // Return the response as JSON

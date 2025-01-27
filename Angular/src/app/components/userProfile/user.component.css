@@ -91,6 +91,15 @@
   transition: background-color 0.3s ease;
 }
 
+.edit-button span{
+  font-size: 16px;
+  line-height: 1;
+  margin: 0; 
+  padding: 0;
+  display: inline-block;
+  /* border: 2px solid red; */
+}
+
 .edit-button:hover {
   background-color: #303f9f;
 }

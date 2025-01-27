@@ -62,6 +62,7 @@ app
       .when("/chat", {
         templateUrl:
           "./app/components/chatApplication/chatApplication.component.html",
+        controller: "ParentController", //not added firstly
       })
       .otherwise({
         redirectTo: "/login",
@@ -72,7 +73,14 @@ app
     "$location",
     "UserService",
     function ($rootScope, $location, UserService) {
+
       $rootScope.$on("$routeChangeStart", function (event, next, current) {
+
+        const isNavigatingToChat = next && next.originalPath === "/chat";
+        if (!isNavigatingToChat) {
+          $rootScope.urlName = undefined;
+        }
+
         const allowedRoutes = ["/login", "/signup"];
         if (
           !UserService.isAuthenticated() &&

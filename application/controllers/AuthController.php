@@ -95,15 +95,15 @@ class AuthController extends CI_Controller {
                 // $this->session->set_userdata('user_name', $user['name']);
                 
                 // Set cookie (example configuration)
-                // $cookie = array(
-                //     'name'   => 'user_id',
-                //     'value'  => $user['user_id'],
-                //     'expire' => '3600', // 1 hour
-                //     'path'   => '/',
-                //     'secure' => FALSE, // Set to TRUE if using HTTPS
-                //     'httponly' => TRUE
-                // );
-                // $this->input->set_cookie($cookie);
+                $cookie = array(
+                    'name'   => 'user_id',
+                    'value'  => $user['id'],
+                    'expire' => '3600', // 1 hour
+                    'path'   => '/',
+                    'secure' => FALSE, // Set to TRUE if using HTTPS
+                    'httponly' => TRUE
+                );
+                $this->input->set_cookie($cookie);
                 // Return success message
                 echo json_encode(['status' => 'success', 'message' => "User logged in successfully", "user"=>$user]);
             } else {
@@ -224,13 +224,15 @@ class AuthController extends CI_Controller {
         // Load input data for offset and limit
         $offset = $this->input->get('offset', true);
         $limit = $this->input->get('limit', true);
-    
+        $search = $this->input->get('search') ?: '';
+        
+        
         // Provide default values if offset and limit are not provided
         $offset = $offset !== null ? (int)$offset : 0;
         $limit = $limit !== null ? (int)$limit : 10;
     
         // Fetch users from the model with pagination
-        $users = $this->Auth_Model->getAllUsers($offset, $limit);
+        $users = $this->Auth_Model->getAllUsers($offset, $limit, $search);
     
         // Return the response
         if (!empty($users)) {

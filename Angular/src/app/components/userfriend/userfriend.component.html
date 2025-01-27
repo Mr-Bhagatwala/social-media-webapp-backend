@@ -70,13 +70,15 @@
       ng-repeat="friend in friends"
       ng-click="viewProfile(friend.name, friend.friend_id)"
     >
-      <img
-        ng-src="{{ friend.profile_photo }}"
-        alt="{{ friend.name }}"
-        class="profile-photo"
-      />
-      <div class="friend-details">
+      <div class="photo">
+        <img
+          ng-src="{{ friend.profile_photo }}"
+          alt="{{ friend.name }}"
+          class="profile-photo"
+        />
         <h3>{{ friend.name }}</h3>
+      </div>
+      <div class="friend-details">
         <button
           class="view-profile-btn"
           ng-click="viewProfile(friend.name, friend.friend_id)"

@@ -81,13 +81,26 @@ class Auth_Model extends CI_Model {
     //     return $query->result_array(); 
     // }
 
-    public function getAllUsers($offset, $limit) {
-        // Use CodeIgniter's query builder to fetch data with pagination
-        $this->db->limit($limit, $offset);
-        $query = $this->db->get('users'); // Replace 'users' with your actual table name
+    public function getAllUsers($offset, $limit, $search = '') {
+        // Base query to select user data
+        $query = "SELECT id, name, profile_photo FROM users WHERE 1=1";
+    
+        // Add search functionality
+        if (!empty($search)) {
+            $query .= " AND name LIKE ?";
+            $bindings = ["%{$search}%", $limit, $offset];
+        } else {
+            $bindings = [$limit, $offset];
+        }
+    
+        // Add pagination
+        $query .= " LIMIT ? OFFSET ?";
+    
+        // Execute the query
+        $result = $this->db->query($query, $bindings);
     
         // Return results as an array
-        return $query->result_array();
+        return $result->result_array();
     }
     
     

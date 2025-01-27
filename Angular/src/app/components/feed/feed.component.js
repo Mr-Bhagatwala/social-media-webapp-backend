@@ -60,7 +60,6 @@ angular
         $http
           .get(apiUrl)
           .then(function (response) {
-            console.log("res hai", response);
             if (response.data && response.data.status === "success") {
               const feeds = response.data.data;
 

@@ -78,6 +78,8 @@
 } */
 
 .friends-container {
+  display: flex !important;
+  flex-direction: column !important;
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -103,10 +105,10 @@
 
 .friend-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 15px;
-  width: 250px;
+  justify-content: space-between;
+  width: 80%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
@@ -120,12 +122,19 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+.photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
 .profile-photo {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 15px;
+  margin-bottom: 1px !important;
   border: 2px solid #007bff;
 }
 
@@ -133,15 +142,17 @@
   text-align: center;
 }
 
-.friend-details h3 {
+.photo h3 {
   margin: 0 0 10px;
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-left: 4px;
   color: #333;
   font-family: "Arial", sans-serif;
 }
 
 .view-profile-btn {
-  padding: 10px 15px;
+  padding: 8px;
   border: none;
   border-radius: 5px;
   background-color: #007bff;
@@ -157,7 +168,7 @@
 }
 
 .search-input {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   font-size: 16px;
   margin-bottom: 20px;

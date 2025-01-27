@@ -145,7 +145,7 @@ class FriendRequestModel extends CI_Model {
                                 OR (u.id = fr.receiver_id AND fr.sender_id = ?)
             WHERE fr.status = 'accepted'
         ";
-
+        
         // Add search functionality
         if (!empty($search)) {
             $query .= " AND u.name LIKE ?";
@@ -159,8 +159,6 @@ class FriendRequestModel extends CI_Model {
         $result = $this->db->query($query, $bindings);
         return $result->result_array();
     }
-
-    
 
 
     public function deleterequest($sender_id, $receiver_id){

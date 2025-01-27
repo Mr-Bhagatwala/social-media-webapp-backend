@@ -14,7 +14,6 @@ angular.module("myApp").component("navbar", {
       UserService.fetchUserData().then(function (user) {
         if (user) {
           $scope.userDetails = user;
-          console.log("Inside userDetails " + $scope.userDetails);
         } else {
           console.log("User not authenticated or data not found.");
         }

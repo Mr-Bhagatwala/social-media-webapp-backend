@@ -24,16 +24,24 @@
     <div class="story-circle" ng-class="{'not-viewed': !story.viewed}">
       <img
         class="story-img"
-        ng-src="{{'http://localhost/codeigniter/' + story.profile_photo}}"
-        alt="{{story.name}}"
+        ng-if="story.profile_photo"
+        ng-src="{{story.profile_photo}}"
+        alt=""
       />
+      <!-- If the profile photo is not available, show a black placeholder -->
+      <div ng-if="!story.profile_photo" class="placeholder">no profile</div>
     </div>
   </div>
 
   <!-- Story Full-Screen Modal -->
   <div class="story-full-modal" ng-if="$ctrl.activeStory">
     <div class="story-header">
-      <img class="story-avatar" ng-src="{{$ctrl.activeStory.profile_photo}}" />
+      <img
+        class="story-img"
+        ng-if="story.profile_photo"
+        ng-src="{{story.profile_photo}}"
+        alt=""
+      />
       <div class="story-user-info">
         <div class="story-username">{{$ctrl.activeStory.name}}</div>
         <div class="story-time">
@@ -44,11 +52,27 @@
     </div>
 
     <div class="story-content">
-      <img
-        class="story-media"
-        ng-src="{{$ctrl.activeStory.media_url}}"
-        alt="Story Media"
-      />
+      <!-- Render Image -->
+      <div ng-if="$ctrl.isImage($ctrl.activeStory.media_url)">
+        <img
+          class="story-media"
+          ng-src="{{$ctrl.activeStory.media_url}}"
+          alt="Story Media"
+          height="370px"
+        />
+      </div>
+
+      <!-- Render Video -->
+      <div ng-if="$ctrl.isVideo($ctrl.activeStory.media_url)">
+        <video
+          class="story-media"
+          ng-src="{{$ctrl.activeStory.media_url}}"
+          controls
+          autoplay
+          muted
+          height="380px"
+        ></video>
+      </div>
     </div>
 
     <div class="story-footer">

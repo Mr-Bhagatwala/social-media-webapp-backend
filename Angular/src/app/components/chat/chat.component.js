@@ -8,15 +8,47 @@ angular.module("myApp").component("chat", {
 
     const userId = UserService.getUserData();
     $scope.searchs = "";
-    // Function to check if input is empty
+    $scope.chats = [];
+    $scope.isThere = true;
+    
     $scope.checkInput = function () {
       return $scope.searchs.trim() !== "";
     };
     const ctrl = this;
 
-    // this.displayChatDetails = function (chat){
-    //   console.log("Clicked chat ", chat);
-    // }
+    $scope.fetchChats = function () {
+      $scope.isThere = true;
+      const url = `http://localhost/codeigniter/index.php/get-all-chats/${userId}?searchQuery=${encodeURIComponent($scope.searchs)}`;
+      $http
+          .get(url)
+          .then(function (response) {
+              if (response.data.status === "success") {
+                  $scope.chats = response.data.data;
+  
+                  // Add hover and toggle to all chats
+                  angular.forEach($scope.chats, function (chat) {
+                      chat.hover = false;
+                      chat.toggle = false;
+                  });
+              } else {
+                $scope.isThere = false;
+                // alert("No chats found");
+              }
+          })
+          .catch(function (response) {
+              alert("Error in fetching chats");
+          });
+    };
+
+    $scope.$watch("searchs", function (newVal, oldVal) {
+      // console.log($scope.searchs);
+      
+      if (newVal !== oldVal) {
+        console.log("I got triggered");
+        
+        $scope.fetchChats();
+      }
+    });
 
     ctrl.toggleMenu = function ($event, chat) {
       $event.stopPropagation();
@@ -185,8 +217,10 @@ angular.module("myApp").component("chat", {
         alert("Error in fetching chats");
       });
 
-      this.displayChatDetails = function (chat){
-        this.onChatClick({chat: chat})
-      }
+    console.log("I am inside chat hello");
+    
+    this.displayChatDetails = function (chat){
+      this.onChatClick({chat: chat})
+    }
   },
 });

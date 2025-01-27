@@ -4,11 +4,14 @@ angular
   .module("myApp")
   .controller(
     "user",
-    function ($scope, $http, $location, UserService, $routeParams) {
+    function ($scope, $http, $location, UserService, $routeParams, $rootScope) {
       $scope.admin = true;
       $scope.isAuthenticated = UserService.isAuthenticated();
       const urlUserId = $routeParams.userId;
       const urlUserName = $routeParams.userName;
+      $rootScope.urlName = urlUserName;
+      console.log("urlName stored in $rootScope: "+$rootScope.urlName);
+      
       const user_id = localStorage.getItem("user_id");
       console.log("I am from url " + urlUserId);
       $scope.requestStatus = "send request";
@@ -27,7 +30,7 @@ angular
           $scope.admin = false;
           fetchProfileFromURL(urlUserName, urlUserId);
         }
-      } else {
+      } else {                    
         console.log("User is not authenticated.");
       }
 
@@ -76,7 +79,7 @@ angular
           nae: "",
           nap: "",
           alternatePhones: [],
-          linkedinUrl: "",
+          linkedinUrl: null,
         },
         education: [],
         workHistory: [],
@@ -723,10 +726,37 @@ angular
         //     }
         //   });
       };
+
+      $scope.openChat = function openChat() {
+        
+        if (!user_id || !urlUserId) {
+            alert("Invalid user information.");
+            return;
+        }
+        
+        $http
+            .post(`http://localhost/codeigniter/index.php/create-chat/${user_id}/${urlUserId}`)
+            .then(function (response) {
+                if (response.data.status === "success") {
+                  console.log("Chat created or already exists:", response.data);
+                  $location.path('/chat');
+                } else {
+                    console.error("Failed to create chat:", response.data.message);
+                    alert("Could not create chat: " + response.data.message);
+                }
+            })
+            .catch(function (error) {
+                console.error("Error while creating chat:", error);
+                alert("An error occurred while creating the chat.");
+            });
+      };
+    
+
       $scope.navigationUserPost = function navigationUserPost() {
         const route = `/user-post/${urlUserId}`;
         $location.path(route);
       };
+
       $scope.openFileDialog = function openFileDialog() {
         const fileInput = document.getElementById("profilePhotoInput");
         console.log("I got triggered");
@@ -916,11 +946,11 @@ angular
           }
         });
 
-      $scope.navigationUserPost = function () {
-        const urlUserId = $routeParams.userId;
-        const route = `user-post/${urlUserId}`;
-        $location.path(route);
-      };
+      // $scope.navigationUserPost = function () {
+      //   const urlUserId = $routeParams.userId;
+      //   const route = `user-post/${urlUserId}`;
+      //   $location.path(route);
+      // };
       $scope.uploadProfilePhoto = function uploadProfilePhoto(input) {
         if (input.files && input.files[0]) {
           const file = input.files[0];

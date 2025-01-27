@@ -286,8 +286,7 @@ exit; // Terminate the script after the preflight response
     //         ]));
     // }
       
-    public function getFriends($userId)
-{
+    public function getFriends($userId){
     // Validate user ID
     if (!is_numeric($userId)) {
         return $this->output
@@ -331,7 +330,7 @@ exit; // Terminate the script after the preflight response
 
         // Fetch friend request status
         $requests_status = $this->FriendRequestModel->getFriendRequest($sender_id, $receiver_id);
-       
+        
         // Handle the response based on the status
         if ($requests_status) {
             return $this->output->set_status_header(200)
@@ -347,5 +346,4 @@ exit; // Terminate the script after the preflight response
     }
     
 }
-
 ?>

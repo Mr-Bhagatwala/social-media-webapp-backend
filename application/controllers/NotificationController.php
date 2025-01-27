@@ -14,27 +14,45 @@ class NotificationController extends CI_Controller {
          // For input validation
     }
 
-    public function getNotificationofUser($userId){
-        //from param
-        // $userId = $this->input->get('user_id');
+    public function getNotificationofUser($userId) {
+        // Validate User ID
         if (empty($userId) || !is_numeric($userId)) {
             return $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid or missing User ID.']));
         }
-
-        $response = $this->NotificationModel->getNotifications($userId);
-        foreach($response as &$friend){
-            $friend['profile_photo'] = base_url().$friend['profile_photo'];
+    
+        // Get `offset` and `limit` from query parameters
+        $offset = $this->input->get('offset') ?: 0; // Default to 0
+        $limit = $this->input->get('limit') ?: 10; // Default to 10
+    
+        // Validate offset and limit
+        if (!is_numeric($offset) || $offset < 0 || !is_numeric($limit) || $limit <= 0) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid offset or limit.']));
         }
-
-        if($response){
-            return $this->output->set_content_type('application/json')
-            ->set_output(json_encode(["data"=>$response, "status"=>"success"]));
+    
+        // Fetch notifications from the model
+        $response = $this->NotificationModel->getNotifications($userId, $offset, $limit);
+    
+        // Add base URL to profile photos
+        foreach ($response as &$notification) {
+            $notification['profile_photo'] = base_url() . $notification['profile_photo'];
         }
-        return $this->output->set_content_type('application/json')
-        ->set_output(json_encode(["status"=> "success", "message"=>"No Notifications "]));
+    
+        // Return response
+        if ($response) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['data' => $response, 'status' => 'success']));
+        }
+    
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['status' => 'success', 'message' => 'No Notifications']));
     }
+    
 
 }
 ?>

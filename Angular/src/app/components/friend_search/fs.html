@@ -5,10 +5,11 @@
     ng-model="searchTerm"
     class="search-input"
     style="width: 300px; margin-left: 20px"
+    ng-change="searchProfiles()"
   />
   <div>
     <div
-      ng-repeat="profile in filteredProfiles()"
+      ng-repeat="profile in profiles"
       class="profile-row"
       ng-click="handleRoute(profile.id, profile.name)"
     >
@@ -27,9 +28,11 @@
         ng-class="{'connected': isConnected(profile.id)}"
         class="connect-button"
       >
-        <!-- {{isConnected(profile.id) ? 'Connected' : 'Connect'}} -->
         Connect
       </button>
     </div>
   </div>
+  <p ng-if="loading">Loading more friends...</p>
+  <p ng-if="!loading && profiles.length === 0">No users found.</p>
+  <p ng-if="allLoaded">End of results</p>
 </div>

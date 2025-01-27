@@ -13,7 +13,10 @@ class ChatController extends CI_Controller {
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
     }
 
+
     public function getAllChats($userId) {
+        $searchQuery = $this->input->get('searchQuery'); // Get the search query
+    
         if ($userId == null || !is_numeric($userId)) {
             $response = [
                 'status' => 'error',
@@ -22,25 +25,28 @@ class ChatController extends CI_Controller {
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
     
-        $data = $this->ChatModel->getAllChats($userId);
+        $data = $this->ChatModel->getAllChats($userId, $searchQuery);
     
-        if ($data === null || empty($data)) { // Check if data is null or empty
+        if ($data === null || empty($data)) {
             $response = [
                 'status' => 'error',
                 'message' => 'No chats found or something went wrong.'
             ];
             return $this->output->set_content_type('application/json')->set_output(json_encode($response));
         }
+    
         foreach ($data as &$res) {
-            $res['profile_photo'] = base_url() . $res['profile_photo'] ;// Add the base URL to media URL
+            $res['profile_photo'] = base_url() . $res['profile_photo'];
         }
+    
         $response = [
             'status' => 'success',
             'message' => 'Chats fetched successfully',
             'data' => $data
         ];
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
-    }
+    }    
+
     //mute a chat
     public function muteChat($userId, $chatId) {
         if ($userId == null || !is_numeric($userId)) {
@@ -257,5 +263,45 @@ class ChatController extends CI_Controller {
         ];
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
+
+    //create a new chat
+    public function createChat($senderId, $receiverId)
+    {
+        // Validate senderId and receiverId
+        if ($senderId == null || !is_numeric($senderId) || $receiverId == null || !is_numeric($receiverId)) {
+            $response = [
+                'status' => 'error',
+                'message' => 'User IDs are required and must be numeric.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+
+        // Call the model method to create or find the chat
+        $response = $this->ChatModel->createChat($senderId, $receiverId);
+
+        if ($response === false) { // Failed to create or find chat
+            $response = [
+                'status' => 'error',
+                'message' => 'Failed to create chat. It may already exist or an error occurred.'
+            ];
+            return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+        }
+
+        if (is_array($response)) { // Existing chat found
+            $response = [
+                'status' => 'success',
+                'chatId' => $response['chat_id'], // Return the existing chat ID
+                'message' => 'Chat already exists.'
+            ];
+        } else { // New chat created
+            $response = [
+                'status' => 'success',
+                'chatId' => $response, // Return the new chat ID
+                'message' => 'Chat created successfully.'
+            ];
+        }
+        return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+
 }
 ?>

@@ -70,27 +70,22 @@ class NotificationModel extends CI_Model {
     //     $this->db->order_by('created_at', 'DESC');
     //     return $this->db->get('notifications')->result_array();
     // }
-    public function getNotifications($userId) {
-        // Select notifications along with the source's name and profile_photo
+    public function getNotifications($userId, $offset, $limit) {
+        // Select notifications with user details
         $this->db->select('
             notifications.*, 
             source_users.name AS name, 
             source_users.profile_photo AS profile_photo
         ');
-    
-        // Join with the users table (alias as source_users) to get source user details (name and profile_photo)
         $this->db->from('notifications');
-        $this->db->join('users AS source_users', 'source_users.id = notifications.source_id', 'left'); // Left join on source_id
-    
-        // Apply the condition for the specific user
+        $this->db->join('users AS source_users', 'source_users.id = notifications.source_id', 'left');
         $this->db->where('notifications.user_id', $userId);
-    
-        // Order the notifications by creation date in descending order
         $this->db->order_by('notifications.created_at', 'DESC');
+        $this->db->limit($limit, $offset); // Apply limit and offset
     
-        // Get the result and return as an array
         return $this->db->get()->result_array();
     }
+    
     
     
 
