@@ -33,6 +33,7 @@ angular.module("myApp").component("storyBar", {
         .get(`${API_BASE_URL}/get-stories/${this.currentUser}`)
         .then((response) => {
           this.stories = response.data;
+          console.log(this.stories);
           this.stories.forEach((story) => {
             story.isCurrentUserStory = story.user_id == this.currentUser;
             $http

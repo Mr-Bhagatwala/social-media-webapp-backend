@@ -117,7 +117,9 @@ exit; // Terminate the script after the preflight response
             $story['media_url'] = base_url().($story['media_url']); // Add the base URL to media URL
         }
         foreach ($res as &$story) {
-            $story['profile_photo'] = base_url().($story['profile_photo']); // Add the base URL to media URL
+            if(strlen($story['profile_photo'])!=0) {
+                $story['profile_photo'] = base_url().($story['profile_photo']); // Add the base URL to media URL
+            }
         }
     
         // Return the response as JSON
