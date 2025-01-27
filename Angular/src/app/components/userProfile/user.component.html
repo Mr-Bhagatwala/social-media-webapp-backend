@@ -33,7 +33,7 @@
           {{ requestStatus }}
         </button>
         
-        <button class="edit-button" ng-if="!admin" ng-click="openChat()">
+        <button class="edit-button" ng-if="!admin && requestStatus=='connected'" ng-click="openChat()">
           <span class="material-icons">
             chat
           </span>

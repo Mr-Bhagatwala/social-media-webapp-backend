@@ -87,6 +87,7 @@ $route['getFriendRequestStatus'] = 'FriendRequestController/getFriendRequestStat
 $route['rfr'] = 'FriendRequestController/respondRequest';
 $route['get-friends/(:num)'] = 'FriendRequestController/getFriends/$1';
 
+
 // Stories
 $route['upload-story'] = 'StoriesController/uploadStory';
 $route['get-stories/(:num)'] = 'StoriesController/getStoriesofUser/$1';

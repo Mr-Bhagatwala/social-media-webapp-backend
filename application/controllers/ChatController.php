@@ -13,6 +13,7 @@ class ChatController extends CI_Controller {
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
     }
 
+
     public function getAllChats($userId) {
         $searchQuery = $this->input->get('searchQuery'); // Get the search query
     

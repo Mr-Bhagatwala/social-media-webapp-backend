@@ -15,7 +15,7 @@ angular
       const user_id = UserService.getUserData();
       $scope.loadFriends = function () {
         if ($scope.isLoading || !$scope.hasMore) return;
-
+        
         console.log("term is ", $scope.searchTerm);
         const searchQuery = encodeURIComponent($scope.searchTerm);
         console.log("searchQuery is ", searchQuery);
@@ -67,6 +67,8 @@ angular
         console.log("Navigating to:", route);
         $location.path(route); // Navigate to the route
       };
+
+
       // Initial call to load friends
       $scope.loadFriends();
     }
