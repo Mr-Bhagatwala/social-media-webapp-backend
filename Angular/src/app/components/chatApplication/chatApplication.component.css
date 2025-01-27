@@ -5,13 +5,13 @@
   flex-grow: 1;
   height: 90vh;
   overflow: hidden;
-  /* background-color: #0c1317; */
-  border: 2px solid red;
-  min-width: 99%;
+  min-width: 100%;
+  flex-wrap: wrap;
 }
 
 .sidebar {
   width:30%;
+  border: 2px solid blueviolet;
   background-color: #01182e;
   color: white;
   padding: 10px;
@@ -47,10 +47,8 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 10%; /* Make sidebar take 100% width */
-  }
-
-  .main-content {
-    width: 40%;
-  }
+    width: 100%; 
+    /* background-color: #2288e7; */
+    border: 2px solid orange;
+  }  
 }
