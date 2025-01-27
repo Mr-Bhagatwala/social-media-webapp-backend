@@ -45,11 +45,9 @@
 }
 
 @media (max-width: 768px) {
-  .sidebar {
-    width: 10%; /* Make sidebar take 100% width */
-  }
 
-  .main-content {
-    width: 40%;
-  }
+
+  /* .main-content {
+    idth: 50%;w
+  } */
 }
