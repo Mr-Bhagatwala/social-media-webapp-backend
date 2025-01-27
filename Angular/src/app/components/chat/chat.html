@@ -68,10 +68,9 @@
       >
         expand_more
       </span>
-
       <!-- Dropdown Menu shown on hover -->
-      <div class="dropdown-menu" ng-if="chat.toggle">
-        <button
+      <div class="dropdown-menu-1" ng-if="chat.toggle">
+        <button 
           class="menu-item"
           ng-click="$ctrl.muteNotifications(chat)"
           ng-if="chat.is_muted==0"

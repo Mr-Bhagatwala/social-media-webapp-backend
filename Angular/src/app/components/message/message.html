@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <!--  display of messages-->>
+
 
   <div id="chat-msg" class="messages" ng-repeat="message in messages track by $index">
     <div ng-class="{
@@ -87,7 +87,7 @@
       <!-- Options Icon -->
       <div class="options-container">
         <span class="options-icon">&#8942;</span>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu-2">
           <button class="menu-item" ng-click="replyToMessage(message)">Reply</button>
           <button class="menu-item" ng-click="deleteMessage(message.message_id)">Delete</button>
           <button class="menu-item" ng-if="message.file_url">
