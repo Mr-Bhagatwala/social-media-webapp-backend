@@ -261,7 +261,7 @@ angular.module("myApp").component("message", {
 
       $http
         .post(
-          "http://localhost/codeigniter/index.php/message/sendFile",
+          "http://localhost/codeigniter/index.php/message/fileReply",
           formData,
           {
             headers: { "Content-Type": undefined },
