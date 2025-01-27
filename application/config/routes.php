@@ -133,6 +133,7 @@ $route['message/send'] = 'MessageController/sendMessage';
 $route['message/sendFile'] = 'MessageController/sendFile';
 $route['message/delete'] = 'MessageController/deleteMessage';
 $route['message/reply'] = 'MessageController/replyToMessage';
+$route['message/fileReply'] = 'MessageController/replySendFile';
 $route['message/fetch'] = 'MessageController/fetchMessage';
 
 $route['404_override'] = '';

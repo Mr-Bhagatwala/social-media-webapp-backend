@@ -52,6 +52,7 @@ angular.module("myApp").component("chat", {
 
     ctrl.toggleMenu = function ($event, chat) {
       $event.stopPropagation();
+      console.log(chat.toggle);
       chat.toggle = !chat.toggle;
     };
 

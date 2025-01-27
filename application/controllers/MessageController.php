@@ -99,7 +99,6 @@ class MessageController extends CI_Controller {
                 'sender_id' => $this->input->post('sender_id'), // Optional, for tracking the uploader
                 'file_url' => $file_url,
                 'timestamp' => date('Y-m-d H:i:s'),
-                'parent_message_id' => $this->input->post('parent_message_id'),
             ];
     
             // Example: Save file data in the database (optional)
@@ -169,6 +168,48 @@ class MessageController extends CI_Controller {
                         ->set_content_type('application/json')
                         ->set_status_header(500)
                         ->set_output(json_encode(['error' => 'Failed to send reply']));
+        }
+    }
+
+
+    public function replySendFile() {
+        if (!isset($_FILES['file'])) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => 'No file was uploaded']));
+        }
+        $this->load->helper('url');
+        $config['upload_path'] = './assets/messageFile/';
+        $config['allowed_types'] = 'gif|jpg|png|pdf|docx|txt'; // Define allowed file types
+        $config['max_size'] = 2048; // Set max file size (in KB)
+    
+        $this->load->library('upload', $config);
+    
+        if (!$this->upload->do_upload('file')) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => $this->upload->display_errors()]));
+        } else {
+            $uploadData = $this->upload->data();
+            $file_url = base_url('assets/messageFile/' . $uploadData['file_name']);
+    
+            // Optional: Save file metadata or associate it with a message in the database
+            $fileData = [
+                'chat_id' => $this->input->post('chat_id'), // Optional, for associating file with chat
+                'sender_id' => $this->input->post('sender_id'), // Optional, for tracking the uploader
+                'file_url' => $file_url,
+                'timestamp' => date('Y-m-d H:i:s'),
+                'parent_message_id' => $this->input->post('parent_message_id'),
+            ];
+    
+            // Example: Save file data in the database (optional)
+            $this->MessageModel->insertFile($fileData);
+    
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode(['success' => 'File uploaded successfully', 'file_url' => $file_url]));
         }
     }
 

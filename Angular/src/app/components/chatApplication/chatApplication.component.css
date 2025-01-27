@@ -10,7 +10,7 @@
 }
 
 .sidebar {
-  width: 30%;
+  width:30%;
   background-color: #01182e;
   color: white;
   padding: 10px;
@@ -42,4 +42,14 @@
   background-color: #ecf0f1;
   box-sizing: border-box;
   overflow-y: auto; 
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 10%; /* Make sidebar take 100% width */
+  }
+
+  .main-content {
+    width: 40%;
+  }
 }

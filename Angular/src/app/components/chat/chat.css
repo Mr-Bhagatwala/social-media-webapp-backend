@@ -1,5 +1,5 @@
 .chat-container {
-  min-width: fit-content;
+  /* min-width: fit-content; */
   overflow: hidden;
 }
 .top {
@@ -157,7 +157,7 @@
   margin-left: 10px;
 }
 
-.dropdown-menu {
+.dropdown-menu-1 {
   position: absolute;
   bottom: -10%; /* Position it right below the icon */
   right: 10%; /* Align it to the right side */
@@ -170,10 +170,6 @@
   flex-direction: column;
   z-index: 100;
   min-width: 160px;
-}
-
-.dropdown-menu.hidden {
-  display: none;
 }
 
 .menu-item {
@@ -190,4 +186,60 @@
 .menu-item:hover {
   background-color: #3c4f56;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    /* flex-direction: column;
+    align-items: flex-start; */
+    display: none;
+  }
+
+  .search-container {
+    width: 40%;
+  }
+
+  .chat-item {
+    flex-direction: column;
+    padding: 15px;
+    border-bottom: 1px solid #333;
+  }
+
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+  }
+
+  .chat-details {
+    margin-left: 10px;
+  }
+
+  .chat-name {
+    font-size: 14px;
+  }
+
+  .chat-time {
+    /* font-size: 10px; */
+    display: none;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .fil {
+    margin: 5px 0;
+    padding: 6px 12px;
+  }
+
+  .dropdown-menu-1 {
+    position: relative;
+    bottom: 0;
+    right: 0;
+  }
+
+  .menu-item {
+    font-size: 12px;
+  }
 }
