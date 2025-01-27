@@ -42,7 +42,7 @@
   margin: 0;
   background-color: #ecf0f1;
   box-sizing: border-box;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 @media (max-width: 768px) {

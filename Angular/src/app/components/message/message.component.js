@@ -10,11 +10,8 @@ angular.module("myApp").component("message", {
     $scope.message = "";
     $scope.messages = [];
     $scope.chatData = null;
-  
 
-
-    console.log("user details ----> ",$scope.userDetails);
-
+    console.log("user details ----> ", $scope.userDetails);
 
     this.$onChanges = function (changes) {
       if (changes.selectedChat) {
@@ -23,21 +20,22 @@ angular.module("myApp").component("message", {
       }
       $scope.getPastMessages();
     };
-
-
-    
-
+    setInterval(function () {
+      $scope.getPastMessages();
+    }, 5000);
     $scope.getParentMessage = function (parentMessageId) {
-      return $scope.messages.find((msg) => msg.message_id === parentMessageId) || {};
+      return (
+        $scope.messages.find((msg) => msg.message_id === parentMessageId) || {}
+      );
     };
-    
+
     $scope.getPastMessages = function () {
       if (!$scope.chatData || !$scope.chatData.chat_id) {
         console.warn("chatData or chat_id is not available");
         return;
       }
       var chatId = $scope.chatData.chat_id; // Assuming chatData is defined in your scope
-      console.log(chatId)
+      console.log(chatId);
 
       $http
         .get(
@@ -63,7 +61,7 @@ angular.module("myApp").component("message", {
       event.stopPropagation(); // Prevent click propagation
       $scope.menuIndex = $scope.menuIndex === index ? null : index; // Toggle menu
     };
-    
+
     $scope.getLastSeenMessage = function (lastMessage) {
       if (!lastMessage) {
         return "No messages yet";
@@ -72,20 +70,19 @@ angular.module("myApp").component("message", {
       const messageDate = new Date(lastMessage);
       const today = new Date();
 
-      const isToday =
-        messageDate.toDateString() === today.toDateString(); // Compare only the date part
+      const isToday = messageDate.toDateString() === today.toDateString(); // Compare only the date part
 
       if (isToday) {
         const hours = messageDate.getHours();
-        const minutes = messageDate.getMinutes().toString().padStart(2, '0');
-        const ampm = hours >= 12 ? 'pm' : 'am';
+        const minutes = messageDate.getMinutes().toString().padStart(2, "0");
+        const ampm = hours >= 12 ? "pm" : "am";
         const formattedTime = `${hours % 12 || 12}:${minutes} ${ampm}`;
         return `Last seen today at ${formattedTime}`;
       } else {
         const formattedDate = messageDate.toLocaleDateString();
         const formattedTime = messageDate.toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
+          hour: "2-digit",
+          minute: "2-digit",
           hour12: true,
         });
         return `Last seen on ${formattedDate} at ${formattedTime}`;
@@ -106,8 +103,6 @@ angular.module("myApp").component("message", {
     $scope.clearReply = function () {
       $scope.replyMessage = null; // Clear the reply message
     };
-
-
 
     $scope.adjustHeight = function (event) {
       const textarea = event.target;
@@ -204,7 +199,7 @@ angular.module("myApp").component("message", {
       var newMessage = {
         chat_id: $scope.chatData.chat_id,
         sender_id: $scope.userDetails,
-        message_text:message,
+        message_text: message,
       };
       $http
         .post("http://localhost/codeigniter/index.php/message/send", newMessage)
@@ -218,46 +213,47 @@ angular.module("myApp").component("message", {
           console.error("Error sending message:", error);
         });
     };
-    
 
-    $scope.sendReplyMessage = function(message){
-        console.log("Reply message called" , $scope.replyMessage_id);
-        if (!message || !message.trim()) {
-          return; // Exit if the message is empty or whitespace
-        }
-      
-        var newMessage = {
-          chat_id: $scope.chatData.chat_id,
-          sender_id: $scope.userDetails,
-          message_text: message,
-          parent_message_id:$scope.replyMessage_id
-        };
-      
-        $http
-          .post("http://localhost/codeigniter/index.php/message/reply", newMessage)
-          .then((response) => {
-            // Add the new message to the messages array
-            $scope.messages.push(response.data);
-            
-            // Clear the textarea by resetting $scope.message
-            $scope.message = ""; // This will clear the textarea
-            $scope.clearReply();
-            $scope.replyBox = false;
-            $scope.getPastMessages();
-          })
-          .catch((error) => {
-            console.error("Error sending message:", error);
-          });
-    }
+    $scope.sendReplyMessage = function (message) {
+      console.log("Reply message called", $scope.replyMessage_id);
+      if (!message || !message.trim()) {
+        return; // Exit if the message is empty or whitespace
+      }
 
+      var newMessage = {
+        chat_id: $scope.chatData.chat_id,
+        sender_id: $scope.userDetails,
+        message_text: message,
+        parent_message_id: $scope.replyMessage_id,
+      };
+
+      $http
+        .post(
+          "http://localhost/codeigniter/index.php/message/reply",
+          newMessage
+        )
+        .then((response) => {
+          // Add the new message to the messages array
+          $scope.messages.push(response.data);
+
+          // Clear the textarea by resetting $scope.message
+          $scope.message = ""; // This will clear the textarea
+          $scope.clearReply();
+          $scope.replyBox = false;
+          $scope.getPastMessages();
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
+    };
 
     $scope.sendFileReplyMessage = function () {
-      console.log("sendFileReplyMessage called")
+      console.log("sendFileReplyMessage called");
       const formData = new FormData();
       formData.append("file", $scope.selectedFile);
       formData.append("chat_id", $scope.chatData.chat_id); // Example chat_id
       formData.append("sender_id", $scope.userDetails); // Example sender_id
-      formData.append("parent_message_id",$scope.replyMessage_id);
+      formData.append("parent_message_id", $scope.replyMessage_id);
 
       $http
         .post(
@@ -281,6 +277,5 @@ angular.module("myApp").component("message", {
           console.error("Error uploading file:", error);
         });
     };
-    
   },
 });
