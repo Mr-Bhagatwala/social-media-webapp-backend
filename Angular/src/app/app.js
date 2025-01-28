@@ -80,7 +80,7 @@ app
         if (!isNavigatingToChat) {
           $rootScope.urlName = undefined;
         }
-
+        
         const allowedRoutes = ["/login", "/signup"];
         if (
           !UserService.isAuthenticated() &&

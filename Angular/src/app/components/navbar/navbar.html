@@ -36,7 +36,7 @@
           <span class="navbar-text">Chats</span>
         </div>
       </a>
-      <a href="#/friends/:uId">
+      <a href="#/friends/:{{userDetails.id}}  ">
         <div class="navbar-item">
           <span class="material-icons navbar-icon">group</span>
           <span class="navbar-text">Friends</span>
@@ -60,10 +60,11 @@
           <span class="navbar-text">Notifications</span>
         </div>
       </a>
-      <a ng-href="#/{{userDetails[0].name}}/{{userDetails[0].id}}">
+      <a ng-href="#/{{userDetails.name}}/{{userDetails.id}}">
         <div class="navbar-item">
           <span class="material-icons navbar-icon">account_circle</span>
-          <span class="navbar-text">Profile</span>
+          <!-- <span class="navbar-text">{{userDetails.name}}</span> -->
+          <span class="navbar-text">{{userDetails.name}}</span>
         </div>
       </a>
     </div>
@@ -107,7 +108,7 @@
     </div>
   </a>
   <a
-    ng-href="#/{{userDetails[0].name}}/{{userDetails[0].id}}"
+    ng-href="#/{{userDetails.name}}/{{userDetails.id}}"
     ng-click="toggleMenu()"
   >
     <div class="navbar-item">

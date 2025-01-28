@@ -11,7 +11,7 @@
 
 .sidebar {
   width:30%;
-  border: 2px solid blueviolet;
+  /* border: 2px solid blueviolet; */
   background-color: #01182e;
   color: white;
   padding: 10px;
@@ -48,7 +48,9 @@
 @media (max-width: 768px) {
   .sidebar {
     width: 100%; 
-    /* background-color: #2288e7; */
-    border: 2px solid orange;
   }  
+
+  .main-content{
+    width: 100%;
+  }
 }

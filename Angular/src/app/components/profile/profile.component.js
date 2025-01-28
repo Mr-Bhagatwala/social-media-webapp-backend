@@ -15,11 +15,11 @@ angular
     $scope.userDetails = null;
     
     if ($scope.isAuthenticated) {
-      UserService.fetchUserData().then(function (user) {
-        if (user) {
-          $scope.userDetails = user;
-          console.log("Inside userDetails "+$scope.userDetails[0].name);
-          $scope.name = $scope.userDetails[0].name;
+      UserService.fetchUserData().then(function (data) {
+        if (data) {
+          $scope.userDetails = data;
+          console.log("Inside userDetails "+$scope.userDetails.user.name);
+          $scope.name = $scope.userDetails.user.name;
           console.log("Inside Details name"+$scope.name);
           
         } else {

@@ -35,6 +35,7 @@ class ChatModel extends CI_Model {
         CASE 
             WHEN blocked_users.blocker_id IS NOT NULL THEN 1
             ELSE 0
+            
         END as is_blocked', false);
         $this->db->from('chats');
         $this->db->join('users', 'chats.sender_id = users.id', 'left');
