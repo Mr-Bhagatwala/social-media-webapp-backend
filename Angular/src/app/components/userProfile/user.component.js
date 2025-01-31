@@ -10,7 +10,7 @@ angular
       const urlUserId = $routeParams.userId;
       const urlUserName = $routeParams.userName;
       $rootScope.urlName = urlUserName;
-
+      
       $scope.userData = "";
       $scope.profile = {
         basicDetails: {

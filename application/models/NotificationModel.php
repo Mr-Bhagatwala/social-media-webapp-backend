@@ -86,6 +86,15 @@ class NotificationModel extends CI_Model {
         return $this->db->get()->result_array();
     }
     
+    //delete notification
+    public function deleteNotificationsByUserId($userId) {
+        $this->db->where('id', $userId);
+        return $this->db->delete('notifications'); // Replace 'notifications' with your actual table name
+    }
+    public function deleteAllNotificationsByUserId($userId) {
+        $this->db->where('user_id', $userId);
+        return $this->db->delete('notifications'); // Replace 'notifications' with your actual table name
+    }
     
     
 
@@ -94,6 +103,19 @@ class NotificationModel extends CI_Model {
         $data = ['is_read' => 1];
         $this->db->where('id', $notificationId);
         return $this->db->update('notifications', $data);
+    }
+
+    public function markAsAllRead($user_id) {
+        // Check if there are any notifications for the user
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get('notifications');
+        if ($query->num_rows() > 0) {
+            $data = ['is_read' => 1];
+            $this->db->where('user_id', $user_id);
+            return $this->db->update('notifications', $data);
+        } else {
+            return false; 
+        }
     }
 
     // Add a new notification

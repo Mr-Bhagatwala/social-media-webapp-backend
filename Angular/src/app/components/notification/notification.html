@@ -1,23 +1,87 @@
-<div ng-controller="NotificationController">
-  <div class="notification-component">
+
+
+<div ng-controller="NotificationController"  class="NotificationController">
+  
+  <div
+  class="noNotification"
+  ng-if="!notifications || notifications.length === 0"
+>
+  <h5>you don't have any notification</h5>
+</div>
+  
+  <div class="setting-page"   ng-if="notifications.length > 0">
+    
+    <div class="manage-notification">
+      <p>Manage your Notifications</p>
+      <p class="viewSetting" ng-click="toggleOptions2()">View setting</p>
+
+      <div class="option-buttons" ng-if="isOptionsVisible">
+        <button ng-click="markAllAsRead()">Mark All as Read</button>
+        <button ng-click="deleteAllNotifications()">
+          Delete All Notifications
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification-component" ng-if="notifications.length > 0">
     <div class="notification-header">
       <h3 class="notification-title">Notifications</h3>
+      <div class="filter-menu">
+        <button class="filter-itom" ng-class="{'active': selectedFilter === 'all'}" ng-click="setFilter('all')">All</button>
+        <button class="filter-itom" ng-class="{'active': selectedFilter === 'unread'}" ng-click="setFilter('unread')">Unread</button>
+        <button class="filter-itom" ng-class="{'active': selectedFilter === 'read'}" ng-click="setFilter('read')">Read</button>
+      </div>
     </div>
-    <ul class="notification-list">
-      <li class="notification-item" ng-repeat="notification in notifications">
-        <img
-          ng-src="{{notification.profile_photo}}"
-          alt="User"
-          class="notification-avatar"
-        />
-        <div class="notification-content">
-          <p class="notification-text">
-            <strong>{{notification.name}}</strong>
-            {{notification.message}}
-          </p>
-          <span class="notification-time">{{notification.created_at}}</span>
-        </div>
-      </li>
-    </ul>
+
+    <div class="notification">
+      <ul class="notification-list">
+        <li
+          class="notification-item"
+          ng-repeat="notification in filteredNotifications"
+          ng-class="{'read': notification.is_read === '1'}"
+        >
+          <span
+            class="notification-dot"
+            ng-if="notification.is_read=='0'"
+          ></span>
+          <img
+            ng-src="{{notification.profile_photo}}"
+            alt="User"
+            class="notification-avatar"
+          />
+
+          <div class="notification-content">
+            <p class="notification-text">
+              <strong>{{notification.name}}</strong>
+              {{notification.message}}
+            </p>
+            <span class="notification-time">{{notification.created_at}}</span>
+          </div>
+
+          <span
+            class="material-icons"
+            ng-click="toggleOptions($event, notification)"
+          >
+            more_horiz
+          </span>
+
+          <div class="option-icon" ng-if="notification.openOption">
+            <button class="menu" ng-click="markAsRead(notification.id)">
+              <span class="material-icons"> mark_as_unread </span>
+              Mark as read
+            </button>
+            <button class="menu" ng-click="deleteNotification(notification.id)">
+              <span class="material-icons"> delete </span>
+              Delete
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="about-page" ng-if="notifications.length > 0">
+    <!-- this is about page -->
   </div>
 </div>

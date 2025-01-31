@@ -114,6 +114,10 @@ $route['posts/post-by-user'] = 'PostController/getUserPost';
 $route['posts/toggle_like']='PostController/toggle_like' ;
 
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
+$route['notification/deleteNotification'] = 'NotificationController/deleteNotification';
+$route['notification/markAsReadNotification'] = 'NotificationController/markAsReadNotification';
+$route['notification/markAsReadAllNotification'] = 'NotificationController/markAsReadAllNotification';
+$route['notification/deleteAllNotification'] = 'NotificationController/deleteAllNotification';
 
 //chats
 $route['create-chat/(:num)/(:num)'] = 'ChatController/createChat/$1/$2';

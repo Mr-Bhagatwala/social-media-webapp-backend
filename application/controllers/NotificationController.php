@@ -52,6 +52,96 @@ class NotificationController extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode(['status' => 'success', 'message' => 'No Notifications']));
     }
+
+    public function deleteNotification(){
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (empty($data['id'])) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => 'notification id  is required']));
+        }
+
+        $deleted = $this->NotificationModel->deleteNotificationsByUserId($data['id']);
+
+        if ($deleted) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'success', 'message' => 'Notifications deleted successfully.']));
+        } else {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'failed', 'message' => 'Failed to delete notifications or no records found.']));
+        }
+    }
+
+    public function markAsReadNotification(){
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (empty($data['id'])) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => 'notification id  is required']));
+        }
+
+        $deleted = $this->NotificationModel->markAsRead($data['id']);
+
+        if ($deleted) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'success', 'message' => 'Notifications  set as mark as read successfully.']));
+        } else {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'failed', 'message' => 'Failed to set mark as read notifications or no records found.']));
+        }
+    }
+
+
+    public function markAsReadAllNotification() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (empty($data['user_id'])) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => 'User ID is required']));
+        }
+        $user_id = $data['user_id'];
+        $deleted = $this->NotificationModel->markAsAllRead($user_id);
+    
+        if ($deleted) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'success', 'message' => 'All notifications set as read successfully.']));
+        } else {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'failed', 'message' => 'No notifications found for this user or failed to update.']));
+        }
+    }
+
+
+    public function deleteAllNotification() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (empty($data['user_id'])) {
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(400)
+                        ->set_output(json_encode(['error' => 'User ID is required']));
+        }
+        $user_id = $data['user_id'];
+        $deleted = $this->NotificationModel->deleteAllNotificationsByUserId($user_id);
+    
+        if ($deleted) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'success', 'message' => 'All notifications delete successfully.']));
+        } else {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(['status' => 'failed', 'message' => 'No notifications found for this user or failed to update.']));
+        }
+    }
     
 
 }

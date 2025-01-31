@@ -1,7 +1,83 @@
+.NotificationController{
+  width: 100%;
+  min-height:100vh;
+  /* background-color: #DFDEDA; */
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between ;
+  margin-bottom: 20px;
+}
+.noNotification{
+  /* height: 100%; */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.setting-page {
+  width: 80%;
+  background-color: #F4F2EE;
+  display: flex;
+  justify-content: center;  /* Centers the .manage-notification horizontally */
+}
+
+.manage-notification {
+  /* border: 2px solid red; */
+  border-radius: 4%;
+  min-width: 60%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;  
+  justify-content: center;  /* Center content vertically */
+  align-items: center; 
+  margin-top: 20%;
+  background-color: white; 
+  border: 1px solid #DFDEDA;
+  position: relative; /* Add this to enable absolute positioning of buttons */
+
+}
+.viewSetting{
+  color: #0A66C2;
+  cursor: pointer;
+}
+.option-buttons {
+  display: flex;
+  flex-direction: column;
+  /* border-radius: 6%; */
+  margin-top: 10px;
+  position: absolute; /* Position the buttons inside the .manage-notification */
+  top: 100%; /* Place the option buttons below the content */
+  left: 0;
+  width: 100%; /* Make the option buttons take full width of the .manage-notification */
+}
+
+.option-buttons button {
+  border: 2px solid black;
+  margin: 5px 0;
+  padding: 8px;
+  cursor: pointer;
+  background-color: white;
+
+  /* border-radius: 6%; */
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.option-buttons button:hover {
+  background-color: #5799dc; /* Change background color on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.about-page{
+  width: 80%;
+  background-color: #F4F2EE;
+}
+
 .notification-component {
   width: 100%;
-  background-color: white;
-  border: 1px solid #e1e1e1;
+  background-color: #F4F2EE;
+  /* border: 1px solid #e1e1e1; */
   border-radius: 8px;
   font-family: Arial, sans-serif;
   overflow: hidden;
@@ -15,43 +91,103 @@ a {
 }
 
 .notification-header {
+  width: 100%;
+  height: 120px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  background-color: #FFFFFF;
   padding: 10px 15px;
-  border-bottom: 1px solid #e1e1e1;
+  border-radius: 5px;
+  border: 2px solid #DFDEDA;
+  margin: 20px;
+  flex-direction: column;
+  position: sticky;
+ 
 }
 
 .notification-title {
-  font-size: 18px;
+  font-size: 35px;
   font-weight: bold;
   color: #333;
 }
 
-.notification-settings {
-  font-size: 20px;
-  color: #666;
-  cursor: pointer;
+.filter-menu {
+  display: flex;
+  gap: 10px; /* Creates space between buttons */
 }
 
+.filter-itom {
+  background-color: #f4f4f4;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-itom:hover {
+  background-color: #5799dc;
+  transform: translateY(-2px);
+}
+
+.filter-itom:active {
+  /* background-color: #ccc; */
+  background-color: #0A66C2;
+  transform: translateY(0);
+}
+
+.notification{
+  width: 100%;
+}
 .notification-list {
+  width: 100%;
+  padding: 10px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+
 .notification-item {
+  position: relative;
+  height: 70px;
   display: flex;
-  align-items: flex-start;
+  /* display: flex; */
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 10px 15px;
-  border-bottom: 1px solid #e1e1e1;
+  border: 1px solid #DFDEDA;
+  background-color: #D7E9FB;
+  color: black;
+}
+
+
+.notification-item.read {
+  background-color: white;
+ padding-left: 32px;
+}
+
+.notification-dot {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(107, 185, 201);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  left: 1px;
+  /* top: 5px;   */
 }
 
 .notification-avatar {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  border: 1px solid black;
 }
 
 .notification-content {
@@ -61,32 +197,79 @@ a {
 .notification-text {
   margin: 0;
   font-size: 14px;
-  color: #333;
+
   line-height: 1.4;
 }
 
 .notification-time {
   font-size: 12px;
-  color: #999;
+
   margin-top: 5px;
 }
 
-.notification-footer {
-  padding: 10px 15px;
-  text-align: center;
-  border-top: 1px solid #e1e1e1;
-}
 
-.notification-clear {
-  padding: 8px 16px;
-  background-color: #0073b1;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
+
+
+/* More options button */
+.material-icons {
   cursor: pointer;
+  font-size: 20px;
+  color: #666;
+  padding: 5px;
+  transition: color 0.3s ease;
 }
 
-.notification-clear:hover {
-  background-color: #005580;
+.material-icons:hover {
+  color: #333;
 }
+
+/* Dropdown menu container */
+.option-icon {
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 5px 0;
+  min-width: 160px;
+  z-index: 100;
+  top: -100%; /* Position above the icon */
+  right: 0; /* Align to the right */
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Dropdown button styles */
+.menu {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon inside menu */
+.menu .material-icons {
+  font-size: 22px;
+  color: #666;
+}
+
+/* Hover effect */
+.menu:hover {
+  background-color: #f5f5f5;
+}
+
+/* Ensure notification item has position relative to hold dropdown */
+.notification-item {
+  position: relative;
+}
+
+
+
