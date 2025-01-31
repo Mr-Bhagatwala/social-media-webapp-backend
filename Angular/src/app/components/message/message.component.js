@@ -247,6 +247,7 @@ angular.module("myApp").component("message", {
         });
     };
 
+
     $scope.sendFileReplyMessage = function () {
       console.log("sendFileReplyMessage called");
       const formData = new FormData();

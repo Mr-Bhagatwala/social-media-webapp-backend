@@ -34,5 +34,9 @@ angular.module('myApp').controller("ParentController", function ($scope, $http, 
     $scope.setSelectedChat = function (chat) {
         $scope.selectedChat = chat;
     };
+    $scope.goBackToChats = function () {
+        $scope.selectedChat = null; // Reset the selected chat to null
+    };
+    
     
 })

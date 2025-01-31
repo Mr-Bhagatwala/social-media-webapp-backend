@@ -4,10 +4,9 @@
   display: flex;
   flex-grow: 1;
   height: 90vh;
-  overflow: hidden;
-  /* background-color: #0c1317; */
-  border: 2px solid red;
-  min-width: 99%;
+  /* overflow: hidden; */
+  background-color: #0c1317;
+  min-width: 100%;
 }
 
 .sidebar {
@@ -16,8 +15,8 @@
   color: white;
   padding: 10px;
   box-sizing: border-box;
-  overflow-y: auto; 
-} 
+  overflow-y: auto; /* Enable vertical scroll for sidebar */
+}
 
 .sidebar h2 {
   margin-top: 0;
@@ -42,13 +41,50 @@
   margin: 0;
   background-color: #ecf0f1;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: auto; 
+}
+.back-btn {
+ /* Hidden by default */
+ display: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #ebf5f5;
+  color: #000000;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
 }
 
+.back-btn:hover {
+  background-color: #3c4f56;
+}
+
+
+
+
 @media (max-width: 768px) {
+  .sidebar {
+    width: 100%; /* Full width by default */
+  }
 
+  .main-content {
+    display: none; /* Hide main-content by default */
+  }
 
-  /* .main-content {
-    idth: 50%;w
-  } */
+  .sidebar.hidden-sidebar {
+    display: none; /* Hide sidebar when chat is selected */
+  }
+
+  .main-content.visible-main {
+    display: block; /* Show main-content when chat is selected */
+    width: 100%; /* Take full width */
+  }
+
+  .back-btn {
+    display: block; /* Show back button on small screens */
+  }
 }
