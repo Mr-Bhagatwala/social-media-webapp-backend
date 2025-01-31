@@ -10,60 +10,7 @@ angular
       const urlUserId = $routeParams.userId;
       const urlUserName = $routeParams.userName;
       $rootScope.urlName = urlUserName;
-      console.log("urlName stored in $rootScope: "+$rootScope.urlName);
-      
-      const user_id = localStorage.getItem("user_id");
-      console.log("I am from url " + urlUserId);
-      $scope.requestStatus = "send request";
 
-      if ($scope.isAuthenticated) {
-        if (user_id === urlUserId) {
-          $scope.admin = true;
-          UserService.fetchUserData().then(function (user) {
-            if (user) {
-              populateUserProfile(user);
-            } else {
-              console.log("User not authenticated or data not found.");
-            }
-          });
-        } else {
-          $scope.admin = false;
-          fetchProfileFromURL(urlUserName, urlUserId);
-        }
-      } else {                    
-        console.log("User is not authenticated.");
-      }
-
-      // Function to fetch profile based on username and id from the URL
-      async function fetchProfileFromURL(username, userId) {
-        try {
-          const response = await $http.post(
-            `http://localhost/codeigniter/index.php/getUser?id=${userId}`
-          );
-          if (response.data.status === "success") {
-            console.log(
-              "Reached here abcdadsaajcaknavjal:::              ",
-              response
-            );
-            populateUserProfile(response.data.user);
-          } else {
-            console.log("Failed to fetch user data from URL.");
-          }
-        } catch (error) {
-          console.log("Error fetching user data from URL");
-        }
-      }
-
-      function populateUserProfile(user) {
-        $scope.userDetails = user;
-        $scope.profile.basicDetails.profile_photo = user[0].profile_photo;
-        $scope.profile.basicDetails.name = user[0].name;
-        $scope.profile.basicDetails.bio = user[0].bio;
-        $scope.profile.basicDetails.hometown = user[0].hometown;
-        $scope.profile.contactDetails.primaryEmail = user[0].email;
-      }
-
-      console.log("I am user Id " + user_id);
       $scope.userData = "";
       $scope.profile = {
         basicDetails: {
@@ -84,6 +31,112 @@ angular
         education: [],
         workHistory: [],
       };
+
+      console.log("urlName stored in $rootScope: " + $rootScope.urlName);
+
+      const user_id = localStorage.getItem("user_id");
+      console.log("I am from url " + urlUserId);
+      $scope.requestStatus = "send request";
+
+      if ($scope.isAuthenticated) {
+        if (user_id === urlUserId) {
+          $scope.admin = true;
+          UserService.fetchUserData().then(function (data) {
+            if (data) {
+              populateUserProfile(data);
+            } else {
+              console.log("User not authenticated or data not found.");
+            }
+          });
+        } else {
+          console.log("Urluser id: " + urlUserId);
+
+          $scope.admin = false;
+          fetchProfileFromURL(urlUserName, urlUserId);
+        }
+      } else {
+        console.log("User is not authenticated.");
+      }
+
+      // Function to fetch profile based on username and id from the URL
+      async function fetchProfileFromURL(username, userId) {
+        $http
+        .post(`http://localhost/codeigniter/index.php/getUser?id=${userId}`)
+        .then(function (response) {
+          if (response.data.status === "success") {
+            console.log("Reached here abcdadsaajcak:::", response.data.data);
+            populateUserProfile(response.data.data); // Call populateUserProfile here
+          } else {
+            console.log("Failed to fetch user data from URL.");
+          }
+        })
+        .catch(function (error) {
+          console.log("Error fetching user data from URL", error);
+        });
+      }
+
+      function populateUserProfile(userData) {
+        console.log("I am inside populateas " + userData.user.name);
+
+        $scope.profile.basicDetails.profile_photo = userData.user.profile_photo;
+        $scope.profile.basicDetails.name = userData.user.name;
+        $scope.profile.basicDetails.bio = userData.user.bio;
+        $scope.profile.basicDetails.hometown = userData.user.hometown;
+        $scope.profile.contactDetails.primaryEmail = userData.user.email;
+
+        const contact = userData.contact_details;
+        console.log("Contact is " + contact.length);
+
+        //Contact Details
+        if (Array.isArray(contact) && contact.length > 0) {
+          $scope.profile.contactDetails.primaryPhone =
+            contact[0].primary_phone || "N/A";
+          $scope.profile.contactDetails.linkedinUrl =
+            contact[0].linkedin_url || "Not provided";
+        } else {
+          console.log("Reached here");
+
+          $scope.profile.contactDetails.primaryPhone = "N/A";
+          $scope.profile.contactDetails.linkedinUrl = "Not provided";
+          console.log("Contact details array is empty.");
+        }
+
+        //alternateEmails
+        $scope.profile.contactDetails.alternateEmails =
+          userData.alternate_emails;
+        //alternatePhones
+        $scope.profile.contactDetails.alternatePhones =
+          userData.alternate_phones;
+
+        //work
+        $scope.profile.workHistory = userData.work.map((work, index) => ({
+          id: index + 1,
+          company: work.company_organisation,
+          position: work.designation,
+          startYear: parseInt(work.start_year, 10),
+          endYear: work.end_year ? parseInt(work.end_year, 10) : null,
+          isCurrent: work.is_current === "1" || work.is_current === 1,
+        }));
+        $scope.workIdCounter = $scope.profile.workHistory.length + 1;
+
+        //education
+        $scope.profile.education = userData.education.map(
+          (education, index) => ({
+            id: index + 1,
+            institution: education.college_school,
+            degree: education.degree_program,
+            startYear: parseInt(education.start_year, 10), // Parse startYear to integer
+            endYear: education.end_year
+              ? parseInt(education.end_year, 10)
+              : null,
+            isCurrent:
+              education.is_current === "1" || education.is_current === 1,
+          })
+        );
+        $scope.educationIdCounter = $scope.profile.education.length + 1;
+      }
+
+      console.log("I am user Id " + user_id);
 
       $scope.educationIdCounter = $scope.profile.education.length + 1;
       $scope.workIdCounter = $scope.profile.workHistory.length + 1;
@@ -198,7 +251,7 @@ angular
           console.log("Edditt data " + $scope.editData.name);
 
           const updatedBasic = {
-            user_id: $scope.userDetails[0].id,
+            user_id: $scope.userDetails.id, //made changes over here
             name: $scope.editData.name,
             bio: $scope.editData.bio,
             hometown: $scope.editData.hometown,
@@ -494,7 +547,7 @@ angular
           // $scope.editData.alternateEmails.push($scope.newAlternateEmail);
           const alternateEmailData = {
             alternative_email: $scope.editData.nae,
-            user_id: $scope.userDetails[0].id,
+            user_id: $scope.userDetails.id, //made changes
           };
           $http
             .post(
@@ -580,7 +633,7 @@ angular
         if ($scope.editData.nap && $scope.editData.alternatePhones) {
           const alternatePhoneData = {
             alternative_phones: $scope.editData.nap,
-            user_id: $scope.userDetails[0].id,
+            user_id: $scope.userDetails.id, //made changes
           };
 
           $http
@@ -728,29 +781,29 @@ angular
       };
 
       $scope.openChat = function openChat() {
-        
         if (!user_id || !urlUserId) {
-            alert("Invalid user information.");
-            return;
+          alert("Invalid user information.");
+          return;
         }
-        
+
         $http
-            .post(`http://localhost/codeigniter/index.php/create-chat/${user_id}/${urlUserId}`)
-            .then(function (response) {
-                if (response.data.status === "success") {
-                  console.log("Chat created or already exists:", response.data);
-                  $location.path('/chat');
-                } else {
-                    console.error("Failed to create chat:", response.data.message);
-                    alert("Could not create chat: " + response.data.message);
-                }
-            })
-            .catch(function (error) {
-                console.error("Error while creating chat:", error);
-                alert("An error occurred while creating the chat.");
-            });
+          .post(
+            `http://localhost/codeigniter/index.php/create-chat/${user_id}/${urlUserId}`
+          )
+          .then(function (response) {
+            if (response.data.status === "success") {
+              console.log("Chat created or already exists:", response.data);
+              $location.path("/chat");
+            } else {
+              console.error("Failed to create chat:", response.data.message);
+              alert("Could not create chat: " + response.data.message);
+            }
+          })
+          .catch(function (error) {
+            console.error("Error while creating chat:", error);
+            alert("An error occurred while creating the chat.");
+          });
       };
-    
 
       $scope.navigationUserPost = function navigationUserPost() {
         const route = `/user-post/${urlUserId}`;
@@ -768,183 +821,6 @@ angular
         }
       };
 
-      // get work history
-      $http
-        .post(
-          "http://localhost/codeigniter/index.php/workHistory/list",
-          urlUserId
-        )
-        .then(function (response) {
-          console.log(
-            "Response from backend (work Details):",
-            response.data.work
-          );
-          if (response.data.status === "success") {
-            $scope.profile.workHistory = response.data.work.map(
-              (work, index) => ({
-                id: index + 1,
-                company: work.company_organisation,
-                position: work.designation,
-                startYear: parseInt(work.start_year, 10),
-                endYear: work.end_year ? parseInt(work.end_year, 10) : null,
-                isCurrent: work.is_current === "1" || work.is_current === 1,
-              })
-            );
-            $scope.workIdCounter = $scope.profile.workHistory.length + 1;
-          } else {
-            alert("Error getting work details: " + response.data.message);
-          }
-        })
-        .catch(function (error) {
-          console.error("Error fetching work details:", error);
-          // Handle network errors or backend errors more explicitly
-          if (error.data) {
-            alert("Error: " + error.data.message);
-          } else {
-            alert(
-              "An error occurred in work details in frontend. Please try again."
-            );
-          }
-        });
-
-      //get education details
-      $http
-        .post(
-          "http://localhost/codeigniter/index.php/education/list",
-          urlUserId
-        )
-        .then(function (response) {
-          console.log(
-            "Response from backend (education Details):",
-            response.data.education
-          );
-          if (response.data.status === "success") {
-            $scope.profile.education = response.data.education.map(
-              (education, index) => ({
-                id: index + 1,
-                institution: education.college_school,
-                degree: education.degree_program,
-                startYear: parseInt(education.start_year, 10), // Parse startYear to integer
-                endYear: education.end_year
-                  ? parseInt(education.end_year, 10)
-                  : null,
-                isCurrent:
-                  education.is_current === "1" || education.is_current === 1,
-              })
-            );
-            $scope.educationIdCounter = $scope.profile.education.length + 1;
-          } else {
-            alert("Error getting education details: " + response.data.message);
-          }
-        })
-        .catch(function (error) {
-          console.error("Error ferching  education details:", error);
-          if (error.data) {
-            alert("Error: " + error.data.message);
-          } else {
-            alert(
-              "An error occurred in education details in frontend. Please try again."
-            );
-          }
-        });
-
-      //get user contact details
-      $http
-        .post("http://localhost/codeigniter/index.php/contact/list", urlUserId)
-        .then(function (response) {
-          console.log(
-            "Response from backend (contact Details):",
-            response.data.contact
-          );
-
-          if (response.data.status === "success") {
-            const contact = response.data.contact;
-
-            if (Array.isArray(contact) && contact.length > 0) {
-              $scope.profile.contactDetails.primaryPhone =
-                contact[0].primary_phone || "N/A";
-              $scope.profile.contactDetails.linkedinUrl =
-                contact[0].linkedin_url || "Not provided";
-            } else {
-              $scope.profile.contactDetails.primaryPhone = "N/A";
-              $scope.profile.contactDetails.linkedinUrl = "Not provided";
-              console.log("Contact details array is empty.");
-            }
-          } else {
-            alert("Error getting contact details: " + response.data.message);
-          }
-        })
-        .catch(function (error) {
-          console.error("Error fetching contact details:", error);
-          if (error.data) {
-            alert("Error: " + error.data.message);
-          } else {
-            alert(
-              "An error occurred while fetching contact details. Please try again."
-            );
-          }
-        });
-
-      // get alternative emails
-      $http
-        .post(
-          "http://localhost/codeigniter/index.php/alternativeEmail/list",
-          urlUserId
-        )
-        .then(function (response) {
-          console.log(
-            "Response from backend (alternate emails Details):",
-            response.data.emails
-          );
-          if (response.data.status === "success") {
-            $scope.profile.contactDetails.alternateEmails =
-              response.data.emails;
-          } else {
-            alert(
-              "Error getting alternate emails details: " + response.data.message
-            );
-          }
-        })
-        .catch(function (error) {
-          console.error("Error fetching alternate emails details:", error);
-          if (error.data) {
-            alert("Error: " + error.data.message);
-          } else {
-            alert(
-              "An error occurred while fetching alternate emails details. Please try again."
-            );
-          }
-        });
-      // get alternative phones
-      $http
-        .post(
-          "http://localhost/codeigniter/index.php/alternativePhone/list",
-          urlUserId
-        )
-        .then(function (response) {
-          console.log(
-            "Response from backend (alternate phone Details):",
-            response.data.phones
-          );
-          if (response.data.status === "success") {
-            $scope.profile.contactDetails.alternatePhones =
-              response.data.phones;
-          } else {
-            alert(
-              "Error getting alternate phone details: " + response.data.message
-            );
-          }
-        })
-        .catch(function (error) {
-          console.error("Error fetching alternate phone details:", error);
-          if (error.data) {
-            alert("Error: " + error.data.message);
-          } else {
-            alert(
-              "An error occurred while fetching alternate phone details. Please try again."
-            );
-          }
-        });
 
       // $scope.navigationUserPost = function () {
       //   const urlUserId = $routeParams.userId;

@@ -16,7 +16,7 @@ angular.module("myApp", [
   "user-feed",
   "fs",
   "userFriendsController",
-  "ParentController", //Added here but working without adding here.
+  "ParentController", 
   "message",
   "chat",
 ]);

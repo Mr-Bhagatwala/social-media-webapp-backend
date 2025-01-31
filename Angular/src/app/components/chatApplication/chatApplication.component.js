@@ -2,7 +2,6 @@
 
 angular.module('myApp').controller("ParentController", function ($scope, $http, $rootScope){
     $scope.selectedChat = null; 
-    // let urlName = undefined;
     let urlName = $rootScope.urlName;
     const user_id = localStorage.getItem("user_id");
 
@@ -30,7 +29,6 @@ angular.module('myApp').controller("ParentController", function ($scope, $http, 
     }else{
         console.log("Not called");
     }
-
     $scope.setSelectedChat = function (chat) {
         $scope.selectedChat = chat;
     };

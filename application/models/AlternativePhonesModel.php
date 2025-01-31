@@ -10,7 +10,7 @@ class AlternativePhonesModel extends CI_Model {
         // $this->db->where('user_id', $user_id);
         return $this->db->insert('alternate_phones', $data);
     }
-
+    
     public function removeAlternativePhone($id, $user_id) {
         // Ensure only the user's own phone can be removed
         $this->db->where('id', $id);

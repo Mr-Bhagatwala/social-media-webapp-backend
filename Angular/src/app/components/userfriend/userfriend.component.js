@@ -63,9 +63,12 @@ angular
       };
 
       $scope.viewProfile = function (name, id) {
+        console.log(name, id);
+        
         const route = `/${name}/${id}`;
         console.log("Navigating to:", route);
-        $location.path(route); // Navigate to the route
+        $location.path(route); 
+        
       };
 
 

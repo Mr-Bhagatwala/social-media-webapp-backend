@@ -5,7 +5,6 @@ angular
   .controller(
     "contactDetails1",
     function ($scope, $http, $location, UserService) {
-      // Initialize form fields
 
       $scope.primaryEmail = "";
       $scope.primaryPhone = "";
@@ -15,12 +14,12 @@ angular
 
       $scope.isAuthenticated = UserService.isAuthenticated();
       $scope.userDetails = null;
-
+      
       if ($scope.isAuthenticated) {
         UserService.fetchUserData().then(function (user) {
           if (user) {
             $scope.userDetails = user;
-            $scope.primaryEmail = $scope.userDetails[0].email;
+            $scope.primaryEmail = $scope.userDetails.user.email;
           } else {
             console.log("User not authenticated or data not found.");
           }

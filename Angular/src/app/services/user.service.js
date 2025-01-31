@@ -4,6 +4,7 @@ angular.module("myApp").service("UserService", [
   "$http",
   function ($rootScope, $window, $http) {
     $rootScope.userData = localStorage.getItem("user_id");
+    $rootScope.userName = "";
     let cachedUserData = null;
 
     this.getUserData = function () {
@@ -21,32 +22,31 @@ angular.module("myApp").service("UserService", [
       cachedUserData = null;
     };
 
-    this.fetchUserData = async function () {
+    this.fetchUserData = function () {
       if (cachedUserData) {
-        return cachedUserData;
+        return Promise.resolve(cachedUserData); 
       }
-
+    
       if (!$rootScope.userData) {
         console.warn("No user ID found in local storage.");
-        return null;
+        return Promise.resolve(null); // Return null as a resolved promise
       }
-
-      try {
-        const response = await $http.post(
-          `http://localhost/codeigniter/index.php/getUser?id=${$rootScope.userData}`
-        );
-
-        if (response.data.status === "success") {
-          cachedUserData = response.data.user;
-          return cachedUserData;
-        } else {
-          console.error("Error fetching user data:", response.data.message);
-          return null;
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        return null;
-      }
+    
+      return $http
+        .post(`http://localhost/codeigniter/index.php/getUser?id=${$rootScope.userData}`)
+        .then(function (response) {
+          if (response.data.status === "success") {
+            cachedUserData = response.data.data; // Cache the user data
+            return cachedUserData; // Return the cached data
+          } else {
+            console.error("Error fetching user data:", response.data.message);
+            return null; // Return null if the response is not successful
+          }
+        })
+        .catch(function (error) {
+          console.error("Error fetching user data:", error);
+          return null; // Return null in case of an error
+        });
     };
 
     this.isAuthenticated = function () {

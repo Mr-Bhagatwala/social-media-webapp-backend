@@ -4,13 +4,14 @@
   display: flex;
   flex-grow: 1;
   height: 90vh;
-  /* overflow: hidden; */
-  background-color: #0c1317;
+  overflow: hidden;
   min-width: 100%;
+  flex-wrap: wrap;
 }
 
 .sidebar {
   width:30%;
+  /* border: 2px solid blueviolet; */
   background-color: #01182e;
   color: white;
   padding: 10px;
@@ -68,23 +69,10 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%; /* Full width by default */
-  }
+    width: 100%; 
+  }  
 
-  .main-content {
-    display: none; /* Hide main-content by default */
-  }
-
-  .sidebar.hidden-sidebar {
-    display: none; /* Hide sidebar when chat is selected */
-  }
-
-  .main-content.visible-main {
-    display: block; /* Show main-content when chat is selected */
-    width: 100%; /* Take full width */
-  }
-
-  .back-btn {
-    display: block; /* Show back button on small screens */
+  .main-content{
+    width: 100%;
   }
 }

@@ -297,7 +297,33 @@ class AuthController extends CI_Controller {
             return;
         }
         $user = $this->Auth_Model->getUserDetail($user_id);
-        echo json_encode(['status' => 'success', 'user' => $user]);
+        
+        $this->load->model('ContactDetailsModel');
+        $contactDetails = $this->ContactDetailsModel->getUserContactHistory($user_id);
+
+        $this->load->model('AlternativeEmailsModel');
+        $alternateEmails = $this->AlternativeEmailsModel->getUserEmails($user_id);
+
+        $this->load->model('AlternativePhonesModel');
+        $alternatePhones = $this->AlternativePhonesModel->getUserPhones($user_id);
+
+        $this->load->model('EducationDetailsModel');
+        $education = $this->EducationDetailsModel->getUserEducationHistory($user_id);
+
+        $this->load->model('WorkDetailsModel');
+        $work = $this->WorkDetailsModel->getUserWorkHistory($user_id);
+
+        $response = [
+            'status' => 'success',
+            'user' => $user[0], // Assuming getUserDetail returns a single row
+            'contact_details' => $contactDetails,
+            'alternate_emails' => $alternateEmails,
+            'alternate_phones' => $alternatePhones,
+            'education' => $education,
+            'work' => $work,
+        ];
+
+        echo json_encode(['status' => 'success', 'data' => $response]);
     }
 }
 ?>
