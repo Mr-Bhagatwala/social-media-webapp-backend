@@ -10,7 +10,7 @@ angular
       $scope.notifications = [];
       $scope.filteredNotifications = [];
       $scope.offset = 0; // Starting offset
-      $scope.limit = 50; // Number of notifications to load per request
+      $scope.limit = 10; // Number of notifications to load per request
       $scope.loading = false; // Prevent multiple requests
       $scope.allLoaded = false; // Flag to indicate if all notifications are loaded
 

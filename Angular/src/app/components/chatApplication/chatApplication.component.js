@@ -30,6 +30,7 @@ angular.module('myApp').controller("ParentController", function ($scope, $http, 
         console.log("Not called");
     }
     $scope.setSelectedChat = function (chat) {
+        console.log("objectwqdqdqwdwqdwqdwqdwqdwqdwq")
         $scope.selectedChat = chat;
     };
     $scope.goBackToChats = function () {

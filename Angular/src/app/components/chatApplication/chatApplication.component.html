@@ -1,10 +1,7 @@
-
-
-
 <div class="container" ng-controller="ParentController">
-  <button  class="back-btn" ng-if="selectedChat" ng-click="goBackToChats()"><span class="material-icons">
-    arrow_back
-    </span></button>
+  <button class="back-btn" ng-show="selectedChat" ng-click="goBackToChats()">
+    <span class="material-icons"> arrow_back </span>
+  </button>
 
   <chat
     class="sidebar"
@@ -16,7 +13,5 @@
     ng-class="{ 'visible-main': selectedChat }"
     selected-chat="selectedChat"
   >
-</message>
+  </message>
 </div>
-
-

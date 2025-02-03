@@ -9,14 +9,15 @@
   flex-wrap: wrap;
 }
 
+/* Sidebar Styling */
 .sidebar {
-  width:30%;
-  /* border: 2px solid blueviolet; */
+  width: 30%;
   background-color: #01182e;
   color: white;
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto; /* Enable vertical scroll for sidebar */
+  transition: transform 0.3s ease-in-out;
 }
 
 .sidebar h2 {
@@ -36,17 +37,24 @@
   background-color: #34495e;
 }
 
+/* Main Content Styling */
 .main-content {
   width: 70%;
   position: relative;
   margin: 0;
   background-color: #ecf0f1;
   box-sizing: border-box;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
+
+/* Hide Sidebar when Chat is Open (Mobile View) */
+.hidden-sidebar {
+display: none;
+}
+
+/* Back Button */
 .back-btn {
- /* Hidden by default */
- display: none;
+  display: none; /* Initially hidden */
   position: absolute;
   top: 5px;
   left: 5px;
@@ -64,15 +72,27 @@
   background-color: #3c4f56;
 }
 
+/* Show Back Button when Chat is Selected */
 
 
-
+/* Responsive Styles */
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%; 
-  }  
+    width: 100%;
+  }
+  .back-btn {
+    display: block; /* Show back button on small screens */
+  }
+  .main-content {
+    display: none;
+  }
 
-  .main-content{
+  .sidebar.hidden-sidebar {
+    display: none;
+  }
+
+  .main-content.visible-main {
+    display: block;
     width: 100%;
   }
 }
