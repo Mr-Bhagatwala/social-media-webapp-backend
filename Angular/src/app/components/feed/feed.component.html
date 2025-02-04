@@ -1,8 +1,13 @@
+
+
+
+
 <div class="feed-container" ng-controller="feedController">
-  <button class="create-post-btn" ng-click="navigateToCreatePost()">
+
+  <button class="create-post-btn1" ng-click="openDialog()">
     <span class="icon">+</span> Create Post
   </button>
-  <div class="sorting-controls">
+  <div class="sorting-controls1">
     <label for="sortCriteria">Sort By:</label>
     <select
       id="sortCriteria"
@@ -14,8 +19,8 @@
     </select>
   </div>
 
-  <div class="feed-card" ng-repeat="feed in feeds">
-    <div class="feed-header">
+  <div class="feed-card1" ng-repeat="feed in feeds">
+    <div class="feed-header1">
       <img
         src="{{ feed.profile_photo }}"
         alt="Profile Image"
@@ -27,14 +32,14 @@
       </div>
     </div>
 
-    <div class="feed-content">
+    <div class="feed-content1">
       <p>{{ feed.content }}</p>
     </div>
 
-    <div class="feed-media" ng-if="feed.mediaFiles.length > 0">
-      <div class="media-slider">
+    <div class="feed-media1" ng-if="feed.mediaFiles.length > 0">
+      <div class="media-slider1">
         <div
-          class="media-item"
+          class="media-item1"
           ng-repeat="media in feed.mediaFiles track by $index"
           ng-show="$index === feed.currentIndex"
         >
@@ -51,19 +56,17 @@
             <source ng-src="{{ media }}" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <div class="pdf-preview" ng-if="media.endsWith('.pdf')">
+          <div class="pdf-preview1" ng-if="media.endsWith('.pdf')">
             <iframe
-              ng-src="{{ media }}"
-              frameborder="0"
-              width="100%"
-              height="300px"
-            >
-            </iframe>
-            <embed class="pdf" ng-src="{{ media }}" width="800" height="500" />
-            <a ng-href="{{ media }}" target="_blank" download>
-              📄 Download PDF
+                ng-src="{{media}}"
+                class="pdf-iframe"
+            ></iframe>
+            <!-- <embed class="pdf1" ng-src="{{media}}" class="pdf-iframe" /> -->
+            <a ng-href="{{media }}" target="_blank" download>
+                📄 Download PDF
             </a>
-          </div>
+        </div>
+        
         </div>
         <button
           class="prev-btn"
@@ -85,13 +88,13 @@
       </div>
     </div>
 
-    <div class="feed-footer">
-      <div class="likes-comments">
+    <div class="feed-footer1">
+      <div class="likes-comments1">
         <span>
           <button
             ng-click="toggleLike(feed)"
             ng-class="{ liked: feed.islike }"
-            class="like-btn"
+            class="like-btn1"
           >
             <i class="material-icons" ng-if="feed.islike">thumb_up</i>
             <i class="material-icons" ng-if="!feed.islike">thumb_up_alt</i>
@@ -101,12 +104,12 @@
       </div>
 
       <button ng-click="toggleComments(feed)">
-        <i class="fa fa-comment"></i>{{ feed.commentCount || 0 }} Comment
+        <i class="fa fa-comment1"></i>{{ feed.commentCount || 0 }} Comment
       </button>
     </div>
 
-    <div class="feed-comments" ng-if="feed.showComments">
-      <div class="comment-input">
+    <div class="feed-comments1" ng-if="feed.showComments">
+      <div class="comment-input1">
         <textarea
           ng-model="feed.newComment"
           placeholder="Write a comment..."
@@ -118,9 +121,9 @@
         </button>
       </div>
 
-      <div class="comments-list">
+      <div class="comments-list1">
         <div
-          class="comment"
+          class="comment1"
           ng-repeat="comment in feed.comments | filter:{parent_comment_id: null}"
         >
           <p>
@@ -134,14 +137,14 @@
           </p>
 
           <button
-            class="reply-btn"
+            class="reply-btn1"
             ng-click="feed.replyingTo = comment.comment_id"
           >
             Reply
           </button>
 
           <div
-            class="comment-reply-input"
+            class="comment-reply-input1"
             ng-if="feed.replyingTo === comment.comment_id"
           >
             <textarea
@@ -150,14 +153,14 @@
             ></textarea>
             <button
               ng-click="submitComment(feed.post_id, feed.replyContent, comment.comment_id, feed.id)"
-              class="reply-btn"
+              class="reply-btn1"
             >
               Post
             </button>
           </div>
 
           <div
-            class="nested-comment"
+            class="nested-comment1"
             ng-repeat="reply in feed.comments | filter:{parent_comment_id: comment.comment_id}"
           >
             <p>
@@ -170,13 +173,13 @@
               {{ reply.content }}
             </p>
             <button
-              class="reply-btn"
+              class="reply-btn1"
               ng-click="feed.replyingTo = reply.comment_id"
             >
               Reply
             </button>
             <div
-              class="comment-reply-input"
+              class="comment-reply-input1"
               ng-if="feed.replyingTo === reply.comment_id"
             >
               <textarea
@@ -185,14 +188,14 @@
               ></textarea>
               <button
                 ng-click="submitComment(feed.post_id, feed.replyContent, reply.comment_id, feed.id)"
-                ng-class="reply - btn"
+                ng-class="reply - btn1"
               >
                 Post
               </button>
             </div>
 
             <div
-              class="nested-comment"
+              class="nested-comment1"
               ng-repeat="nestedReply in feed.comments | filter:{parent_comment_id: reply.comment_id}"
             >
               <p>
@@ -205,13 +208,13 @@
                 {{ nestedReply.content }}
               </p>
               <button
-                class="reply-btn"
+                class="reply-btn1"
                 ng-click="feed.replyingTo = nestedReply.comment_id"
               >
                 Reply
               </button>
               <div
-                class="comment-reply-input"
+                class="comment-reply-input1"
                 ng-if="feed.replyingTo === nestedReply.comment_id"
               >
                 <textarea
@@ -220,7 +223,7 @@
                 ></textarea>
                 <button
                   ng-click="submitComment(feed.post_id, feed.replyContent, nestedReply.comment_id, feed.id)"
-                  class="reply-btn"
+                  class="reply-btn1"
                 >
                   Reply
                 </button>
@@ -231,8 +234,101 @@
       </div>
     </div>
   </div>
-  <div class="feed-loader" ng-if="loading && !allLoaded">
+  <div class="feed-loader1" ng-if="loading && !allLoaded">
     Loading more posts...
   </div>
-  <div class="feed-loader" ng-if="allLoaded">No more posts to display.</div>
+  <div class="feed-loader1" ng-if="allLoaded">No more posts to display.</div>
+
+
+
+<dialog id="postDialog" >
+
+  <div class="back-button-container">
+    <button class="back-btn1" ng-click="closeDialog()">
+      <span class="material-icons" id="postBack"> arrow_back </span>
+    </button>
+  </div>
+  <div class="create-post-container"  >
+
+   
+      
+    <h2>Create Post</h2>
+    <form
+      name="createPostForm"
+      ng-submit="submitPost(createPostForm)"
+      enctype="multipart/form-data"
+      novalidate
+    >
+      <div class="form-group">
+        <textarea
+          ng-model="post.content"
+          placeholder="What's on your mind?"
+          name="content"
+          required
+          ng-minlength="3"
+        ></textarea>
+        <div
+          class="error-message"
+          ng-show="
+            createPostForm.content.$dirty && createPostForm.content.$invalid
+          "
+        >
+          <span ng-if="createPostForm.content.$error.required"
+            >Content is required.</span
+          >
+          <span ng-if="createPostForm.content.$error.minlength"
+            >Content must be at least 3 characters long.</span
+          >
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <div class="file file--upload">
+          <label for="mediaFiles">
+            <i class="material-icons">cloud_upload</i>Upload Media
+          </label>
+          <input
+            type="file"
+            id="mediaFiles"
+            multiple
+            accept="image/*,video/*,application/pdf"
+            onchange="angular.element(this).scope().handleFileUpload(this)"
+          />
+        </div>
+      </div>
+  
+      <div class="preview-container" ng-if="mediaPreview.length > 0">
+        <div
+          class="media-preview-item"
+          ng-repeat="media in mediaPreview track by $index"
+        >
+          <img
+            ng-if="media.type.startsWith('image/')"
+            ng-src="{{ media.url }}"
+            alt="Preview"
+          />
+          <video ng-if="media.type.startsWith('video/')" controls>
+            <source ng-src="{{ media.url }}" type="{{ media.type }}" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="pdf-preview" ng-if="media.type === 'application/pdf'">
+            <iframe src="{{media.file.name}}" frameborder="0"></iframe>
+            <span>📄 PDF: {{ media.file.name }}</span>
+          </div>
+          <button type="button" ng-click="removeMedia($index)">Remove</button>
+        </div>
+      </div>
+  
+      <button
+        type="submit"
+        class="submit-btn"
+        ng-disabled="createPostForm.$invalid"
+        ng-click="closeDialog() , loadFeeds()"
+      >
+        Post
+      </button>
+    </form>
+  </div>
+</dialog>
+
 </div>

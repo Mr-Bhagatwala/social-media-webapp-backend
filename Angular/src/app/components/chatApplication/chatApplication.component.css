@@ -6,7 +6,7 @@
   height: 90vh;
   overflow: hidden;
   min-width: 100%;
-  flex-wrap: wrap;
+
 }
 
 /* Sidebar Styling */
@@ -24,6 +24,9 @@
   margin-top: 0;
 }
 
+#chatBack{
+  font-size: 14px;
+}
 .sidebar a {
   color: white;
   text-decoration: none;
@@ -48,15 +51,15 @@
 }
 
 /* Hide Sidebar when Chat is Open (Mobile View) */
-.hidden-sidebar {
+/* .hidden-sidebar {
 display: none;
-}
+} */
 
 /* Back Button */
 .back-btn {
   display: none; /* Initially hidden */
   position: absolute;
-  top: 5px;
+  top: 10px;
   left: 5px;
   background-color: #ebf5f5;
   color: #000000;

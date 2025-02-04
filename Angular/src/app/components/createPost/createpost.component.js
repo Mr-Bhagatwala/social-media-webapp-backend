@@ -46,6 +46,8 @@ angular
       //   alert("Please correct the errors in the form.");
       // }
       // return;
+
+     
       const userId = UserService.getUserData();
       const formData = new FormData();
       formData.append("user_id", userId);
@@ -77,8 +79,9 @@ angular
         });
     };
 
-    $scope.goBack = function () {
-      // Using AngularJS's $window to navigate to the previous page
-      $window.history.back();
-    };
+    // $scope.goBack = function () {
+    //   // Using AngularJS's $window to navigate to the previous page
+
+    //   $window.history.back();
+    // };
   });

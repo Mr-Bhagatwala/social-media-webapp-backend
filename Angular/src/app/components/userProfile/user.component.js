@@ -547,7 +547,7 @@ angular
           // $scope.editData.alternateEmails.push($scope.newAlternateEmail);
           const alternateEmailData = {
             alternative_email: $scope.editData.nae,
-            user_id: $scope.userDetails.id, //made changes
+            user_id: user_id, //made changes
           };
           $http
             .post(
@@ -633,7 +633,7 @@ angular
         if ($scope.editData.nap && $scope.editData.alternatePhones) {
           const alternatePhoneData = {
             alternative_phones: $scope.editData.nap,
-            user_id: $scope.userDetails.id, //made changes
+            user_id: user_id, //made changes
           };
 
           $http

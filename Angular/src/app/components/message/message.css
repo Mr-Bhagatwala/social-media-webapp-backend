@@ -105,7 +105,8 @@ span:hover {
   position: fixed;
   bottom: -44vh;
   left: -6%;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
+
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -288,67 +289,9 @@ span:hover {
 }
 
 /* Responsive CSS */
-/* @media (max-width: 768px) {
-  .msg-nav {
-    flex-direction: column;
-    align-items: center;
-    height: auto;
+@media (max-width: 768px) {
+  .file-dialog {
+    width: 60%;
+    top: -120px;
   }
-  .sticky-input-container {
-    flex-direction: row;
-  }
-  .my-message,
-  .other-message {
-    min-width: 40%;
-    max-width: 60%;
-    font-size: 14px;
-    padding: 8px;
-  }
-  .image-preview {
-    max-height: 110px;
-  }
-  .pdf-preview {
-    height: 110px;
-  }
-  .reply-preview {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-} */
-
-/* @media (max-width: 480px) {
-  .msg-nav {
-    padding: 10px;
-  }
-
-  .my-message,
-  .other-message {
-    min-width: 60%;
-    max-width: 85%;
-  }
-
-  .text-input {
-    font-size: 13px;
-  }
-
-  .attach,
-  .send {
-    margin: 5px;
-  }
-
-  .image-preview {
-    max-height: 120px;
-  }
-
-  .pdf-preview {
-    height: 120px;
-  }
-
-  .cancel-reply {
-    font-size: 14px;
-  }
-
-  .reply-preview {
-    font-size: 12px;
-  }
-} */
+}
