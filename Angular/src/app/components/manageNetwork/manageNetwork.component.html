@@ -1,0 +1,30 @@
+<div class="manage-network">
+    <div class="manage-network-menu">
+        <!-- Total connections section -->
+        <div id="totalconnection" ng-click="goToUserFriends()">
+            <span class="material-icons" id="material-icons-manage-network">
+                person
+            </span>
+            <p id="p-manage-network">connections</p>
+            <p id="p2-manage-network">{{connections}}</p>
+        </div>
+
+        <!-- Contacts section -->
+        <div id="totalconnection" ng-click="goToContacts()">
+            <span class="material-icons" id="material-icons-manage-network">
+                contacts
+            </span>
+            <p id="p-manage-network">contacts</p>
+            <p id="p2-manage-network">{{contacts}}</p>
+        </div>
+        
+        <!-- Posts section -->
+        <div id="totalconnection" ng-click="goToUserPosts()">
+            <span class="material-icons" id="material-icons-manage-network">
+                web_stories
+            </span>
+            <p id="p-manage-network">posts</p>
+            <p id="p2-manage-network">{{posts}}</p>
+        </div>
+    </div>
+</div>

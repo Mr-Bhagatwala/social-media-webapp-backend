@@ -24,7 +24,6 @@ angular.module("myApp").component("chat", {
           .then(function (response) {
               if (response.data.status === "success") {
                   $scope.chats = response.data.data;
-  
                   // Add hover and toggle to all chats
                   angular.forEach($scope.chats, function (chat) {
                       chat.hover = false;

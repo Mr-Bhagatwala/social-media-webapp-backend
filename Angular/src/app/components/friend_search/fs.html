@@ -1,38 +1,55 @@
 <div ng-controller="FriendSearchController" class="profile-list-container">
-  <input
-    type="text"
-    placeholder="Search profiles..."
-    ng-model="searchTerm"
-    class="search-input"
-    style="width: 300px; margin-left: 20px"
-    ng-change="searchProfiles()"
-  />
-  <div>
-    <div
-      ng-repeat="profile in profiles"
-      class="profile-row"
-      ng-click="handleRoute(profile.id, profile.name)"
-    >
-      <div class="profile-photo">
-        <img
-          ng-src="{{ 'http://localhost/codeigniter/' + profile.profile_photo}}"
-          alt="{{profile.name}}"
-        />
-      </div>
-      <div class="profile-info">
-        <h3 class="profile-name">{{profile.name}}</h3>
-        <p class="profile-location">{{profile.hometown}}</p>
-      </div>
-      <button
-        ng-click="handleConnect(profile.id)"
-        ng-class="{'connected': isConnected(profile.id)}"
-        class="connect-button"
+  <manage-network class="network-setting"></manage-network>
+  <!-- <chat
+    class="sidebar"
+    on-chat-click="setSelectedChat(chat)"
+    ng-class="{ 'hidden-sidebar': selectedChat }"
+  ></chat> -->
+
+  <div class="profile-search-container">
+    <div class="input-container">
+      <input
+      id="input-container-search"
+        type="text"
+        placeholder="Search profiles..."
+        ng-model="searchTerm"
+ 
+        ng-change="searchProfiles()"
+      />
+    </div>
+
+    <div class="friend-container">
+      <div
+        ng-repeat="profile in profiles"
+        class="profile-row"
+        ng-click="handleRoute(profile.id, profile.name)"
       >
-        Connect
-      </button>
+        <div class="profile-photo">
+          <img
+            ng-src="{{ 'http://localhost/codeigniter/' + profile.profile_photo}}"
+            alt="{{profile.name}}"
+          />
+        </div>
+        <div class="profile-info">
+          <h3 class="profile-name">{{profile.name}}</h3>
+          <p class="profile-location">{{profile.hometown}}</p>
+        </div>
+        <button
+          ng-click="handleConnect(profile.id)"
+          ng-class="{'connected': isConnected(profile.id)}"
+          class="connect-button"
+        >
+        <span class="material-icons" id="connect-btn">
+          person_add_alt
+          </span>Connect
+        </button>
+      </div>
+    </div>
+
+    <div class="no-result">
+      <p ng-if="loading" >Loading more friends...</p>
+      <p ng-if="!loading && profiles.length === 0" style="font-size: 24px;">No users found.</p>
+      <p ng-if="allLoaded" style="font-size: 24px; ">End of results</p>
     </div>
   </div>
-  <p ng-if="loading">Loading more friends...</p>
-  <p ng-if="!loading && profiles.length === 0">No users found.</p>
-  <p ng-if="allLoaded">End of results</p>
 </div>

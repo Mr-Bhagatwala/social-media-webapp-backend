@@ -112,6 +112,7 @@ $route['posts/comment/(:num)'] = 'PostController/addComment/$1';  // POST: Add a
 $route['posts/getcomments/(:num)'] = 'PostController/getComments/$1'; // Get all comments of a post by postIdś
 $route['posts/post-by-user'] = 'PostController/getUserPost';
 $route['posts/toggle_like']='PostController/toggle_like' ;
+$route['posts/getAllPostOfUser']='PostController/getAllPostOfUser' ;
 
 $route['get-notifications/(:num)'] = 'NotificationController/getNotificationofUser/$1';
 $route['notification/deleteNotification'] = 'NotificationController/deleteNotification';

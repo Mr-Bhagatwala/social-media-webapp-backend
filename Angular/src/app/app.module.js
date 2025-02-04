@@ -19,6 +19,6 @@ angular.module("myApp", [
   "ParentController", 
   "message",
   "chat",
-  "practice"
+  "manageNetwork"
 ]);
 // angular.module("myApp", ["navbar", "notification", "fr", "signup", "login", "profile","alternateEmail","alternatePhone","contactDetails"]);

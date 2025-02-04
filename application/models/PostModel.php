@@ -11,6 +11,22 @@ class PostModel extends CI_Model {
         $this->load->database();
     }
 
+
+
+
+    //user;s all post 
+
+    public function getAllPostOfUSer($user_id) {
+        $this->db->where('user_id', $user_id);
+        $query = $this->db->get('posts'); // Assuming 'posts' is your table name
+    
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); // Return all posts as an associative array
+        } else {
+            return false; // Return false if no posts are found
+        }
+    }
+    
     // Create a new post
     public function createPost($userId, $content, $mediaUrls) {
         $this->db->trans_start();

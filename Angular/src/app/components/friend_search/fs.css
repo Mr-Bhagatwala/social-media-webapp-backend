@@ -1,14 +1,31 @@
 .profile-list-container {
+  width: 100%;
+height: 100%;
   font-family: Arial, sans-serif;
-  max-width: 600px;
-  padding: 0 25% !important;
+  display: flex;
+  background-color: #F4F2EE;
+  
+}
+.profile-search-container{
+  width: 73%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-height: 100%;
 }
-
-.search-input {
-  width: 300px !important;
+.network-setting{
+  width: 27%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8%;
+  /* background-color: #FFFFFF; */
+}
+.input-container{
+  display: flex;
+justify-content: center;
+align-items: center;
+}
+#input-container-search {
+  width: 50%;
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 20px;
@@ -16,15 +33,35 @@
   border: 1px solid #ccc;
 }
 
-.profile-row {
-  width: 100%;
+.friend-container{
   display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ gap: 15px;
+ border: 1px solid #DFDEDA;
+ border-radius: 5px;
+ padding: 20px;
+ margin: 18px 20px;
+ background-color: #FFFFFF;
+ box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Stronger effect */
+
+}
+.profile-row {
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
   padding: 10px;
-  background-color: #f0f0f0;
+  background-color: #FFFFFF;
   border-radius: 5px;
+  flex-direction: column;
+  margin: auto;
+  border: 1px solid #E8E8E8;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .profile-row:hover {
   cursor: pointer;
@@ -60,19 +97,52 @@
   font-size: 14px;
   color: #666;
 }
-
+#connect-btn{
+  color: #007bff;
+  font-size: 24px;
+  margin-bottom: 6px;
+  margin-right: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
 .connect-button {
-  padding: 8px 16px;
-  font-size: 14px;
+  /* padding: 8px  */
+  padding:  0 12px;
+  font-size: 20px;
   color: #007bff;
   background-color: transparent;
   border: 1px solid #007bff;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-
+.connect-button:hover{
+  background-color: #b4d7f9;
+  border: 2px solid #007bff;
+  transform: scale(1.05); /* Slight zoom effect */
+  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+}
 .connect-button.connected {
   color: #fff;
   background-color: #007bff;
+}
+.no-result{
+  display: flex;
+  justify-content: center;
+  
+}
+
+@media(max-width: 768px){
+  .network-setting{
+    display: none;
+  }
+  .profile-search-container{
+    width: 100%;
+  }
+  .profile-row{
+    width: 50%;
+  }
 }

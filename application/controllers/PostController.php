@@ -87,6 +87,38 @@ class PostController extends CI_Controller {
     //     }
      
     // }
+
+    public function getAllPostOfUser() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if (!isset($data['user_id'])) {
+            echo json_encode(['status' => 'error', 'message' => 'User ID is required.']);
+            return;
+        }
+    
+        $user_id = $data['user_id'];
+        $response = $this->PostModel->getAllPostOfUSer($user_id);
+    
+        if ($response) {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode([
+                                    "status" => "success",
+                                    "message" => "User's all posts fetched successfully.",
+                                    "data" => $response
+                                ]));
+        } else {
+            return $this->output->set_content_type('application/json')
+                                ->set_output(json_encode([
+                                    "status" => "failed",
+                                    "message" => "No posts found for this user."
+                                ]));
+        }
+    }
+    
+
+
+
+
     public function createPost(){
         // Changes required: fetching userId from session
         // $userId = $this->session->userdata('user_id');

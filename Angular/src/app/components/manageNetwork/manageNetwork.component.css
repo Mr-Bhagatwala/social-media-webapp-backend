@@ -1,0 +1,40 @@
+.manage-network{
+    width: 60%;
+    height: fit-content;
+    border: 1px solid #DFDEDA;
+    margin: 10px;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); 
+}
+#totalconnection{
+    display: flex;
+    flex-direction: row;
+}
+#material-icons-manage-network{
+    font-size: 32px;
+}
+#p-manage-network{
+    margin-top: 14px;
+    margin-left: 10px;
+    font-size: 18px;
+}
+#p2-manage-network{
+    margin-left: auto;
+    margin-top: 16px;
+    font-size: 18px;
+}
+.manage-network-menu{
+    display: flex;
+    flex-direction: column;
+}
+#totalconnection {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#totalconnection:hover {
+    background-color: #E8E8E8; /* Change background color */
+    transform: scale(1.05); /* Slight zoom effect */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+}
