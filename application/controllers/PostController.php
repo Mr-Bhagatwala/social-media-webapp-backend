@@ -65,9 +65,12 @@ class PostController extends CI_Controller
     {
         // Changes required: fetching userId from session
         // $userId = $this->session->userdata('user_id');
-        $userId = $this->input->post('user_id');
-        $content = $this->input->post('content');
+        $data = json_decode(file_get_contents('php://input'), true);
+        $userId = $data['user_id'] ;
+        $content = $data['content'] ;
         $mediaUrls = [];
+        $taggedUsers = isset($data['tagged_users']) ? $data['tagged_users'] : [];
+
 
         // Validate user ID
         if (empty($userId) || !is_numeric($userId)) {
@@ -118,8 +121,24 @@ class PostController extends CI_Controller
         // Attempt to save the post
         try {
             $response = $this->PostModel->createPost($userId, $content, $mediaUrls);
-
             if ($response['status'] == "success") {
+
+                $postId = $response['post_id'];
+                if (!empty($taggedUsers)) {
+                    foreach ($taggedUsers as $taggedUserId) {
+                        if (is_numeric($taggedUserId)) {
+                            $this->PostModel->tagUserInPost($postId, $taggedUserId, $userId);
+                        }
+                    }
+
+
+                    $notification = [
+                        'user_ids' => $taggedUsers,
+                        'message' => "You were tagged in a post.",
+                    ];
+                    $this->NotificationModel->addNotificationforPostTag($notification, $userId);
+                } 
+
                 $friends = $this->FriendRequestModel->getFriendsList($userId);
                 if (!empty($friends)) {
                     $friendIds = array_column($friends, 'friend_id');
@@ -180,128 +199,6 @@ class PostController extends CI_Controller
     }
 
 
-    // Get paginated feed
-    // public function getFeed() {
-    //     $offset = $this->input->get('offset') ?: 0;
-    //     $sort = $this->input->get('sort') ?: 'recent'; // recent/oldest
-    //     $user_id = $this->input->get('user_id');
-    //     //$userId = $this->session->userdata('user_id');
-
-    //     // Validate user ID
-    //     if (empty($userId) || !is_numeric($userId)) {
-    //         return $this->output
-    //             ->set_content_type('application/json') 
-    //             ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid or missing User ID.']));
-    //     }
-
-    //     $response = $this->PostModel->getFeed($offset, $sort);
-
-    //     foreach($response as &$res){
-
-
-    //         $meds = explode(',', $res['media']);
-    //         $newmeds="";
-    //         foreach($meds as $med){
-    //             if($med){
-    //             $med = base_url().$med . ",";
-    //             $newmeds  = $newmeds.$med; }
-    //         }
-
-    //         $res['media'] = rtrim($newmeds, ","); 
-
-
-    //         $res['profile_photo'] = base_url().$res['profile_photo'];
-
-    //         $res['likesCount'] = $this->PostModel->getLikesCount($res['post_id']);
-    //         $res['commentsCount'] = $this->PostModel->getCommentsCount($res['post_id']);
-
-    //         if($user_id){
-    //             $islike = $this->PostModel->isLikeByUser($res['post_id'], $user_id);
-    //             if($islike){
-    //                 $res['islike'] = true;
-    //             }else{$res['islike'] = false;}
-    //             //$res['islikekaresponse'] = $islike;
-
-    //         }else{
-    //             $res['islike'] = false;
-    //         }
-    //     }
-
-    //     return $this->output->set_content_type('application/json')->set_output(json_encode(['status' => 'success', 'message' => 'feed fetched Succesfully', 'data'=> $response]));
-    // }
-
-
-    // public function getFeed(){
-    //     $offset = $this->input->get('offset') ?: 0; // Use XSS filtering
-    //     $sort = $this->input->get('sort') ?: 'recent'; // 'recent' or 'oldest'
-    //     $user_id = $this->input->get('user_id');
-    //      // Changes required: fetching userId from session
-    //     // $userId = $this->session->userdata('user_id');
-
-
-    //     // Validate inputs
-    //     if (!is_numeric($offset) || $offset < 0) {
-    //         return $this->output
-    //             ->set_content_type('application/json')
-    //             ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid offset value.']));
-    //     }
-
-    //     if (!in_array($sort, ['recent', 'oldest'])) {
-    //         return $this->output
-    //             ->set_content_type('application/json')
-    //             ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid sort parameter.']));
-    //     }
-
-    //     if (!empty($user_id) && !is_numeric($user_id)) {
-    //         return $this->output
-    //             ->set_content_type('application/json')
-    //             ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid User ID.']));
-    //     }
-
-    //     // Fetch feed from the model
-    //     $response = $this->PostModel->getFeed($offset, $sort);
-
-    //     if(!$response){
-    //         return $this->output
-    //         ->set_content_type('application/json')
-    //         ->set_output(json_encode(['status' => 'success', 'message' => 'No Feed to display']));
-    //     }
-    //     // Process each feed item
-
-
-    //     foreach ($response as &$res) {
-    //         $mediaList = explode(',', $res['media']);
-    //         $processedMedia = [];
-
-    //         foreach ($mediaList as $media) {
-    //             if (!empty($media)) {
-    //                 $processedMedia[] = base_url() . $media;
-    //             }
-    //         }
-
-    //         $res['media'] = $processedMedia; // Now an array of URLs
-    //         $res['profile_photo'] = !empty($res['profile_photo']) ? base_url() . $res['profile_photo'] : null;
-
-    //         // Add likes and comments counts
-    //         //$res['likesCount'] = $this->PostModel->getLikesCount($res['post_id']);
-    //         //$res['commentsCount'] = $this->PostModel->getCommentsCount($res['post_id']);
-
-    //         // Check if the user has liked the post
-    //         if($user_id){
-    //             $islike = $this->PostModel->isLikeByUser($res['post_id'], $user_id);
-    //             if($islike){
-    //                 $res['islike'] = true;
-    //             }else{$res['islike'] = false;}
-    //             //$res['islikekaresponse'] = $islike;
-
-    //         }else{
-    //             $res['islike'] = false;
-    //         }
-    //     }
-
-    //     return $this->output
-    //         ->set_content_type('application/json')
-    //         ->set_output(json_encode(['status' => 'success', 'message' => 'Feed fetched successfully.', 'data' => $response]));
     // }
     public function getFeed()
     {

@@ -105,6 +105,19 @@ class NotificationModel extends CI_Model {
         return $this->db->update('notifications', $data);
     }
 
+    public function addNotificationforPostTag($notification, $senderId)
+    {
+        foreach ($notification['user_ids'] as $userId) {
+            $data = [
+                'user_id' => $userId,
+                'message' => $notification['message'],
+                'source_id' => $senderId,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            $this->db->insert('notifications', $data);
+        }
+        return ['status' => 'success'];
+    }
     public function markAsAllRead($user_id) {
         // Check if there are any notifications for the user
         $this->db->where('user_id', $user_id);

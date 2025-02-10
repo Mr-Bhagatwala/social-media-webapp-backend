@@ -20,6 +20,7 @@ angular.module("myApp", [
   "message",
   "chat",
   "manageNetwork",
-  "LoginWithOtp"
+  "LoginWithOtp",
+  "tag",
 ]);
 // angular.module("myApp", ["navbar", "notification", "fr", "signup", "login", "profile","alternateEmail","alternatePhone","contactDetails"]);

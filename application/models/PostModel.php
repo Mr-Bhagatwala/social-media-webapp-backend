@@ -43,11 +43,26 @@ class PostModel extends CI_Model {
         $this->db->trans_complete();
 
         if ($this->db->trans_status()) {
-            return ['status' => 'success', 'message' => 'Post created successfully'];
+            return ['status' => 'success', 'message' => 'Post created successfully' ,  'post_id' =>  $postId];
         } else {
             return ['status' => 'failed', 'message' => 'Failed to create post'];
         }
     }
+
+
+    public function tagUserInPost($postId, $taggedUserId, $taggedBy)
+    {
+        $data = [
+            'post_id' => $postId,
+            'tagged_user_id' => $taggedUserId,
+            'tagged_by' => $taggedBy,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        $this->db->insert('post_tags', $data);
+    }
+
+  
+
 
     // Delete a post
     public function deletePost($postId) {
