@@ -19,6 +19,7 @@ angular.module("myApp", [
   "ParentController", 
   "message",
   "chat",
-  "manageNetwork"
+  "manageNetwork",
+  "LoginWithOtp"
 ]);
 // angular.module("myApp", ["navbar", "notification", "fr", "signup", "login", "profile","alternateEmail","alternatePhone","contactDetails"]);

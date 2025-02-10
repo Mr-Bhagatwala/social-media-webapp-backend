@@ -35,7 +35,7 @@
   border-radius: 5px;
 }
 
-.btn-primary {
+#btn-primary {
   width: 100%;
   padding: 10px;
   background-color: #3498db;
@@ -66,6 +66,7 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
 
 @media only screen and (max-width: 668px) {
   .login-box {

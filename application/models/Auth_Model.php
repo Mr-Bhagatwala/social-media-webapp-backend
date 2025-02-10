@@ -38,6 +38,20 @@ class Auth_Model extends CI_Model {
             return FALSE;
         }
     }
+
+    public function saveOtp($email, $otp) {
+        $this->db->where('email', $email);
+        $this->db->update('users', ['user_otp' => $otp]);
+    }
+
+    public function verifyOtp($email, $otp) {
+        $this->db->where('email', $email);
+        $this->db->where('user_otp', $otp);
+        $query = $this->db->get('users');
+    
+        return $query->num_rows() > 0;
+    }
+    
     public function fillDetails($profile_photo, $gender ,$marital_status ,$date_of_birth, $current_city, $hometown) {
         $data = array(
             'profile_photo' => $profile_photo,

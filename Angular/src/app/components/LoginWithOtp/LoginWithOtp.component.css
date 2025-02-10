@@ -1,0 +1,36 @@
+.login-otp-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+  height: 100%;
+}
+
+.login-otp {
+  
+  width: 500px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 20px 30px;
+}
+#GVB{
+    margin-left: 400px;
+  height: 35px;
+  width: 100px;
+  border-radius: 8px;
+  border: none;
+  background-color: #3498db;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .login-otp{
+      width: 50%;
+    }
+    #GVB{
+        margin-left: 88px;
+    }
+   
+  }
+  

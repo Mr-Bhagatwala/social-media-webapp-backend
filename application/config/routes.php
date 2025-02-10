@@ -44,6 +44,9 @@ $route['session'] = "AuthController/check_session";
 
 $route['register'] = 'AuthController/register_user';
 $route['login'] = "AuthController/login_user";
+$route['generate-otp'] = 'AuthController/generateOtp';
+$route['verify-otp'] = 'AuthController/verifyOtp';
+
 $route['logout'] = "AuthController/logout";
 $route['details'] = "AuthController/addProfileDetails";
 $route['getUser'] = "AuthController/getUser";

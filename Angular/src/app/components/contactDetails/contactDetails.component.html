@@ -1,118 +1,160 @@
-<div class="container">
-    <form class="contactDetails-form" name="contactDetails" ng-submit="onSubmit(contactDetails)" novalidate>
-        <h2 class="form-heading">Complete Your Profile</h2>
-        <!-- Contact Details -->
-        <h3 class="section-heading">Contact Details</h3>
-        <div class="form-group">
-            <!-- Primary Email -->
-            <div class="input-group">
-                <input
-                    type="email"
-                    placeholder="Primary Email"
-                    ng-model="primaryEmail"
-                    name="email"
-                    required
-                />
-                <div
-                    ng-show="contactDetails.email.$touched && contactDetails.email.$invalid"
-                    class="error-message"
-                >
-                    <span ng-show="contactDetails.email.$error.required">Email is required.</span>
-                    <span ng-show="contactDetails.email.$error.email">Email is invalid.</span>
-                </div>
-            </div>
+<div id="conatct-main-container" style="display: flex; justify-content: center; align-items: center; ">
+  <div class="contact-second-container" style="width: 5 0%;  margin-top: 100px;">
 
-            <!-- Primary Phone -->
-            <div class="input-group">
-                <input
-                    type="tel"
-                    placeholder="Primary Phone"
-                    ng-model="primaryPhone"
-                    name="phone"
-                    required
-                    ng-pattern="/^[0-9]*$/"
-                    ng-minlength="10"
-                    ng-maxlength="10"
-                />
-                <div
-                    ng-show="contactDetails.phone.$touched && contactDetails.phone.$invalid"
-                    class="error-message"
-                >
-                    <span ng-show="contactDetails.phone.$error.required">Primary Phone is required.</span>
-                    <span ng-show="contactDetails.phone.$error.pattern">Only numbers are allowed.</span>
-                    <span
-                        ng-show="contactDetails.phone.$error.minlength || contactDetails.phone.$error.maxlength"
-                    >
-                        Phone number must be 10 digits.
-                    </span>
-                </div>
-            </div>
 
-            <!-- Alternative Email -->
-            <div class="input-group">
-                <input
-                    type="email"
-                    placeholder="Add alternative email"
-                    name="alternativeEmail"
-                    ng-model="alternativeEmail"
-                />
-                <div
-                    ng-show="contactDetails.alternativeEmail.$touched && contactDetails.alternativeEmail.$invalid"
-                    class="error-message"
-                >
-                    <span ng-show="contactDetails.alternativeEmail.$error.email">
-                        Please enter a valid email
-                    </span>
-                </div>
-            </div>
+    <form name="contactDetails" ng-submit="onSubmit(contactDetails)" novalidate 
+    style="display: flex; flex-direction: column; justify-content: center;">
 
-            <!-- Alternative Phone -->
-            <div class="input-group">
-                <input
-                    type="tel"
-                    placeholder="Enter alternative phone"
-                    name="alternativePhone"
-                    ng-model="alternativePhone"
-                    ng-pattern="/^[0-9]*$/"
-                    ng-minlength="10"
-                    ng-maxlength="10"
-                />
-                <div
-                    ng-show="contactDetails.alternativePhone.$touched && contactDetails.alternativePhone.$invalid"
-                    class="error-message"
-                >
-                    <span ng-show="contactDetails.alternativePhone.$error.pattern">
-                        Only numbers are allowed.
-                    </span>
-                    <span
-                        ng-show="contactDetails.alternativePhone.$error.minlength || contactDetails.alternativePhone.$error.maxlength"
-                    >
-                        Phone number must be 10 digits.
-                    </span>
-                </div>
-            </div>
 
-            <!-- LinkedIn Profile -->
-            <div class="input-group">
-                <input 
-                    type="text" 
-                    placeholder="LinkedIn Profile URL" 
-                    ng-model="linkedinUrl" 
-                    name="linkedinProfile" 
-                    ng-pattern="/^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/"
-                />
-                <div 
-                    ng-show="contactDetails.linkedinProfile.$touched && contactDetails.linkedinProfile.$invalid" 
-                    class="error-message"
-                >
-                    <span ng-show="contactDetails.linkedinProfile.$error.pattern">
-                        Please enter a valid LinkedIn URL (e.g., https://www.linkedin.com/in/username).
-                    </span>
-                </div>
-            </div>
+      <h2 class="form-heading">Complete Your Profile</h2>
+      <!-- Contact Details -->
+      <h3 class="section-heading">Contact Details</h3>
+      <div class="conatct-form-group">
+        <!-- Primary Email -->
+        <div class="input-group">
+          <input
+            type="email"
+            placeholder="Primary Email"
+            ng-model="primaryEmail"
+            name="email"
+            required
+          />
+          <div
+            ng-show="
+              contactDetails.email.$touched && contactDetails.email.$invalid
+            "
+            class="error-message"
+          >
+            <span ng-show="contactDetails.email.$error.required"
+              >Email is required.</span
+            >
+            <span ng-show="contactDetails.email.$error.email"
+              >Email is invalid.</span
+            >
+          </div>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="submit-btn" ng-disabled="contactDetails.$invalid">Save & Continue</button>
+        <!-- Primary Phone -->
+        <div class="input-group">
+          <input
+            type="tel"
+            placeholder="Primary Phone"
+            ng-model="primaryPhone"
+            name="phone"
+            required
+            ng-pattern="/^[0-9]*$/"
+            ng-minlength="10"
+            ng-maxlength="10"
+          />
+          <div
+            ng-show="
+              contactDetails.phone.$touched && contactDetails.phone.$invalid
+            "
+            class="error-message"
+          >
+            <span ng-show="contactDetails.phone.$error.required"
+              >Primary Phone is required.</span
+            >
+            <span ng-show="contactDetails.phone.$error.pattern"
+              >Only numbers are allowed.</span
+            >
+            <span
+              ng-show="
+                contactDetails.phone.$error.minlength ||
+                contactDetails.phone.$error.maxlength
+              "
+            >
+              Phone number must be 10 digits.
+            </span>
+          </div>
+        </div>
+
+        <!-- Alternative Email -->
+        <div class="input-group">
+          <input
+            type="email"
+            placeholder="Add alternative email"
+            name="alternativeEmail"
+            ng-model="alternativeEmail"
+          />
+          <div
+            ng-show="
+              contactDetails.alternativeEmail.$touched &&
+              contactDetails.alternativeEmail.$invalid
+            "
+            class="error-message"
+          >
+            <span ng-show="contactDetails.alternativeEmail.$error.email">
+              Please enter a valid email
+            </span>
+          </div>
+        </div>
+
+        <!-- Alternative Phone -->
+        <div class="input-group">
+          <input
+            type="tel"
+            placeholder="Enter alternative phone"
+            name="alternativePhone"
+            ng-model="alternativePhone"
+            ng-pattern="/^[0-9]*$/"
+            ng-minlength="10"
+            ng-maxlength="10"
+          />
+          <div
+            ng-show="
+              contactDetails.alternativePhone.$touched &&
+              contactDetails.alternativePhone.$invalid
+            "
+            class="error-message"
+          >
+            <span ng-show="contactDetails.alternativePhone.$error.pattern">
+              Only numbers are allowed.
+            </span>
+            <span
+              ng-show="
+                contactDetails.alternativePhone.$error.minlength ||
+                contactDetails.alternativePhone.$error.maxlength
+              "
+            >
+              Phone number must be 10 digits.
+            </span>
+          </div>
+        </div>
+
+        <!-- LinkedIn Profile -->
+        <div class="input-group">
+          <input
+            type="text"
+            placeholder="LinkedIn Profile URL"
+            ng-model="linkedinUrl"
+            name="linkedinProfile"
+            ng-pattern="/^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/"
+          />
+          <div
+            ng-show="
+              contactDetails.linkedinProfile.$touched &&
+              contactDetails.linkedinProfile.$invalid
+            "
+            class="error-message"
+          >
+            <span ng-show="contactDetails.linkedinProfile.$error.pattern">
+              Please enter a valid LinkedIn URL (e.g.,
+              https://www.linkedin.com/in/username).
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="submit-btn"
+        ng-disabled="contactDetails.$invalid"
+        style="width: 103%;"
+      >
+        Save & Continue
+      </button>
     </form>
+  </div>
 </div>

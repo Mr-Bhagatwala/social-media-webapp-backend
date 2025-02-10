@@ -56,14 +56,17 @@
 </div> -->
 
 <div class="friends-container">
-  <h2>Friends List</h2>
-  <input
+  <div class="friend-search-container">
+
+    <h2>Friends List</h2>
+    <input
     type="text"
-    class="search-input"
+    id="friend-search-input"
     ng-model="searchTerm"
     placeholder="Search friends..."
     ng-change="searchFriends()"
-  />
+    />
+  </div>
   <div class="friends-flex">
     <div
       class="friend-card"
@@ -89,6 +92,7 @@
       </div>
     </div>
   </div>
-  <p ng-if="isLoading">Loading more friends...</p>
-  <p ng-if="!hasMore && friends.length === 0">No friends found.</p>
+
+  <p ng-if="isLoading" id="N0-friends">Loading more friends...</p>
+  <p ng-if="!hasMore && friends.length === 0"  id="N0-friends">No friends found.</p>
 </div>

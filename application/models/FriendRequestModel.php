@@ -139,7 +139,7 @@ class FriendRequestModel extends CI_Model {
 
     public function getFriendsListPagination($userId, $limit, $offset, $search = ''){
         $query = "
-            SELECT DISTINCT u.id AS friend_id, u.name, u.profile_photo
+            SELECT DISTINCT u.id AS friend_id, u.name, u.profile_photo 
             FROM friend_requests fr
             INNER JOIN users u ON (u.id = fr.sender_id AND fr.receiver_id = ?) 
                                 OR (u.id = fr.receiver_id AND fr.sender_id = ?)

@@ -1,0 +1,45 @@
+<div class="login-otp-container">
+  <div class="login-otp">
+    <h4 class="login-heading">Login</h4>
+
+    <!-- Email Section (Before OTP) -->
+    <div class="login-opt-2">
+      <label class="input-label">Email</label>
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        class="input-box"
+        ng-model="otpEmail"
+        required
+      />
+      <button id="GVB" ng-click="generateOtp()">Get OTP</button>
+    </div>
+
+    <!-- OTP Section (After OTP is Sent) -->
+    <div class="login-opt-2" >
+      <label class="input-label">OTP</label>
+      <input
+        type="text"
+        name="otp"
+        placeholder="Enter your OTP"
+        class="input-box"
+        ng-model="randomOtp"
+        required
+      />
+      <button  id="GVB" ng-click="verifyOtp()" >
+        Verify OTP
+      </button>
+    </div>
+
+    <p class="signup-link">
+      Not registered yet?
+      <a href="#/signup" class="link">Create an account</a>
+    </p>
+
+    <p class="signup-link">
+      <span style="font-size: 24px; text-align: center;">☺️</span>
+      <a href="#/login" class="link">Login with Password</a>
+    </p>
+  </div>
+</div>

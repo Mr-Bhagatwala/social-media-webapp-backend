@@ -36,6 +36,10 @@ app
         templateUrl: "./app/components/login/login.component.html",
         controller: "login",
       })
+      .when("/loginWithOtp", {
+        templateUrl: "./app/components/LoginWithOtp/LoginWithOtp.component.html",
+        controller: "LoginWithOtp",
+      })
       .when("/user", {
         templateUrl: "./app/components/userProfile/user.component.html",
         controller: "user",
@@ -81,7 +85,7 @@ app
           $rootScope.urlName = undefined;
         }
         
-        const allowedRoutes = ["/login", "/signup"];
+        const allowedRoutes = ["/login", "/signup" , "/loginWithOtp"];
         if (
           !UserService.isAuthenticated() &&
           !allowedRoutes.includes($location.path())
@@ -100,7 +104,7 @@ app.controller("HomeController", function ($scope) {
 app.controller("MainController", function ($scope, $location) {
   $scope.isLoginOrSignupPage = function () {
     const currentPath = $location.path();
-    return currentPath === "/login" || currentPath === "/signup";
+    return currentPath === "/login" || currentPath === "/signup" || currentPath=== "/loginWithOtp" || currentPath==="/contactDetails"  || currentPath==="/profile";
   };
   //story should be display at home page
   $scope.isHomePage = function () {
