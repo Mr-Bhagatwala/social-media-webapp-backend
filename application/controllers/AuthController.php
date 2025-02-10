@@ -27,6 +27,19 @@ class AuthController extends CI_Controller
         $this->load->helper('cookie');
         $this->load->library('email');
 
+        $this->SMTPUser = getenv('EMAIL_USER');
+        $this->SMTPPass = getenv('EMAIL_PASS');
+        $this->SMTPHost = getenv('EMAIL_HOST');
+        $this->SMTPPort = getenv('EMAIL_PORT');
+        $this->SMTPName = getenv('EMAIL_NAME');
+        $this->SMTPProtocol = getenv('EMAIL_PROTOCOL');
+        $this->SMTPType = getenv('EMAIL_TYPE');
+        $this->SMTPAuth = getenv('EMAIL_AUTH');
+        $this->SMTPTls = getenv('EMAIL_TLS');
+
+
+
+
     }
 
     public function check_session()
@@ -60,20 +73,21 @@ class AuthController extends CI_Controller
 
         // Email Configuration
         $config = array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.gmail.com', // Replace with your SMTP server
-            'smtp_user' => 'socialmediawebapptest@gmail.com',
-            'smtp_pass' => 'mwci wtln lots guyf',
-            'smtp_port' => 465, // SMTP port
-            'mailtype' => 'html',
+            'protocol' => $this->SMTPProtocol,
+            'smtp_host' => $this->SMTPHost, // Replace with your SMTP server
+            'smtp_user' => $this->SMTPUser,
+            'smtp_pass' => $this->SMTPPass,
+            'smtp_port' => $this->SMTPPort, // SMTP port
+            'mailtype' => $this->SMTPType,
             'charset' => 'utf-8',
             'wordwrap' => TRUE,
             'newline' => "\r\n"
         );
         $this->email->initialize($config);
 
+
         // Set email parameters
-        $this->email->from('SMTP_USER', 'Almashines');
+        $this->email->from('smtp_user', $this->SMTPName);
         $this->email->to($email);
         $this->email->subject('Welcome to Our Platform!');
         $this->email->message("<h3>Hi $name,</h3><p>Thank you for registering! Your account has been successfully created.</p>");
@@ -96,8 +110,6 @@ class AuthController extends CI_Controller
                 'error' => $this->email->print_debugger()
             ]);
         }
-
-
 
         if (!$user_id) {
             echo json_encode([
@@ -164,10 +176,11 @@ class AuthController extends CI_Controller
         }
     }
 
+    // Handle login with OTP  form submission
     public function generateOtp()
     {
         $postData = json_decode(file_get_contents('php://input'), true);
-        $email =  $postData['email'];
+        $email = $postData['email'];
 
 
         if (empty($email)) {
@@ -185,25 +198,25 @@ class AuthController extends CI_Controller
             $this->load->library('email');
 
             $config = array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.gmail.com', // Replace with your SMTP server
-                'smtp_user' => 'socialmediawebapptest@gmail.com',
-                'smtp_pass' => 'mwci wtln lots guyf',
-                'smtp_port' => 465, // SMTP port
-                'mailtype' => 'html',
+                'protocol' => $this->SMTPProtocol,
+                'smtp_host' => $this->SMTPHost, // Replace with your SMTP server
+                'smtp_user' => $this->SMTPUser,
+                'smtp_pass' => $this->SMTPPass,
+                'smtp_port' => $this->SMTPPort, // SMTP port
+                'mailtype' => $this->SMTPType,
                 'charset' => 'utf-8',
                 'wordwrap' => TRUE,
                 'newline' => "\r\n"
             );
             $this->email->initialize($config);
 
-            $this->email->from('SMTP_USER', 'Almashines');
+            $this->email->from('smtp_user', $this->SMTPName);
             $this->email->to($email);
             $this->email->subject('Your OTP Code');
             $this->email->message("<p>Your OTP is <strong>$otp</strong>.</p>");
 
             if ($this->email->send()) {
-                echo json_encode(['status' => 'success', 'message' => 'OTP sent successfully on user mail ID ','showBtn' => true] );
+                echo json_encode(['status' => 'success', 'message' => 'OTP sent successfully on user mail ID ', 'showBtn' => true]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Failed to send OTP on user mail ID ']);
             }
@@ -213,7 +226,8 @@ class AuthController extends CI_Controller
     }
 
 
-    public function verifyOtp() {
+    public function verifyOtp()
+    {
         $postData = json_decode(file_get_contents('php://input'), true);
         $email = $postData['email'];
         $otp = $postData['otp'];
@@ -225,29 +239,29 @@ class AuthController extends CI_Controller
         $user = $this->Auth_Model->login($email);
         // Check OTP in the database
         if ($user) {
-        if ($this->Auth_Model->verifyOtp($email, $otp)) {
-            $cookie = array(
-                'name' => 'user_id',
-                'value' => $user['id'],
-                'expire' => '3600', // 1 hour
-                'path' => '/',
-                'secure' => FALSE, // Set to TRUE if using HTTPS
-                'httponly' => TRUE
-            );
-            $this->input->set_cookie($cookie);
+            if ($this->Auth_Model->verifyOtp($email, $otp)) {
+                $cookie = array(
+                    'name' => 'user_id',
+                    'value' => $user['id'],
+                    'expire' => '3600', // 1 hour
+                    'path' => '/',
+                    'secure' => FALSE, // Set to TRUE if using HTTPS
+                    'httponly' => TRUE
+                );
+                $this->input->set_cookie($cookie);
 
-            echo json_encode(['status' => 'success', 'message' => 'OTP verified and user logged in successfully' ,"user" => $user]);
+                echo json_encode(['status' => 'success', 'message' => 'OTP verified and user logged in successfully', "user" => $user]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid OTP']);
+            }
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid OTP']);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Invalid email or user not found',
+                'email' => $email,
+                'user' => $user
+            ]);
         }
-    }else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Invalid email or user not found',
-            'email' => $email,
-            'user' => $user
-        ]);
-    }
     }
 
     public function editBasicDetails()

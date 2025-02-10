@@ -18,7 +18,20 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-	define('ENVIRONMENT', 'development');
+
+
+ // define('ENVIRONMENT', isset($_ENV['ENVIRONMENT']) ? $_ENV['ENVIRONMENT'] : 'production');
+if (file_exists(__DIR__ . '/.env')) {
+	$lines = file(__DIR__ . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+	foreach ($lines as $line) {
+		if (strpos(trim($line), '#') === 0) continue; // Skip comments
+		list($key, $value) = explode('=', $line, 2);
+		putenv(trim($key) . '=' . trim($value)); // Set environment variables
+	}
+}
+
+define('ENVIRONMENT', getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'production');
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

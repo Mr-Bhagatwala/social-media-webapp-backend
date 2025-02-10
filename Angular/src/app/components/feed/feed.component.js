@@ -220,22 +220,17 @@ angular
           });
       };
 
-  
       $scope.loadFeeds(); // Initial load
-
-
-
-
 
       $scope.openDialog = function () {
         const dialog = document.querySelector("#postDialog");
         dialog.showModal();
-      }
+      };
       $scope.closeDialog = function () {
         $scope.loadFeeds();
-        setTimeout(function() {
+        setTimeout(function () {
           $window.location.reload();
-      }, 300);
+        }, 300);
         const dialog = document.querySelector("#postDialog");
         dialog.close();
       };
@@ -277,7 +272,6 @@ angular
 
       // Submit post
       $scope.submitPost = function (form) {
-
         const userId = UserService.getUserData();
         const formData = new FormData();
         formData.append("user_id", userId);
