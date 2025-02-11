@@ -17,7 +17,6 @@ angular
       $scope.loadProfiles = function () {
         if ($scope.loading || $scope.allLoaded) return;
         $scope.loading = true;
-      
         $http
           .get(
             `http://localhost/codeigniter/index.php/getAll?offset=${$scope.offset}&limit=${$scope.limit}&search=${encodeURIComponent(

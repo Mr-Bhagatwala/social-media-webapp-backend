@@ -4,7 +4,7 @@ angular
   .module("myApp")
   .controller(
     "feedController",
-    function ($scope, $http, $window, UserService, $location) {
+    function ($scope, $http, $window, UserService, $location,TagService) {
       $scope.feeds = [];
       const userId = UserService.getUserData(); // Replace with dynamic user_id if available
       $scope.sortCriteria = "recent"; // Default sorting
@@ -48,6 +48,10 @@ angular
       //       $scope.loading = false;
       //     });
       // };
+
+      $scope.taggedUsers = TagService.getTaggedUsers();
+      console.log("Tagged users in feedController:", $scope.taggedUsers);
+
       $scope.loadFeeds = function () {
         // Prevent multiple requests or loading beyond available data
         if ($scope.loading || $scope.allLoaded) return;
@@ -62,7 +66,7 @@ angular
           .then(function (response) {
             if (response.data && response.data.status === "success") {
               const feeds = response.data.data;
-
+              console.log("feeds------->",feeds)
               if (feeds && feeds.length > 0) {
                 // Process and append new feeds
                 const newFeeds = feeds.map((feed) => {
@@ -227,10 +231,10 @@ angular
         dialog.showModal();
       };
       $scope.closeDialog = function () {
-        $scope.loadFeeds();
-        setTimeout(function () {
-          $window.location.reload();
-        }, 300);
+        // $scope.loadFeeds();
+        // setTimeout(function () {
+        //   $window.location.reload();
+        // }, 300);
         const dialog = document.querySelector("#postDialog");
         dialog.close();
       };
@@ -281,6 +285,11 @@ angular
           formData.append("media[]", file);
         });
 
+
+        
+        const taggedUsers = $scope.taggedUsers.map(user => user.id);
+        formData.append("tagged_users", JSON.stringify(taggedUsers));
+
         $http
           .post(
             "http://localhost/codeigniter/index.php/posts/create",
@@ -297,14 +306,14 @@ angular
               $scope.mediaPreview = [];
               document.getElementById("mediaFiles").value = ""; // Reset file input
               $scope.closeDialog();
-              $scope.loadFeeds();
+              // $scope.loadFeeds();
             } else {
               alert("Error in backend: ".response.data.message);
             }
           })
           .catch(function (error) {
             console.error("Error creating post:", error);
-            alert("Error creating post. Please try again.");
+            // alert("Error creating post. Please try again.");
           });
       };
     }

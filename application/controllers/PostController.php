@@ -65,18 +65,22 @@ class PostController extends CI_Controller
     {
         // Changes required: fetching userId from session
         // $userId = $this->session->userdata('user_id');
-        $data = json_decode(file_get_contents('php://input'), true);
-        $userId = $data['user_id'] ;
-        $content = $data['content'] ;
+        // $data = json_decode(file_get_contents('php://input'), true);
+        $userId = $this->input->post('user_id');
+        $content = $this->input->post('content');
         $mediaUrls = [];
-        $taggedUsers = isset($data['tagged_users']) ? $data['tagged_users'] : [];
+        $taggedUsers = $this->input->post('tagged_users');
 
+        $taggedUsers = json_decode($taggedUsers, true); // Convert JSON string to array
+        if (!is_array($taggedUsers)) {
+            $taggedUsers = []; // Ensure it's an array
+        }
 
         // Validate user ID
         if (empty($userId) || !is_numeric($userId)) {
             return $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid or missing User ID.']));
+                ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid or missing User ID.', 'userId' => $userId, 'content' => $content, 'taggedUSers' => $taggedUsers]));
         }
 
         // Validate content length
@@ -137,7 +141,7 @@ class PostController extends CI_Controller
                         'message' => "You were tagged in a post.",
                     ];
                     $this->NotificationModel->addNotificationforPostTag($notification, $userId);
-                } 
+                }
 
                 $friends = $this->FriendRequestModel->getFriendsList($userId);
                 if (!empty($friends)) {

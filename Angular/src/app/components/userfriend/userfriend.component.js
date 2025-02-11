@@ -14,14 +14,15 @@ angular
       $scope.friends = [];
       const user_id = UserService.getUserData();
       $scope.loadFriends = function () {
+
         if ($scope.isLoading || !$scope.hasMore) return;
-        
+      
         console.log("term is ", $scope.searchTerm);
         const searchQuery = encodeURIComponent($scope.searchTerm);
         console.log("searchQuery is ", searchQuery);
         $scope.isLoading = true;
         const url = `http://localhost/codeigniter/index.php/get-friends/${user_id}?page=${$scope.page}&limit=${$scope.limit}&search=${searchQuery}`;
-        
+      
         $http
           .get(url)
           .then(
@@ -70,7 +71,6 @@ angular
         $location.path(route); 
         
       };
-
 
       // Initial call to load friends
       $scope.loadFriends();

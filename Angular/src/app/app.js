@@ -75,7 +75,9 @@ app
   .run([
     "$rootScope",
     "$location",
-    "UserService",
+    "UserService","TagService",
+    
+
     function ($rootScope, $location, UserService) {
 
       $rootScope.$on("$routeChangeStart", function (event, next, current) {

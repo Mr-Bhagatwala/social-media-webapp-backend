@@ -88,21 +88,36 @@ class PostModel extends CI_Model {
 
     // Get feed with pagination
     public function getFeed($offset, $sort) {
-        $this->db->select('p.post_id, p.content, p.created_at, p.likesCount, p.commentCount, u.id,u.name, u.profile_photo, GROUP_CONCAT(m.media_url) as media');
+        $this->db->select('
+            p.post_id, 
+            p.content, 
+            p.created_at, 
+            p.likesCount, 
+            p.commentCount, 
+            u.id AS user_id, 
+            u.name, 
+            u.profile_photo, 
+            GROUP_CONCAT(DISTINCT m.media_url) AS media,
+            GROUP_CONCAT(DISTINCT tu.name) AS tagged_users
+        ');
         $this->db->from('posts p');
         $this->db->join('users u', 'u.id = p.user_id');
         $this->db->join('media m', 'm.post_id = p.post_id', 'left');
+        $this->db->join('post_tags pt', 'pt.post_id = p.post_id', 'left');
+        $this->db->join('users tu', 'tu.id = pt.tagged_user_id', 'left'); // Fetch tagged users
         $this->db->group_by('p.post_id');
-
+    
         if ($sort === 'recent') {
             $this->db->order_by('p.created_at', 'DESC');
         } else {
             $this->db->order_by('p.created_at', 'ASC');
         }
-
+    
         $this->db->limit(3, $offset);
         return $this->db->get()->result_array();
     }
+    
+    
 
     public function likePost($postId, $userId) {
         // Insert into likes table

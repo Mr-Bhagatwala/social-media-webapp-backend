@@ -382,16 +382,28 @@
 
 
 #postDialog{
-  width: 50%;
+  width: 60%;
   z-index: 100;
   border: none;
-  /* border: 2px solid red; */
-  /* background-color: #ccc; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
 }
 
+.tag-container{
+  width:100%;
+  /* border: 2px solid red; */
+  align-items: center;
+  /* height: 100px; */
+  margin-bottom: 10px;
+}
+.tag-main-container{
+  width: 100%;
+  /* border: 2px solid rgb(0, 0, 0); */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .create-post-container {
   margin: 20px auto;
@@ -414,7 +426,7 @@
 }
 
 textarea {
-  width: 100%;
+  width: 96%;
   height: 100px;
   padding: 10px;
   border: 1px solid #ddd;

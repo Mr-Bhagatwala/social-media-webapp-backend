@@ -1,0 +1,110 @@
+.tag-parent-component {
+  width: 80%;
+  /* border: 2px solid green; */
+  display: flex;
+  justify-content: center;
+}
+
+.tag-child-component {
+  width: 80%;
+  /* border: 2px solid blue; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-component {
+  width: 100%;
+}
+
+#tag-search-bar {
+  width: 90%;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.search-result-component {
+  width: fit-content;
+  /* border: 1px solid #ccc; */
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.tag-result-comonent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.tag-profile-photo {
+  height: 50px;
+  border-radius: 50%;
+}
+
+.friend-photo-tag,
+.tagfriend-name,
+.friend-add-button {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.tag-result-component {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: auto;
+  /* border: 2px solid black;  */
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.tagged-friends-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  /* border: 1px solid #ccc; */
+  padding: 0px 40px;
+  border-radius: 5px;
+  gap: 5px;
+}
+.everytaggedUSer {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  gap: 10px;
+}
+.tagged-profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+#friend-remove-button {
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+@media (max-width: 600px) {
+  .tagged-friends-container {
+    flex: 1 1 100%; /* On smaller screens, show 1 per row */
+    max-width: 100%;
+  }
+}

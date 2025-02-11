@@ -1,3 +1,57 @@
-<div class="tag-component">
-    <h1>tag component</h1>
+<div class="tag-parent-component">
+  <div class="tag-child-component">
+
+    <div class="search-component">
+      <input
+        type="text"
+        ng-model="tagSearchTerm"
+        placeholder="Tag friends..."
+        ng-change="searchFriends()"
+        id="tag-search-bar"
+        ng-click="openDialog()"
+      />
+    </div>
+
+    <div class="search-result-component" ng-show="searchClicked">
+      <div class="tag-result-comonent" ng-repeat="tagFriend in displayedTagFriends">
+        <div class="friend-photo-tag">
+          <img
+            ng-src="{{ tagFriend.profile_photo }}"
+            alt="{{ tagFriend.name }}"
+            class="tag-profile-photo"
+          />
+        </div>
+        <div class="tagfriend-name">
+          <h6>{{ tagFriend.name }}</h6>
+        </div>
+        <div class="friend-add-button">
+          <span class="material-icons" ng-click="tagFriendFun(tagFriend.friend_id , tagFriend.name, tagFriend.profile_photo )"> person_add</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="tag-result-component">
+      <div class="tagged-friends-container" ng-repeat="taggedUser in taggedUsers">
+        <div class="everytaggedUSer">
+
+          <div class="friend-photo-tagged">
+            <img
+            ng-src="{{ taggedUser.profile_photo }}"
+            alt="{{ taggedUser.name }}"
+            class="tagged-profile-photo"
+            />
+          </div>
+          <div class="taggedfriend-name">
+            <h6>{{ taggedUser.name }}</h6>
+          </div>
+          <div id="friend-remove-button">
+            <span class="material-icons" ng-click="untagFriendFun(taggedUser.id)">close</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
 </div>
